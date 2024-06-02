@@ -1,4 +1,5 @@
 ---
+
 title: "Trabajo Práctico: Mercado de trabajo y empleo"
 output: html_document
 
@@ -8,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Estudiante: Melisa Laurora
+### Estudiante: Melisa Laurora y Francisco Fernández
 
 ## Mercado de trabajo y empleo
 <div align="justify">
@@ -21,13 +22,11 @@ Martes 18 de junio. La entrega será un informe en Rmarkdown alojado en un repos
 ## 1
 1) Abrir y explorar las distintas bases de datos. Describir brevemente (en 1 párrafo) la metodología con que la encuesta es elaborada y explicar (en un tabulado) las variables que serán utilizadas en el TP.
 
-```{r warning=FALSE}
-# librerias 
+```{r warning=FALSE, message = FALSE}
+# librerias
 library(tidyverse)
 library(ggplot2)
 library(kableExtra)
-library(kableExtra)
-
 
 #Cargar base de datos
 base<-readRDS(file='Brasil_T32019.Rda')
@@ -43,7 +42,6 @@ Fuente: https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continu
 ```{r warning=FALSE}
 var <- read.csv("Variables.csv")
 ```
-
 
 
 ## 2
