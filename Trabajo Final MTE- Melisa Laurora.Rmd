@@ -115,3 +115,33 @@ Describir todas las decisiones metodológicas realizadas, en cuanto a la operaci
 
 ```
 
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+Análisis España
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+```{r}
+bbdd_uk=read.csv("reino_unido.csv")
+```
+
+```{r}
+bbdd_espana=read.csv("espana.csv")
+```
+
+```{r}
+bbdd_espana %>% select(COEFF,WSTATOR,STAPRO,MAINSTAT)
+```
+
+
+
+
