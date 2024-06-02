@@ -1,0 +1,151 @@
+---
+title: "Trabajo Práctico Grupal - Seminario Mercado de Trabajo y Empleo"
+author: "Melisa Laurora y Francisco Fernández"
+date: "2024-06-02"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Mercado de trabajo y empleo
+<div align="justify">
+El siguiente trabajo práctico es condición obligatoria para la promoción de la materia **Mercado de trabajo y empleo de la Maestría en Generación y Analisis de Información Estadística de la UNTREF**. El mismo es de resolución grupal.
+
+#### Fecha de entrega: 
+
+Martes 18 de junio. La entrega será un informe en Rmarkdown alojado en un repositorio de Github que pueda correrse desde cualquier computadora, con la base datos correspondiente en el directorio de trabajo.
+
+## 1
+1) Abrir y explorar las distintas bases de datos. Describir brevemente (en 1 párrafo) la metodología con que la encuesta es elaborada y explicar (en un tabulado) las variables que serán utilizadas en el TP.
+
+```{r warning=FALSE, message = FALSE}
+# librerias
+library(tidyverse)
+library(ggplot2)
+library(kableExtra)
+
+#Cargar base de datos
+base<-readRDS(file='Brasil_T32019.Rda')
+summary(base)
+
+```
+### PNAD Continua - Encuesta Nacional Continua por Muestra de Hogares
+
+Tiene como objetivo principal seguir las fluctuaciones trimestrales y la evolución en la inserción de la población en el mercado laboral y características como edad, sexo y nivel de educación, además de permitir el estudio del desarrollo socioeconómico del país a través de la producción de datos anuales sobre otras formas de trabajo. Es una encuesta integrada de viviendas; con muestreo probabilístico; frecuencia de divulgación trimestral/ anual; población objetivo compuesta por todas las personas que viven en hogares privados permanentes en el área cubierta por la investigación (Grandes Regiones, Unidades de Federación, 20 Regiones Metropolitanas que contienen Municipios Capitales, Municipios de las Capitales y Región de Desarrollo Integrado de la Gran Teresina).
+
+Fuente: https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&t=o-que-e
+
+```{r warning=FALSE}
+var <- read.csv("Variables.csv")
+```
+
+
+## 2
+
+Estimar y presentar las tasas básicas del mercado de trabajo. Analizar brevemente los resultados encontrados.
+
+```{r warning=FALSE}
+
+```
+
+
+## 3 
+
+Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
+
+```{r warning=FALSE}
+
+
+```
+
+## 4
+
+Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
+
+```{r warning=FALSE}
+
+```
+
+
+
+## 5
+
+Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
+
+```{r warning=FALSE}
+# Join
+
+
+```
+
+
+## 6
+
+Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
+
+
+```{r warning=FALSE}
+
+
+
+```
+
+Consignas para todos los países
+Analizar brevemente las diferencias en la estructura demográfica y del mercado de trabajo entre países. Luego comparar entre países todas las dimensiones estudiadas en las consignas anteriores. A la hora de realizar comparaciones, tener en cuenta y reflexionar sobre los distintos criterios adoptados para operacionalizar los conceptos estudiados para cada fuente de datos.
+
+
+```{r warning=FALSE}
+
+
+```
+
+Otras aclaraciones:
+Describir todas las decisiones metodológicas realizadas, en cuanto a la operacionalización de conceptos, las variables utilizadas y el universo de análisis. Tener en cuenta que para la mayoría de las consignas hay más de una respuesta válida. No es necesario incluir una revisión de la literatura sobre informalidad y precariedad en el TP, tan sólo las referencias necesarias para fundamentar la elección de las variables.
+</div>
+
+```{r warning=FALSE}
+
+```
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+Análisis España
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+```{r}
+bbdd_uk=read.csv("reino_unido.csv")
+```
+
+```{r}
+bbdd_espana=read.csv("espana.csv")
+```
+
+```{r}
+bbdd_espana %>% select(COEFF,WSTATOR,STAPRO,MAINSTAT)
+```
+
+
+
+
