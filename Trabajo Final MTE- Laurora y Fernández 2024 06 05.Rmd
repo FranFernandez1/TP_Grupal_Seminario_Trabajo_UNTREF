@@ -79,8 +79,7 @@ Estimar y presentar las tasas básicas del mercado de trabajo. Analizar
 brevemente los resultados encontrados.
 
 ```{r warning=FALSE}
-x<-base %>% filter(VD4004 =="Pessoas subocupadas")
-table(base$VD4004A)
+if (!require('scales')) install.packages('scales'); library('scales')
 
 Cuadro_1.1a <- base %>% 
   summarise(Poblacion         = sum(V1028),
@@ -91,14 +90,13 @@ Cuadro_1.1a <- base %>%
             Suboc_demandante  = sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004A=="Pessoas subocupadas") & (V4063=="Sim"|V4063A=="Sim"|VD4005=="Pessoas desalentadas")],na.rm=TRUE),#VD4005
             Suboc_no_demand   = sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004A=="Pessoas subocupadas") & (V4063=="Não"|V4063A=="Não")],na.rm=TRUE),
             Subocupados       =  sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004A=="Pessoas subocupadas")],na.rm=TRUE),
-            'Tasa Actividad'                  = PEA/Poblacion,
-            'Tasa Empleo'                     = Ocupados/Poblacion,
-            'Tasa Desocupacion'               = Desocupados/PEA,
-            #'Tasa ocupados demandantes'       = Ocupados_demand/PEA,
-            'Tasa Subocupación'               = Subocupados/PEA
-            #'Tasa Subocupación demandante'    = Suboc_demandante/PEA,
-            #'Tasa Subocupación no demandante' = Suboc_no_demand/PEA
-  )
+            'Tasa Actividad'                  = percent(PEA/Poblacion, accuracy = 0.1),
+            'Tasa Empleo'                     = percent(Ocupados/Poblacion, accuracy = 0.1),
+            'Tasa Desocupacion'               = percent(Desocupados/PEA, accuracy = 0.1),
+            #'Tasa ocupados demandantes'       = percent(Ocupados_demand/PEA, accuracy = 0.1),
+            'Tasa Subocupación'               = percent(Subocupados/PEA, accuracy = 0.1))                       #'Tasa Subocupación demandante'    = percent(Suboc_demandante/PEA,
+            #'Tasa Subocupación no demandante' = percent(Suboc_no_demand/PEA
+  
 
 kable(Cuadro_1.1a)
 ```
