@@ -1503,836 +1503,10 @@ trabajo.</p>
 </div>
 <div id="section" class="section level2">
 <h2>1</h2>
-<ol style="list-style-type: decimal">
-<li>Abrir y explorar las distintas bases de datos. Describir brevemente
+<p>Abrir y explorar las distintas bases de datos. Describir brevemente
 (en 1 párrafo) la metodología con que la encuesta es elaborada y
 explicar (en un tabulado) las variables que serán utilizadas en el
-TP.</li>
-</ol>
-<pre class="r"><code># librerias
-library(tidyverse)
-library(ggplot2)
-library(kableExtra)
-
-#Cargar base de datos
-base&lt;-readRDS(file=&#39;Brasil_T32019.Rda&#39;)
-summary(base)</code></pre>
-<pre><code>##      Ano             Trimestre                      UF        
-##  Length:550227      Length:550227      São Paulo     : 42952  
-##  Class :character   Class :character   Minas Gerais  : 40412  
-##  Mode  :character   Mode  :character   Rio de Janeiro: 38615  
-##                                        Maranhão      : 37730  
-##                                        Santa Catarina: 32959  
-##                                        Paraná        : 28953  
-##                                        (Other)       :328606  
-##                              Capital      
-##  Município de Rio de Janeiro (RJ): 12999  
-##  Município de Brasília (DF)      : 10047  
-##  Município de São Paulo (SP)     : 10020  
-##  Município de Manaus (AM)        :  7319  
-##  Município de Fortaleza (CE)     :  6373  
-##  (Other)                         : 79977  
-##  NA&#39;s                            :423492  
-##                                         RM_RIDE           UPA           
-##  Região Metropolitana de Rio de Janeiro (RJ): 25569   Length:550227     
-##  Região Metropolitana de São Paulo (SP)     : 18099   Class :character  
-##  Região Metropolitana de Fortaleza (CE)     :  9833   Mode  :character  
-##  Região Metropolitana de Belo Horizonte (MG):  9751                     
-##  Região Metropolitana de Porto Alegre (RS)  :  9523                     
-##  (Other)                                    : 97935                     
-##  NA&#39;s                                       :379517                     
-##    Estrato             V1008              V1014              V1016          
-##  Length:550227      Length:550227      Length:550227      Length:550227     
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##                                                                             
-##     V1022       
-##  Urbana:399645  
-##  Rural :150582  
-##                 
-##                 
-##                 
-##                 
-##                 
-##                                                                                 V1023       
-##  Capital                                                                           :126735  
-##  Resto da RM (Região Metropolitana, excluindo a capital)                           : 69478  
-##  Resto da RIDE (Região Integrada de Desenvolvimento Econômico, excluindo a capital):  6389  
-##  Resto da UF  (Unidade da Federação, excluindo a região metropolitana e a RIDE)    :347625  
-##                                                                                             
-##                                                                                             
-##                                                                                             
-##      V1027              V1028              V1029             posest         
-##  Min.   :   5.195   Min.   :   5.821   Min.   :  109318   Length:550227     
-##  1st Qu.: 135.502   1st Qu.: 166.617   1st Qu.: 1646830   Class :character  
-##  Median : 223.712   Median : 269.680   Median : 4623973   Mode  :character  
-##  Mean   : 321.815   Mean   : 381.075   Mean   : 5583540                     
-##  3rd Qu.: 387.855   3rd Qu.: 464.562   3rd Qu.: 6721700                     
-##  Max.   :6890.745   Max.   :7885.199   Max.   :24203167                     
-##                                                                             
-##      V2001           V2003          
-##  Min.   : 1.000   Length:550227     
-##  1st Qu.: 3.000   Class :character  
-##  Median : 4.000   Mode  :character  
-##  Mean   : 3.693                     
-##  3rd Qu.: 5.000                     
-##  Max.   :22.000                     
-##                                     
-##                                          V2005           V2007       
-##  Pessoa responsável pelo domicílio          :186959   Homem :268499  
-##  Filho(a) do responsável e do cônjuge       :119697   Mulher:281728  
-##  Cônjuge ou companheiro(a) de sexo diferente:116119                  
-##  Filho(a) somente do responsável            : 60051                  
-##  Neto(a)                                    : 26189                  
-##  Pai, mãe, padrasto ou madrasta             :  7877                  
-##  (Other)                                    : 33335                  
-##     V2008              V20081             V20082              V2009       
-##  Length:550227      Length:550227      Length:550227      Min.   :  0.00  
-##  Class :character   Class :character   Class :character   1st Qu.: 17.00  
-##  Mode  :character   Mode  :character   Mode  :character   Median : 34.00  
-##                                                           Mean   : 35.52  
-##                                                           3rd Qu.: 52.00  
-##                                                           Max.   :114.00  
-##                                                                           
-##       V2010         V3001         V3002                 V3002A      
-##  Branca  :212318   Sim :464125   Sim :135082   Rede privada: 31487  
-##  Preta   : 46188   Não : 51546   Não :380589   Rede pública:103595  
-##  Amarela :  2635   NA&#39;s: 34556   NA&#39;s: 34556   NA&#39;s        :415145  
-##  Parda   :286318                                                    
-##  Indígena:  2716                                                    
-##  Ignorado:    52                                                    
-##                                                                     
-##                                                                    V3003       
-##  Pré-escolar (maternal e jardim de infância)                          :     0  
-##  Alfabetização de jovens e adultos                                    :     0  
-##  Regular do ensino fundamental                                        :     0  
-##  Educação de jovens e adultos (EJA) ou supletivo do ensino fundamental:     0  
-##  Regular do ensino médio                                              :     0  
-##  (Other)                                                              :     0  
-##  NA&#39;s                                                                 :550227  
-##                               V3003A          V3004         V3005       
-##  Regular do ensino fundamental   : 76927   8 anos:     0   Sim :     0  
-##  Regular do ensino médio         : 22597   9 anos:     0   Não :     0  
-##  Superior - graduação            : 19521   NA&#39;s  :550227   NA&#39;s:550227  
-##  Pré-escola                      :  8623                                
-##  Especialização de nível superior:  2619                                
-##  (Other)                         :  4795                                
-##  NA&#39;s                            :415145                                
-##                  V3005A                V3006       
-##  Períodos semestrais: 18402   Segunda (o) : 18916  
-##  Anos               :  1007   Primeira (o): 18662  
-##  Outra forma        :   112   Terceira (o): 18655  
-##  NA&#39;s               :530706   Quarta (o)  : 12057  
-##                               Sexta (o)   : 11894  
-##                               (Other)     : 42529  
-##                               NA&#39;s        :427514  
-##                                V3006A        V3007         V3008       
-##  Anos iniciais (primeiro segmento):   190   Sim :  1775   Sim :358843  
-##  Anos finais (segundo segmento)   :   222   Não : 17746   Não : 21746  
-##  NA&#39;s                             :549815   NA&#39;s:530706   NA&#39;s:169638  
-##                                                                        
-##                                                                        
-##                                                                        
-##                                                                        
-##                                          V3009       
-##  Classe de alfabetização - CA               :     0  
-##  Alfabetização de jovens e adultos          :     0  
-##  Antigo primário (elementar)                :     0  
-##  Antigo ginásio (médio 1º ciclo)            :     0  
-##  Regular do ensino fundamental ou do 1º grau:     0  
-##  (Other)                                    :     0  
-##  NA&#39;s                                       :550227  
-##                                          V3009A          V3010       
-##  Regular do ensino médio óu do 2º grau      :120812   8 anos: 98404  
-##  Regular do ensino fundamental ou do 1º grau:105311   9 anos:  6907  
-##  Superior - graduação                       : 44243   NA&#39;s  :444916  
-##  Antigo primário (elementar)                : 42805                  
-##  Especialização de nível superior           : 12985                  
-##  (Other)                                    : 32687                  
-##  NA&#39;s                                       :191384                  
-##   V3011                        V3011A      
-##  Sim :     0   Períodos semestrais: 39058  
-##  Não :     0   Anos               :  6838  
-##  NA&#39;s:550227   Outra forma        :   122  
-##                NA&#39;s               :504209  
-##                                            
-##                                            
-##                                            
-##                                       V3012                 V3013       
-##  Concluiu                                :320685   Terceira (o):122084  
-##  Não concluiu                            : 11159   Quarta (o)  : 50879  
-##  Curso não classificado em séries ou anos:  1507   Oitava (o)  : 40934  
-##  NA&#39;s                                    :216876   Segunda (o) : 24295  
-##                                                    Quinta (o)  : 23614  
-##                                                    (Other)     : 60654  
-##                                                    NA&#39;s        :227767  
-##                                V3013A        V3013B        V3014       
-##  Anos iniciais (primeiro segmento):   323   Sim :    64   Sim :200116  
-##  Anos finais (segundo segmento)   :   329   Não :   259   Não :146699  
-##  NA&#39;s                             :549575   NA&#39;s:549904   NA&#39;s:203412  
-##                                                                        
-##                                                                        
-##                                                                        
-##                                                                        
-##   V4001         V4002         V4003         V4004         V4005       
-##  Sim :211080   Sim :   893   Sim :  8235   Sim :  8136   Sim :  5657  
-##  Não :234342   Não :233449   Não :225214   Não :217078   Não :211421  
-##  NA&#39;s:104805   NA&#39;s:315885   NA&#39;s:316778   NA&#39;s:325013   NA&#39;s:333149  
-##                                                                       
-##                                                                       
-##                                                                       
-##                                                                       
-##                                                                                                                                     V4006       
-##  Férias, folga ou jornada de trabalho variável                                                                                         :     0  
-##  Licença maternidade                                                                                                                   :     0  
-##  Licença remunerada por motivo de doença ou acidente da própria pessoa                                                                 :     0  
-##  Outro tipo de licença remunerada (estudo, paternidade, casamento, licença prêmio, etc.)                                               :     0  
-##  Afastamento do próprio negócio/empresa por motivo de gestação, doença, acidente, etc., sem ser remunerado por instituto de previdência:     0  
-##  (Other)                                                                                                                               :     0  
-##  NA&#39;s                                                                                                                                  :550227  
-##                                                                                                                                     V4006A      
-##  Férias, folga ou jornada de trabalho variável                                                                                         :  2368  
-##  Licença remunerada por motivo de saúde ou acidente da própria pessoa                                                                  :  1410  
-##  Afastamento do próprio negócio/empresa por motivo de gestação, doença, acidente, etc., sem ser remunerado por instituto de previdência:   591  
-##  Licença maternidade ou paternidade                                                                                                    :   551  
-##  Outro motivo                                                                                                                          :   402  
-##  (Other)                                                                                                                               :   335  
-##  NA&#39;s                                                                                                                                  :544570  
-##   V4007                               V4008           V40081         
-##  Sim :     0   Menos de 1 mês            :   558   Length:550227     
-##  Não :     0   De 1 mês a menos de 1 ano :   495   Class :character  
-##  NA&#39;s:550227   De 1 ano a menos de 2 anos:    55   Mode  :character  
-##                2 anos ou mais            :   116                     
-##                NA&#39;s                      :549003                     
-##                                                                      
-##                                                                      
-##     V40082             V40083                   V4009           V4010          
-##  Length:550227      Length:550227      Um          :225328   Length:550227     
-##  Class :character   Class :character   Dois        :  7853   Class :character  
-##  Mode  :character   Mode  :character   Três ou mais:   480   Mode  :character  
-##                                        NA&#39;s        :316566                     
-##                                                                                
-##                                                                                
-##                                                                                
-##                                                                V4012       
-##  Empregado do setor privado                                       :102546  
-##  Conta própria                                                    : 66341  
-##  Empregado do setor público (inclusive empresas de economia mista): 28908  
-##  Trabalhador doméstico                                            : 15502  
-##  Empregador                                                       : 10089  
-##  (Other)                                                          : 10275  
-##  NA&#39;s                                                             :316566  
-##                                     V40121          V4013          
-##  Em ajuda a conta própria ou empregador:  7308   Length:550227     
-##  Em ajuda a empregado                  :   763   Class :character  
-##  Em ajuda a trabalhador doméstico      :   130   Mode  :character  
-##  NA&#39;s                                  :542026                     
-##                                                                    
-##                                                                    
-##                                                                    
-##                                                                                                                                   V40132      
-##  Agricultura, pecuária silvicultura, exploração florestal, pesca ou aquicultura                                                      :     0  
-##  Outra atividade, inclusive as atividades de apoio à agricultura, pecuária, silvicultura, exploração florestal, pesca ou aquicultura.:     0  
-##  NA&#39;s                                                                                                                                :550227  
-##                                                                                                                                               
-##                                                                                                                                               
-##                                                                                                                                               
-##                                                                                                                                               
-##                                                                                                                                                                                     V40132A      
-##  Agricultura, pecuária silvicultura, exploração florestal, pesca ou aquicultura e atividades de apoio à agricultura, pecuária, silvicultura, exploração florestal, pesca ou aquicultura.: 37122  
-##  Outra atividade                                                                                                                                                                        :196539  
-##  NA&#39;s                                                                                                                                                                                   :316566  
-##                                                                                                                                                                                                  
-##                                                                                                                                                                                                  
-##                                                                                                                                                                                                  
-##                                                                                                                                                                                                  
-##        V4014         V4015       
-##  Federal  :  4308   Sim :  8011  
-##  Estadual :  9043   Não :170965  
-##  Municipal: 17631   NA&#39;s:371251  
-##  NA&#39;s     :519245                
-##                                  
-##                                  
-##                                  
-##                                       V40151         V401511         
-##  1 a 5 trabalhadores não remunerados     :  7945   Length:550227     
-##  6 a 10 trabalhadores não remunerados    :    37   Class :character  
-##  11 ou mais trabalhadores não remunerados:    29   Mode  :character  
-##  NA&#39;s                                    :542216                     
-##                                                                      
-##                                                                      
-##                                                                      
-##    V401512                            V4016           V40161         
-##  Length:550227      1 a 5 empregados     :  7526   Length:550227     
-##  Class :character   6 a 10 empregados    :  1215   Class :character  
-##  Mode  :character   11 a 50 empregados   :  1065   Mode  :character  
-##                     51 ou mais empregados:   283                     
-##                     NA&#39;s                 :540138                     
-##                                                                      
-##                                                                      
-##     V40162             V40163           V4017                     V40171      
-##  Length:550227      Length:550227      Sim : 12487   1 a 5 sócios    : 12359  
-##  Class :character   Class :character   Não : 63943   6 ou mais sócios:   128  
-##  Mode  :character   Mode  :character   NA&#39;s:473797   NA&#39;s            :537740  
-##                                                                               
-##                                                                               
-##                                                                               
-##                                                                               
-##    V401711                         V4018           V40181         
-##  Length:550227      1 a 5 pessoas     :109156   Length:550227     
-##  Class :character   6 a 10 pessoas    : 17433   Class :character  
-##  Mode  :character   11 a 50 pessoas   : 20257   Mode  :character  
-##                     51 ou mais pessoas: 40201                     
-##                     NA&#39;s              :363180                     
-##                                                                   
-##                                                                   
-##     V40182             V40183           V4019       
-##  Length:550227      Length:550227      Sim : 18780  
-##  Class :character   Class :character   Não : 57650  
-##  Mode  :character   Mode  :character   NA&#39;s:473797  
-##                                                     
-##                                                     
-##                                                     
-##                                                     
-##                                       V4020         V4021       
-##  Em loja, escritório, galpão, etc.       :140856   Sim : 95985  
-##  Em fazenda, sítio, granja, chácara, etc.: 34396   Não : 13889  
-##  Não tinha estabelecimento para funcionar: 42777   NA&#39;s:440353  
-##  NA&#39;s                                    :332198                
-##                                                                 
-##                                                                 
-##                                                                 
-##                                                                             V4022       
-##  Em local designado pelo empregador, cliente ou freguês                        : 25830  
-##  Em veículo automotor (táxi, ônibus, caminhão, automóvel, embarcação, etc.)    :  8683  
-##  No domicílio de residência, sem local exclusivo para o desempenho da atividade:  6500  
-##  Em via ou área pública (rua, rio, manguezal, mata pública, praça, praia etc.) :  6183  
-##  No domicílio de residência, em local exclusivo para o desempenho da atividade :  4309  
-##  (Other)                                                                       :  5161  
-##  NA&#39;s                                                                          :493561  
-##   V4024         V4025         V4026         V4027         V4028       
-##  Sim :  4143   Sim : 18641   Sim :  3322   Sim :   144   Sim : 18296  
-##  Não : 11359   Não :114887   Não :   383   Não :   239   Não :  3656  
-##  NA&#39;s:534725   NA&#39;s:416699   NA&#39;s:546522   NA&#39;s:549844   NA&#39;s:528275  
-##                                                                       
-##                                                                       
-##                                                                       
-##                                                                       
-##   V4029         V4032                                       V4033       
-##  Sim : 78306   Sim : 35796   Indica se o quesito foi respondido:225460  
-##  Não : 50354   Não : 90988   NA&#39;s                              :324767  
-##  NA&#39;s:421567   NA&#39;s:423443                                              
-##                                                                         
-##                                                                         
-##                                                                         
-##                                                                         
-##          V40331                    V403311          V403312      
-##  Em dinheiro:224472   [1SM]+1 a [2SM]  : 78403   Min.   :     4  
-##  NA&#39;s       :325755   [0,5SM]+1 a [1SM]: 49953   1st Qu.:   998  
-##                       [2SM]+1 a [3SM]  : 30104   Median :  1200  
-##                       1 a [0,5SM]      : 28457   Mean   :  1993  
-##                       [3SM]+1 a [5SM]  : 20540   3rd Qu.:  2000  
-##                       (Other)          : 17015   Max.   :260000  
-##                       NA&#39;s             :325755   NA&#39;s   :325755  
-##                         V40332                    V403321      
-##  Em produtos ou mercadorias:   766   1 a [0,5SM]      :   671  
-##  NA&#39;s                      :549461   [0,5SM]+1 a [1SM]:    52  
-##                                      [1SM]+1 a [2SM]  :    26  
-##                                      [2SM]+1 a [3SM]  :     9  
-##                                      [3SM]+1 a [5SM]  :     4  
-##                                      (Other)          :     4  
-##                                      NA&#39;s             :549461  
-##     V403322                 V40333      
-##  Min.   :  15     Em benefícios:   315  
-##  1st Qu.:  80     NA&#39;s         :549912  
-##  Median : 125                           
-##  Mean   : 282                           
-##  3rd Qu.: 250                           
-##  Max.   :6500                           
-##  NA&#39;s   :549461                         
-##                                                                 V403331      
-##  Pessoa recebendo somente em beneficios, exceto aprendizado         :   150  
-##  Aprendiz ou estagiário recebendo em aprendizado e outros beneficios:    40  
-##  Aprendiz ou estagiário recebendo somente em aprendizado            :   125  
-##  NA&#39;s                                                               :549912  
-##                                                                              
-##                                                                              
-##                                                                              
-##                                 V4034                V40341      
-##  Indica se o quesito foi respondido:225145   Em dinheiro:224481  
-##  NA&#39;s                              :325082   NA&#39;s       :325746  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##               V403411          V403412      
-##  [1SM]+1 a [2SM]  : 75427   Min.   :     0  
-##  [0,5SM]+1 a [1SM]: 47267   1st Qu.:   800  
-##  [2SM]+1 a [3SM]  : 29595   Median :  1200  
-##  1 a [0,5SM]      : 26540   Mean   :  2002  
-##  [3SM]+1 a [5SM]  : 20653   3rd Qu.:  2000  
-##  (Other)          : 24999   Max.   :260000  
-##  NA&#39;s             :325746   NA&#39;s   :325746  
-##                         V40342                    V403421      
-##  Em produtos ou mercadorias:   799   1 a [0,5SM]      :   595  
-##  NA&#39;s                      :549428   0                :    86  
-##                                      [0,5SM]+1 a [1SM]:    71  
-##                                      [1SM]+1 a [2SM]  :    32  
-##                                      [2SM]+1 a [3SM]  :     7  
-##                                      (Other)          :     8  
-##                                      NA&#39;s             :549428  
-##     V403422            V4039            V4039C      
-##  Min.   :    0.0   Min.   :  1.0    Min.   :  0.0   
-##  1st Qu.:   50.0   1st Qu.: 30.0    1st Qu.: 30.0   
-##  Median :  110.0   Median : 40.0    Median : 40.0   
-##  Mean   :  288.9   Mean   : 38.2    Mean   : 37.1   
-##  3rd Qu.:  300.0   3rd Qu.: 44.0    3rd Qu.: 44.0   
-##  Max.   :10000.0   Max.   :120.0    Max.   :120.0   
-##  NA&#39;s   :549428    NA&#39;s   :316566   NA&#39;s   :316566  
-##                         V4040            V40401           V40402      
-##  Menos de 1 mês            :  9382   Min.   : 1       Min.   : 0.0    
-##  De 1 mês a menos de 1 ano : 43868   1st Qu.: 2       1st Qu.: 0.0    
-##  De 1 ano a menos de 2 anos: 21352   Median : 5       Median : 2.0    
-##  2 anos ou mais            :159059   Mean   : 5       Mean   : 3.3    
-##  NA&#39;s                      :316566   3rd Qu.: 7       3rd Qu.: 6.0    
-##                                      Max.   :11       Max.   :11.0    
-##                                      NA&#39;s   :506359   NA&#39;s   :528875  
-##      V40403          V4041          
-##  Min.   : 2.0     Length:550227     
-##  1st Qu.: 4.0     Class :character  
-##  Median : 8.0     Mode  :character  
-##  Mean   :11.4                       
-##  3rd Qu.:16.0                       
-##  Max.   :79.0                       
-##  NA&#39;s   :391168                     
-##                                                                   V4043       
-##  Conta própria                                                       :  3828  
-##  Empregado do setor privado                                          :  1839  
-##  Empregado do setor público (inclusive empresas de economia mista)   :  1546  
-##  Empregador                                                          :   437  
-##  Trabalhador não remunerado em ajuda a membro do domicílio ou parente:   425  
-##  (Other)                                                             :   258  
-##  NA&#39;s                                                                :541894  
-##                                     V40431          V4044          
-##  Em ajuda a conta própria ou empregador:   407   Length:550227     
-##  Em ajuda a empregado                  :    18   Class :character  
-##  Em ajuda a trabalhador doméstico      :     0   Mode  :character  
-##  NA&#39;s                                  :549802                     
-##                                                                    
-##                                                                    
-##                                                                    
-##        V4045         V4046         V4047         V4048         V4049       
-##  Federal  :    54   Sim :   851   Sim :   980   Sim :   753   Sim :  1518  
-##  Estadual :   550   Não :  3414   Não :   566   Não :  1904   Não :  4651  
-##  Municipal:   948   NA&#39;s:545962   NA&#39;s:548681   NA&#39;s:547570   NA&#39;s:544058  
-##  NA&#39;s     :548675                                                          
-##                                                                            
-##                                                                            
-##                                                                            
-##                                 V4050                V40501      
-##  Indica se o quesito foi respondido:  7908   Em dinheiro:  7871  
-##  NA&#39;s                              :542319   NA&#39;s       :542356  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##               V405011          V405012      
-##  [1SM]+1 a [2SM]  :  2011   Min.   :   10   
-##  1 a [0,5SM]      :  1965   1st Qu.:  500   
-##  [0,5SM]+1 a [1SM]:  1593   Median : 1000   
-##  [2SM]+1 a [3SM]  :  1062   Mean   : 1712   
-##  [3SM]+1 a [5SM]  :   702   3rd Qu.: 2000   
-##  (Other)          :   538   Max.   :80000   
-##  NA&#39;s             :542356   NA&#39;s   :542356  
-##                         V40502                    V405021      
-##  Em produtos ou mercadorias:    22   1 a [0,5SM]      :    20  
-##  NA&#39;s                      :550205   [0,5SM]+1 a [1SM]:     1  
-##                                      [1SM]+1 a [2SM]  :     1  
-##                                      [2SM]+1 a [3SM]  :     0  
-##                                      [3SM]+1 a [5SM]  :     0  
-##                                      (Other)          :     0  
-##                                      NA&#39;s             :550205  
-##     V405022                 V40503      
-##  Min.   :  25.0   Em benefícios:    17  
-##  1st Qu.:  63.8   NA&#39;s         :550210  
-##  Median : 150.0                         
-##  Mean   : 188.2                         
-##  3rd Qu.: 195.0                         
-##  Max.   :1000.0                         
-##  NA&#39;s   :550205                         
-##                                                                 V405031      
-##  Pessoa recebendo somente em beneficios, exceto aprendizado         :     9  
-##  Aprendiz ou estagiário recebendo em aprendizado e outros beneficios:     3  
-##  Aprendiz ou estagiário recebendo somente em aprendizado            :     5  
-##  NA&#39;s                                                               :550210  
-##                                                                              
-##                                                                              
-##                                                                              
-##                                 V4051                V40511      
-##  Indica se o quesito foi respondido:  7891   Em dinheiro:  7871  
-##  NA&#39;s                              :542336   NA&#39;s       :542356  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##                                                                  
-##               V405111          V405112                           V40512      
-##  [1SM]+1 a [2SM]  :  1846   Min.   :    0    Produtos ou mercadorias:    22  
-##  1 a [0,5SM]      :  1694   1st Qu.:  350    NA&#39;s                   :550205  
-##  [0,5SM]+1 a [1SM]:  1434   Median : 1000                                    
-##  [2SM]+1 a [3SM]  :  1011   Mean   : 1648                                    
-##  [3SM]+1 a [5SM]  :   707   3rd Qu.: 2000                                    
-##  (Other)          :  1179   Max.   :80000                                    
-##  NA&#39;s             :542356   NA&#39;s   :542356                                   
-##               V405121          V405122           V4056            V4056C      
-##  1 a [0,5SM]      :    17   Min.   :   0.0   Min.   : 1.0     Min.   : 0      
-##  0                :     2   1st Qu.:  52.5   1st Qu.:10.0     1st Qu.: 8      
-##  [0,5SM]+1 a [1SM]:     2   Median : 150.0   Median :16.0     Median :16      
-##  [1SM]+1 a [2SM]  :     1   Mean   : 225.2   Mean   :16.8     Mean   :16      
-##  [2SM]+1 a [3SM]  :     0   3rd Qu.: 237.5   3rd Qu.:20.0     3rd Qu.:20      
-##  (Other)          :     0   Max.   :1000.0   Max.   :60.0     Max.   :60      
-##  NA&#39;s             :550205   NA&#39;s   :550205   NA&#39;s   :541894   NA&#39;s   :541894  
-##   V4057                                       V4058                V40581      
-##  Sim :   186   Indica se o quesito foi respondido:   480   Em dinheiro:   465  
-##  Não :   294   NA&#39;s                              :549747   NA&#39;s       :549762  
-##  NA&#39;s:549747                                                                   
-##                                                                                
-##                                                                                
-##                                                                                
-##                                                                                
-##               V405811          V405812      
-##  1 a [0,5SM]      :   111   Min.   :   35   
-##  [1SM]+1 a [2SM]  :    96   1st Qu.:  500   
-##  [0,5SM]+1 a [1SM]:    85   Median : 1040   
-##  [2SM]+1 a [3SM]  :    56   Mean   : 2444   
-##  [5SM]+1 a [10SM] :    48   3rd Qu.: 3000   
-##  (Other)          :    69   Max.   :50000   
-##  NA&#39;s             :549762   NA&#39;s   :549762  
-##                         V40582                    V405821      
-##  Em produtos ou mercadorias:     3   [0,5SM]+1 a [1SM]:     2  
-##  NA&#39;s                      :550224   1 a [0,5SM]      :     1  
-##                                      [1SM]+1 a [2SM]  :     0  
-##                                      [2SM]+1 a [3SM]  :     0  
-##                                      [3SM]+1 a [5SM]  :     0  
-##                                      (Other)          :     0  
-##                                      NA&#39;s             :550224  
-##     V405822                 V40583      
-##  Min.   :250.0    Em benefícios:     0  
-##  1st Qu.:400.0    NA&#39;s         :550227  
-##  Median :550.0                          
-##  Mean   :466.7                          
-##  3rd Qu.:575.0                          
-##  Max.   :600.0                          
-##  NA&#39;s   :550224                         
-##                                                                 V405831      
-##  Pessoa recebendo somente em beneficios, exceto aprendizado         :     0  
-##  Aprendiz ou estagiário recebendo em aprendizado e outros beneficios:     0  
-##  Aprendiz ou estagiário recebendo somente em aprendizado            :     0  
-##  NA&#39;s                                                               :550227  
-##                                                                              
-##                                                                              
-##                                                                              
-##             V40584                                      V4059       
-##  Não remunerado:    13   Indica se o quesito foi respondido:   467  
-##  NA&#39;s          :550214   NA&#39;s                              :549760  
-##                                                                     
-##                                                                     
-##                                                                     
-##                                                                     
-##                                                                     
-##          V40591                    V405911          V405912      
-##  Em dinheiro:   465   1 a [0,5SM]      :    94   Min.   :    0   
-##  NA&#39;s       :549762   [1SM]+1 a [2SM]  :    86   1st Qu.:  400   
-##                       [0,5SM]+1 a [1SM]:    81   Median : 1000   
-##                       [2SM]+1 a [3SM]  :    52   Mean   : 2356   
-##                       [3SM]+1 a [5SM]  :    48   3rd Qu.: 2800   
-##                       (Other)          :   104   Max.   :50000   
-##                       NA&#39;s             :549762   NA&#39;s   :549762  
-##                         V40592                    V405921      
-##  Em produtos ou mercadorias:     3   [0,5SM]+1 a [1SM]:     2  
-##  NA&#39;s                      :550224   1 a [0,5SM]      :     1  
-##                                      0                :     0  
-##                                      [1SM]+1 a [2SM]  :     0  
-##                                      [2SM]+1 a [3SM]  :     0  
-##                                      (Other)          :     0  
-##                                      NA&#39;s             :550224  
-##     V405922           V4062            V4062C        V4063         V4063A      
-##  Min.   :250      Min.   : 1.0     Min.   : 0.0     Sim :     0   Sim : 29666  
-##  1st Qu.:375      1st Qu.: 5.0     1st Qu.: 4.0     Não :     0   Não :203995  
-##  Median :500      Median : 9.0     Median : 8.0     NA&#39;s:550227   NA&#39;s:316566  
-##  Mean   :450      Mean   :10.3     Mean   : 9.7                                
-##  3rd Qu.:550      3rd Qu.:14.0     3rd Qu.:14.0                                
-##  Max.   :600      Max.   :40.0     Max.   :40.0                                
-##  NA&#39;s   :550224   NA&#39;s   :549747   NA&#39;s   :549747                              
-##   V4064         V4064A        V4071       
-##  Sim :     0   Sim : 26950   Sim : 30241  
-##  Não :     0   Não :  2716   Não :181520  
-##  NA&#39;s:550227   NA&#39;s:520561   NA&#39;s:338466  
-##                                           
-##                                           
-##                                           
-##                                           
-##                                                                                                           V4072       
-##  Entrou diretamente em contato com empregador (em fábrica, fazenda, mercado, loja ou outro local de trabalho):     0  
-##  Fez ou inscreveu-se em concurso                                                                             :     0  
-##  Consultou agência privada ou sindicato                                                                      :     0  
-##  Consultou agência municipal, estadual ou o Sistema Nacional de Emprego (SINE)                               :     0  
-##  Colocou ou respondeu anúncio                                                                                :     0  
-##  (Other)                                                                                                     :     0  
-##  NA&#39;s                                                                                                        :550227  
-##                                                                                                                               V4072A      
-##  Entrou em contato com empregador (pessoalmente, por telefone, por email ou pelo portal da empresa, inclusive enviando currículo): 23294  
-##  Consultou parente, amigo ou colega                                                                                              :  3829  
-##  Fez ou inscreveu-se em concurso                                                                                                 :   845  
-##  Consultou ou inscreveu-se em agência de emprego municipal, estadual ou no Sistema Nacional de Emprego (SINE)                    :   755  
-##  Tomou medida para iniciar o próprio negócio (recursos financeiros, local para instalação, equipamentos, legalização etc.)       :   507  
-##  (Other)                                                                                                                         :  1011  
-##  NA&#39;s                                                                                                                            :519986  
-##   V4073       
-##  Sim : 35010  
-##  Não :146724  
-##  NA&#39;s:368493  
-##               
-##               
-##               
-##               
-##                                                                                 V4074       
-##  Conseguiu proposta de trabalho para começar após a semana de referência           :     0  
-##  Aguardando resposta de medida tomada para conseguir trabalho                      :     0  
-##  Desistiu de procurar por não conseguir encontrar trabalho                         :     0  
-##  Acha que não vai encontrar trabalho por ser muito jovem ou muito idoso            :     0  
-##  Tinha que cuidar de filho(s), de outro(s) dependente(s) ou dos afazeres domésticos:     0  
-##  (Other)                                                                           :     0  
-##  NA&#39;s                                                                              :550227  
-##                                                                                 V4074A      
-##  Não havia trabalho na localidade                                                  : 13651  
-##  Tinha que cuidar dos afazeres domésticos, do(s) filho(s) ou de outro(s) parente(s):  5239  
-##  Por problema de saúde ou gravidez                                                 :  4949  
-##  Estava estudando (curso de qualquer tipo ou por conta própria)                    :  3789  
-##  Não conseguia trabalho adequado                                                   :  2809  
-##  (Other)                                                                           :  4573  
-##  NA&#39;s                                                                              :515217  
-##                        V4075A         V4075A1         
-##  Menos de 1 mês           :   168   Length:550227     
-##  De 1 mês a menos de 1 ano:    50   Class :character  
-##  1 ano ou mais            :    20   Mode  :character  
-##  NA&#39;s                     :549989                     
-##                                                       
-##                                                       
-##                                                       
-##                         V4076            V40761           V40762      
-##  Menos de 1 mês            :  4888   Min.   : 1.0     Min.   : 0.0    
-##  De 1 mês a menos de 1 ano : 13359   1st Qu.: 2.0     1st Qu.: 0.0    
-##  De 1 ano a menos de 2 anos:  3955   Median : 4.0     Median : 1.0    
-##  2 anos ou mais            :  8019   Mean   : 4.4     Mean   : 2.3    
-##  NA&#39;s                      :520006   3rd Qu.: 6.0     3rd Qu.: 5.0    
-##                                      Max.   :11.0     Max.   :11.0    
-##                                      NA&#39;s   :536868   NA&#39;s   :546272  
-##      V40763        V4077       
-##  Min.   : 2.0     Sim : 54298  
-##  1st Qu.: 2.0     Não : 10739  
-##  Median : 3.0     NA&#39;s:485190  
-##  Mean   : 3.5                  
-##  3rd Qu.: 4.0                  
-##  Max.   :38.0                  
-##  NA&#39;s   :542208                
-##                                                                                 V4078       
-##  Tinha que cuidar de filho(s), de outro(s) dependente(s) ou dos afazeres domésticos:     0  
-##  Estudo                                                                            :     0  
-##  Incapacidade física, mental ou doença permanente                                  :     0  
-##  Aposentado ou idoso para trabalhar                                                :     0  
-##  Muito jovem para trabalhar                                                        :     0  
-##  (Other)                                                                           :     0  
-##  NA&#39;s                                                                              :550227  
-##                                                                                 V4078A      
-##  Tinha que cuidar dos afazeres domésticos, do(s) filho(s) ou de outro(s) parente(s): 34755  
-##  Estava estudando (em curso de qualquer tipo ou por conta própria)                 : 27977  
-##  Por problema de saúde ou gravidez                                                 : 31228  
-##  Por ser muito jovem ou muito idoso para trabalhar                                 : 43536  
-##  Por não querer trabalhar                                                          : 14488  
-##  Outro motivo, especifique:                                                        :  5479  
-##  NA&#39;s                                                                              :392764  
-##   V4082                                   VD2002           VD2003      
-##  Sim : 28074   Pessoa responsável            :186959   Min.   : 1.000  
-##  Não :183347   Filho(a)                      :179748   1st Qu.: 3.000  
-##  NA&#39;s:338806   Cônjuge ou companheiro(a)     :116539   Median : 4.000  
-##                Neto(a)                       : 26189   Mean   : 3.692  
-##                Pai, mãe, padrasto ou madrasta:  7877   3rd Qu.: 4.000  
-##                Outro parente                 :  7460   Max.   :22.000  
-##                (Other)                       : 25455                   
-##         VD2004                                            VD3004      
-##  Unipessoal: 29630   Fundamental incompleto ou equivalente   :203437  
-##  Nuclear   :379612   Médio completo ou equivalente           :114123  
-##  Estendida :132571   Superior completo                       : 54821  
-##  Composta  :  8414   Sem instrução e menos de 1 ano de estudo: 46484  
-##                      Fundamental completo ou equivalente     : 40325  
-##                      (Other)                                 : 56481  
-##                      NA&#39;s                                    : 34556  
-##                                       VD3005      
-##  12 anos de estudo                       :112310  
-##  16 anos ou mais de estudo               : 51887  
-##  5 anos de estudo                        : 49017  
-##  Sem instrução e menos de 1 ano de estudo: 46484  
-##  9 anos de estudo                        : 40300  
-##  (Other)                                 :215673  
-##  NA&#39;s                                    : 34556  
-##                                       VD3006      
-##  Sem instrução e menos de 1 ano de estudo: 46484  
-##  1 a 4 anos de estudo                    : 80154  
-##  5 a 8 anos de estudo                    :123269  
-##  9 a 11 anos de estudo                   : 74656  
-##  12 a 15 anos de estudo                  :139221  
-##  16 anos ou mais de estudo               : 51887  
-##  NA&#39;s                                    : 34556  
-##                                VD4001                       VD4002      
-##  Pessoas na força de trabalho     :263104   Pessoas ocupadas   :233661  
-##  Pessoas fora da força de trabalho:182318   Pessoas desocupadas: 29443  
-##  NA&#39;s                             :104805   NA&#39;s               :287123  
-##                                                                         
-##                                                                         
-##                                                                         
-##                                                                         
-##                                                                      VD4003      
-##  Pessoas fora da força de trabalho e na força de trabalho potencial     : 25624  
-##  Pessoas fora da força de trabalho e fora da força de trabalho potencial:156694  
-##  NA&#39;s                                                                   :367909  
-##                                                                                  
-##                                                                                  
-##                                                                                  
-##                                                                                  
-##                  VD4004                      VD4004A      
-##  Pessoas subocupadas:     0   Pessoas subocupadas: 18712  
-##  NA&#39;s               :550227   NA&#39;s               :531515  
-##                                                           
-##                                                           
-##                                                           
-##                                                           
-##                                                           
-##                   VD4005      
-##  Pessoas desalentadas: 17290  
-##  NA&#39;s                :532937  
-##                               
-##                               
-##                               
-##                               
-##                               
-##                                          VD4007      
-##  Empregado (inclusive trabalhador doméstico):149030  
-##  Empregador                                 : 10089  
-##  Conta própria                              : 66341  
-##  Trabalhador familiar auxiliar              :  8201  
-##  NA&#39;s                                       :316566  
-##                                                      
-##                                                      
-##                                                                    VD4008      
-##  Empregado no setor privado                                           :102546  
-##  Trabalhador doméstico                                                : 15502  
-##  Empregado no setor público (inclusive servidor estatutário e militar): 30982  
-##  Empregador                                                           : 10089  
-##  Conta-própria                                                        : 66341  
-##  Trabalhador familiar auxiliar                                        :  8201  
-##  NA&#39;s                                                                 :316566  
-##                                                           VD4009      
-##  Empregado no setor privado com carteira de trabalho assinada: 71483  
-##  Conta-própria                                               : 66341  
-##  Empregado no setor privado sem carteira de trabalho assinada: 31063  
-##  Militar e servidor estatutário                              : 20370  
-##  Trabalhador doméstico sem carteira de trabalho assinada     : 11409  
-##  (Other)                                                     : 32995  
-##  NA&#39;s                                                        :316566  
-##                                                                                              VD4010      
-##  Comércio, reparação de veículos automotores e motocicletas                                     : 41828  
-##  Agricultura, pecuária, produção florestal, pesca e aquicultura                                 : 37120  
-##  Educação, saúde humana e serviços sociais                                                      : 27378  
-##  Indústria geral                                                                                : 26434  
-##  Informação, comunicação e atividades financeiras, imobiliárias, profissionais e administrativas: 21448  
-##  (Other)                                                                                        : 79453  
-##  NA&#39;s                                                                                           :316566  
-##                                                                                                   VD4011      
-##  Trabalhadores dos serviços, vendedores dos comércios e mercados                                     : 50833  
-##  Ocupações elementares                                                                               : 42761  
-##  Trabalhadores qualificados, operários e artesões da construção, das artes mecânicas e outros ofícios: 29232  
-##  Trabalhadores qualificados da agropecuária, florestais, da caça e da pesca                          : 25443  
-##  Profissionais das ciências e intelectuais                                                           : 23230  
-##  (Other)                                                                                             : 62162  
-##  NA&#39;s                                                                                                :316566  
-##               VD4012                    VD4013                    VD4014      
-##  Contribuinte    :134839   Até 14 horas    : 10962   Até 14 horas    : 17440  
-##  Não contribuinte: 98822   15 a 39 horas   : 55927   15 a 39 horas   : 56728  
-##  NA&#39;s            :316566   40 a 44 horas   :116505   40 a 44 horas   :109700  
-##                            45 a 48 horas   : 22415   45 a 48 horas   : 21775  
-##                            49 horas ou mais: 27852   49 horas ou mais: 28018  
-##                            NA&#39;s            :316566   NA&#39;s            :316566  
-##                                                                               
-##                                                                     VD4015      
-##  Remuneração em dinheiro, produtos ou mercadorias no trabalho principal:225145  
-##  Remuneração em benefícios ou sem remuneração no trabalho principal    :  8516  
-##  NA&#39;s                                                                  :316566  
-##                                                                                 
-##                                                                                 
-##                                                                                 
-##                                                                                 
-##      VD4016           VD4017      
-##  Min.   :     4   Min.   :     0  
-##  1st Qu.:   998   1st Qu.:   800  
-##  Median :  1200   Median :  1200  
-##  Mean   :  1988   Mean   :  1998  
-##  3rd Qu.:  2000   3rd Qu.:  2000  
-##  Max.   :260000   Max.   :260000  
-##  NA&#39;s   :325082   NA&#39;s   :325082  
-##                                                                              VD4018      
-##  Remuneração em dinheiro, produtos ou mercadorias em pelo menos um dos trabalhos:225221  
-##  Remuneração em benefícios ou sem remuneração em todos os trabalhos             :  8440  
-##  NA&#39;s                                                                           :316566  
-##                                                                                          
-##                                                                                          
-##                                                                                          
-##                                                                                          
-##      VD4019           VD4020      
-##  Min.   :     4   Min.   :     0  
-##  1st Qu.:   998   1st Qu.:   800  
-##  Median :  1200   Median :  1200  
-##  Mean   :  2052   Mean   :  2059  
-##  3rd Qu.:  2000   3rd Qu.:  2000  
-##  Max.   :260000   Max.   :260000  
-##  NA&#39;s   :325006   NA&#39;s   :325006  
-##                                                                                    VD4023      
-##  Tinha que cuidar dos afazeres domésticos, do(s) filho(s) ou de outro(s) dependente(s):     0  
-##  Estava estudando                                                                     :     0  
-##  Por incapacidade física, mental ou doença permanente                                 :     0  
-##  Por ser muito jovem ou muito idoso para trabalhar                                    :     0  
-##  Por não querer trabalhar                                                             :     0  
-##  Por outro motivo                                                                     :     0  
-##  NA&#39;s                                                                                 :550227  
-##                                                                                 VD4030      
-##  Tinha que cuidar dos afazeres domésticos, do(s) filho(s) ou de outro(s) parente(s): 36875  
-##  Estava estudando                                                                  : 30165  
-##  Por problema de saúde ou gravidez                                                 : 31904  
-##  Por ser muito jovem ou muito idoso para trabalhar                                 : 42939  
-##  Por não querer trabalhar                                                          : 14330  
-##  Por outro motivo                                                                  : 26105  
-##  NA&#39;s                                                                              :367909  
-##      VD4031           VD4032           VD4033           VD4034      
-##  Min.   :  1.0    Min.   : NA      Min.   : NA      Min.   : NA     
-##  1st Qu.: 32.0    1st Qu.: NA      1st Qu.: NA      1st Qu.: NA     
-##  Median : 40.0    Median : NA      Median : NA      Median : NA     
-##  Mean   : 38.8    Mean   :NaN      Mean   :NaN      Mean   :NaN     
-##  3rd Qu.: 44.0    3rd Qu.: NA      3rd Qu.: NA      3rd Qu.: NA     
-##  Max.   :120.0    Max.   : NA      Max.   : NA      Max.   : NA     
-##  NA&#39;s   :316566   NA&#39;s   :550227   NA&#39;s   :550227   NA&#39;s   :550227  
-##      VD4035                    VD4036                    VD4037      
-##  Min.   :  0.0    Até 14 horas    : 11242   Até 14 horas    : 17815  
-##  1st Qu.: 30.0    15 a 39 horas   : 58620   15 a 39 horas   : 59182  
-##  Median : 40.0    40 a 44 horas   :117831   40 a 44 horas   :110822  
-##  Mean   : 37.7    45 a 48 horas   : 22038   45 a 48 horas   : 21449  
-##  3rd Qu.: 44.0    49 horas ou mais: 23930   49 horas ou mais: 24393  
-##  Max.   :120.0    NA&#39;s            :316566   NA&#39;s            :316566  
-##  NA&#39;s   :316566</code></pre>
+TP.</p>
 <div id="pnad-continua---encuesta-nacional-continua-por-muestra-de-hogares" class="section level3">
 <h3>PNAD Continua - Encuesta Nacional Continua por Muestra de
 Hogares</h3>
@@ -2349,13 +1523,198 @@ cubierta por la investigación (Grandes Regiones, Unidades de Federación,
 Municipios de las Capitales y Región de Desarrollo Integrado de la Gran
 Teresina).</p>
 <p>Fuente: <a href="https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&amp;t=o-que-e" class="uri">https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&amp;t=o-que-e</a></p>
-<pre class="r"><code>var &lt;- read.csv(&quot;Variables.csv&quot;)</code></pre>
+<pre class="r"><code>var &lt;- read.csv(&quot;Variables.csv&quot;)
+kable(var)</code></pre>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Indicadores.Operacionalización.Variables.utilizadas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Tasa de empleo:;porcentaje entre la población ocupada y
+la población total de referencia. ;</td>
+</tr>
+<tr class="even">
+<td align="left">Tasa de desocupación:;porcentaje entre la población
+desocupada y la población económicamente activa. ;</td>
+</tr>
+<tr class="odd">
+<td align="left">Tasa de demandantes de empleo:;porcentaje entre la
+población de demandantes de empleo y la población económicamente activa.
+;</td>
+</tr>
+<tr class="even">
+<td align="left">Tasa de ocupados demandantes de empleo:;porcentaje
+entre la población de ocupados demandantes de empleo y la población
+económicamente activa.;</td>
+</tr>
+<tr class="odd">
+<td align="left">Tasa de subocupación horaria:;porcentaje entre la
+población subocupada y la población económicamente activa.;</td>
+</tr>
+<tr class="even">
+<td align="left">Tasa de sobreocupación horaria:;porcentaje entre la
+población sobreocupada y la población económicamente activa. ;</td>
+</tr>
+<tr class="odd">
+<td align="left">Tasa de subocupación demandante:;porcentaje entre la
+población de subocupados demandantes y la población económicamente
+activa. ;</td>
+</tr>
+<tr class="even">
+<td align="left">Tasa de subocupación no demandante:;porcentaje entre la
+población de subocupados no demandantes y la población económicamente
+activa.;</td>
+</tr>
+<tr class="odd">
+<td align="left">Población económicamente activa:;la integran las
+personas que tienen una ocupación o que</td>
+</tr>
+<tr class="even">
+<td align="left">sin tenerla</td>
+</tr>
+<tr class="odd">
+<td align="left">la están buscando activamente. Está compuesta por la
+población ocupada más la población desocupada. ;</td>
+</tr>
+<tr class="even">
+<td align="left">Población ocupada: ;conjunto de personas que tienen por
+lo menos una ocupación</td>
+</tr>
+<tr class="odd">
+<td align="left">es decir que en la semana de referencia han trabajado
+como mínimo una hora (en una actividad económica). El criterio de una
+hora trabajada</td>
+</tr>
+<tr class="even">
+<td align="left">además de preservar la comparabilidad con otros
+países</td>
+</tr>
+<tr class="odd">
+<td align="left">permite captar las múltiples ocupaciones informales o
+de baja intensidad que realiza la población. Para poder discriminar
+dentro del nivel de empleo qué parte corresponde al empleo de baja
+intensidad</td>
+</tr>
+<tr class="even">
+<td align="left">pueden restarse del empleo total aquellos que trabajan
+menos de cierta cantidad de horas (por ejemplo</td>
+</tr>
+<tr class="odd">
+<td align="left">las personas subocupados). La información recogida
+permite realizar distintos recortes según la necesidad de información de
+que se trate</td>
+</tr>
+<tr class="even">
+<td align="left">así como caracterizar ese tipo de empleos. ;</td>
+</tr>
+<tr class="odd">
+<td align="left">Población desocupada: ;personas que</td>
+</tr>
+<tr class="even">
+<td align="left">no teniendo ocupación</td>
+</tr>
+<tr class="odd">
+<td align="left">están buscando activamente trabajo y están disponibles
+para trabajar. Corresponde a la desocupación abierta. Este concepto no
+incluye otras formas de precariedad laboral tales como personas que
+realizan trabajos transitorios mientras buscan activamente una
+ocupación</td>
+</tr>
+<tr class="even">
+<td align="left">aquellas que trabajan jornadas involuntariamente por
+debajo de lo normal</td>
+</tr>
+<tr class="odd">
+<td align="left">las personas desocupadas que han suspendido la búsqueda
+por falta de oportunidades visibles de empleo</td>
+</tr>
+<tr class="even">
+<td align="left">las ocupadas en puestos por debajo de la remuneración
+mínima o en puestos por debajo de su calificación</td>
+</tr>
+<tr class="odd">
+<td align="left">etc. Estas modalidades son también relevadas por la
+EPH</td>
+</tr>
+<tr class="even">
+<td align="left">como indicadores separados.;</td>
+</tr>
+<tr class="odd">
+<td align="left">Población ocupada demandante de empleo: ;población
+ocupada que busca activamente otra ocupación.;</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="section-1" class="section level2">
 <h2>2</h2>
 <p>Estimar y presentar las tasas básicas del mercado de trabajo.
 Analizar brevemente los resultados encontrados.</p>
+<pre class="r"><code>Cuadro_1.1a &lt;- base %&gt;% 
+  summarise(Poblacion         = sum(V1028),
+            Ocupados          = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
+            Desocupados       = sum(V1028[VD4002 == &quot;Pessoas desocupadas&quot;],na.rm=TRUE),
+            PEA               = Ocupados + Desocupados,
+            #Ocupados_demand   = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot; &amp; V4071 ==&quot;Sim&quot;],na.rm=TRUE),
+            #Suboc_demandante  = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;) &amp; (V4071==&quot;Sim&quot;|VD4005)],na.rm=TRUE),#VD4005
+            #Suboc_no_demand   = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;) &amp; V4071==&quot;Não&quot;],na.rm=TRUE),
+            Subocupados       =  sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;)],na.rm=TRUE),
+            &#39;Tasa Actividad&#39;                  = PEA/Poblacion,
+            &#39;Tasa Empleo&#39;                     = Ocupados/Poblacion,
+            &#39;Tasa Desocupacion&#39;               = Desocupados/PEA,
+            #&#39;Tasa ocupados demandantes&#39;       = Ocupados_demand/PEA,
+            &#39;Tasa Subocupación&#39;               = Subocupados/PEA,
+            #&#39;Tasa Subocupación demandante&#39;    = Suboc_demandante/PEA,
+            #&#39;Tasa Subocupación no demandante&#39; = Suboc_no_demand/PEA
+  )
+
+kable(Cuadro_1.1a)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="7%" />
+<col width="10%" />
+<col width="8%" />
+<col width="10%" />
+<col width="12%" />
+<col width="10%" />
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Poblacion</th>
+<th align="right">Ocupados</th>
+<th align="right">Desocupados</th>
+<th align="right">PEA</th>
+<th align="right">Subocupados</th>
+<th align="right">Tasa Actividad</th>
+<th align="right">Tasa Empleo</th>
+<th align="right">Tasa Desocupacion</th>
+<th align="right">Tasa Subocupación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">209677912</td>
+<td align="right">93800646</td>
+<td align="right">12514772</td>
+<td align="right">106315418</td>
+<td align="right">0</td>
+<td align="right">0.5070416</td>
+<td align="right">0.4473559</td>
+<td align="right">0.1177136</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="section-2" class="section level2">
 <h2>3</h2>

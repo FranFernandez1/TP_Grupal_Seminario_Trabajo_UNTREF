@@ -33,10 +33,10 @@ con la base datos correspondiente en el directorio de trabajo.
 
 ## 1
 
-1)  Abrir y explorar las distintas bases de datos. Describir brevemente
-    (en 1 párrafo) la metodología con que la encuesta es elaborada y
-    explicar (en un tabulado) las variables que serán utilizadas en el
-    TP.
+Abrir y explorar las distintas bases de datos. Describir brevemente
+(en 1 párrafo) la metodología con que la encuesta es elaborada y
+explicar (en un tabulado) las variables que serán utilizadas en el
+TP.
 
 ```{r warning=FALSE, message = FALSE,include=FALSE}
 # librerias
@@ -70,15 +70,34 @@ Fuente:
 
 ```{r warning=FALSE}
 var <- read.csv("Variables.csv")
+kable(var)
 ```
 
 ## 2
 
-Estimar y presentar las tasas básicas del mercado de trabajo. Analizar
+Estimar y presentar las tasas básicas del mercado de trabajo. Analizar 
 brevemente los resultados encontrados.
 
 ```{r warning=FALSE}
+Cuadro_1.1a <- base %>% 
+  summarise(Poblacion         = sum(V1028),
+            Ocupados          = sum(V1028[VD4002 == "Pessoas ocupadas"],na.rm=TRUE),
+            Desocupados       = sum(V1028[VD4002 == "Pessoas desocupadas"],na.rm=TRUE),
+            PEA               = Ocupados + Desocupados,
+            #Ocupados_demand   = sum(V1028[VD4002 == "Pessoas ocupadas" & V4071 =="Sim"],na.rm=TRUE),
+            #Suboc_demandante  = sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004=="Pessoas subocupadas") & (V4071=="Sim"|VD4005)],na.rm=TRUE),#VD4005
+            #Suboc_no_demand   = sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004=="Pessoas subocupadas") & V4071=="Não"],na.rm=TRUE),
+            Subocupados       =  sum(V1028[(VD4004 =="Pessoas subocupadas"|VD4004=="Pessoas subocupadas")],na.rm=TRUE),
+            'Tasa Actividad'                  = PEA/Poblacion,
+            'Tasa Empleo'                     = Ocupados/Poblacion,
+            'Tasa Desocupacion'               = Desocupados/PEA,
+            #'Tasa ocupados demandantes'       = Ocupados_demand/PEA,
+            'Tasa Subocupación'               = Subocupados/PEA,
+            #'Tasa Subocupación demandante'    = Suboc_demandante/PEA,
+            #'Tasa Subocupación no demandante' = Suboc_no_demand/PEA
+  )
 
+kable(Cuadro_1.1a)
 ```
 
 ## 3
