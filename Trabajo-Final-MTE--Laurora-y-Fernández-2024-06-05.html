@@ -1657,36 +1657,50 @@ ocupada que busca activamente otra ocupación.;</td>
 <h2>2</h2>
 <p>Estimar y presentar las tasas básicas del mercado de trabajo.
 Analizar brevemente los resultados encontrados.</p>
+<pre class="r"><code>if (!require(&#39;scales&#39;)) install.packages(&#39;scales&#39;); library(&#39;scales&#39;)</code></pre>
+<pre><code>## Loading required package: scales</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     discard</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor</code></pre>
 <pre class="r"><code>Cuadro_1.1a &lt;- base %&gt;% 
   summarise(Poblacion         = sum(V1028),
             Ocupados          = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
             Desocupados       = sum(V1028[VD4002 == &quot;Pessoas desocupadas&quot;],na.rm=TRUE),
             PEA               = Ocupados + Desocupados,
-            #Ocupados_demand   = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot; &amp; V4071 ==&quot;Sim&quot;],na.rm=TRUE),
-            #Suboc_demandante  = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;) &amp; (V4071==&quot;Sim&quot;|VD4005)],na.rm=TRUE),#VD4005
-            #Suboc_no_demand   = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;) &amp; V4071==&quot;Não&quot;],na.rm=TRUE),
-            Subocupados       =  sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004==&quot;Pessoas subocupadas&quot;)],na.rm=TRUE),
-            &#39;Tasa Actividad&#39;                  = PEA/Poblacion,
-            &#39;Tasa Empleo&#39;                     = Ocupados/Poblacion,
-            &#39;Tasa Desocupacion&#39;               = Desocupados/PEA,
-            #&#39;Tasa ocupados demandantes&#39;       = Ocupados_demand/PEA,
-            &#39;Tasa Subocupación&#39;               = Subocupados/PEA
-            #&#39;Tasa Subocupación demandante&#39;    = Suboc_demandante/PEA,
-            #&#39;Tasa Subocupación no demandante&#39; = Suboc_no_demand/PEA
-  )
-
+            Ocupados_demand   = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot; &amp; V4071 ==&quot;Sim&quot;],na.rm=TRUE),
+            Suboc_demandante  = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;) &amp; (V4063==&quot;Sim&quot;|V4063A==&quot;Sim&quot;|VD4005==&quot;Pessoas desalentadas&quot;)],na.rm=TRUE),#VD4005
+            Suboc_no_demand   = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;) &amp; (V4063==&quot;Não&quot;|V4063A==&quot;Não&quot;)],na.rm=TRUE),
+            Subocupados       =  sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;)],na.rm=TRUE),
+            &#39;Tasa Actividad&#39;                  = percent(PEA/Poblacion, accuracy = 0.1),
+            &#39;Tasa Empleo&#39;                     = percent(Ocupados/Poblacion, accuracy = 0.1),
+            &#39;Tasa Desocupacion&#39;               = percent(Desocupados/PEA, accuracy = 0.1),
+            &#39;Tasa ocupados demandantes&#39;       = percent(Ocupados_demand/PEA, accuracy = 0.1),
+            &#39;Tasa Subocupación&#39;               = percent(Subocupados/PEA, accuracy = 0.1),                       &#39;Tasa Subocupación demandante&#39;    = percent(Suboc_demandante/PEA, accuracy = 0.1),
+            &#39;Tasa Subocupación no demandante&#39; = percent(Suboc_no_demand/PEA, accuracy = 0.1))
+  
 kable(Cuadro_1.1a)</code></pre>
 <table style="width:100%;">
 <colgroup>
-<col width="8%" />
+<col width="3%" />
+<col width="3%" />
+<col width="4%" />
+<col width="3%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="4%" />
+<col width="5%" />
+<col width="4%" />
 <col width="7%" />
 <col width="10%" />
-<col width="8%" />
-<col width="10%" />
+<col width="7%" />
+<col width="11%" />
 <col width="12%" />
-<col width="10%" />
-<col width="15%" />
-<col width="15%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1694,11 +1708,17 @@ kable(Cuadro_1.1a)</code></pre>
 <th align="right">Ocupados</th>
 <th align="right">Desocupados</th>
 <th align="right">PEA</th>
+<th align="right">Ocupados_demand</th>
+<th align="right">Suboc_demandante</th>
+<th align="right">Suboc_no_demand</th>
 <th align="right">Subocupados</th>
-<th align="right">Tasa Actividad</th>
-<th align="right">Tasa Empleo</th>
-<th align="right">Tasa Desocupacion</th>
-<th align="right">Tasa Subocupación</th>
+<th align="left">Tasa Actividad</th>
+<th align="left">Tasa Empleo</th>
+<th align="left">Tasa Desocupacion</th>
+<th align="left">Tasa ocupados demandantes</th>
+<th align="left">Tasa Subocupación</th>
+<th align="left">Tasa Subocupación demandante</th>
+<th align="left">Tasa Subocupación no demandante</th>
 </tr>
 </thead>
 <tbody>
@@ -1708,10 +1728,16 @@ kable(Cuadro_1.1a)</code></pre>
 <td align="right">12514772</td>
 <td align="right">106315418</td>
 <td align="right">0</td>
-<td align="right">0.5070416</td>
-<td align="right">0.4473559</td>
-<td align="right">0.1177136</td>
+<td align="right">7043809</td>
 <td align="right">0</td>
+<td align="right">7043809</td>
+<td align="left">50.7%</td>
+<td align="left">44.7%</td>
+<td align="left">11.8%</td>
+<td align="left">0.0%</td>
+<td align="left">6.6%</td>
+<td align="left">6.6%</td>
+<td align="left">0.0%</td>
 </tr>
 </tbody>
 </table>
