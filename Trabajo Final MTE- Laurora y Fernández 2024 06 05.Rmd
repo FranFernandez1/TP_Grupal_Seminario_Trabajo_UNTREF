@@ -92,7 +92,7 @@ Cuadro_1.1a <- base %>%
             'Tasa Empleo'                     = Ocupados/Poblacion,
             'Tasa Desocupacion'               = Desocupados/PEA,
             #'Tasa ocupados demandantes'       = Ocupados_demand/PEA,
-            'Tasa Subocupación'               = Subocupados/PEA,
+            'Tasa Subocupación'               = Subocupados/PEA
             #'Tasa Subocupación demandante'    = Suboc_demandante/PEA,
             #'Tasa Subocupación no demandante' = Suboc_no_demand/PEA
   )
