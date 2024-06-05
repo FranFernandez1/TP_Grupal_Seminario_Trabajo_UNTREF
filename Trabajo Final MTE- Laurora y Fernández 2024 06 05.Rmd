@@ -93,11 +93,10 @@ Cuadro_1.1a <- base %>%
             'Tasa Actividad'                  = percent(PEA/Poblacion, accuracy = 0.1),
             'Tasa Empleo'                     = percent(Ocupados/Poblacion, accuracy = 0.1),
             'Tasa Desocupacion'               = percent(Desocupados/PEA, accuracy = 0.1),
-            #'Tasa ocupados demandantes'       = percent(Ocupados_demand/PEA, accuracy = 0.1),
-            'Tasa Subocupación'               = percent(Subocupados/PEA, accuracy = 0.1))                       #'Tasa Subocupación demandante'    = percent(Suboc_demandante/PEA,
-            #'Tasa Subocupación no demandante' = percent(Suboc_no_demand/PEA
+            'Tasa ocupados demandantes'       = percent(Ocupados_demand/PEA, accuracy = 0.1),
+            'Tasa Subocupación'               = percent(Subocupados/PEA, accuracy = 0.1),                       'Tasa Subocupación demandante'    = percent(Suboc_demandante/PEA, accuracy = 0.1),
+            'Tasa Subocupación no demandante' = percent(Suboc_no_demand/PEA, accuracy = 0.1))
   
-
 kable(Cuadro_1.1a)
 ```
 
