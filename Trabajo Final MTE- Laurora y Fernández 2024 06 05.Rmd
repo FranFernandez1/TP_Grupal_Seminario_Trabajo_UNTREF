@@ -17,7 +17,9 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Mercado de trabajo y empleo
+# Mercado de trabajo y empleo
+
+# Análisis Brasil
 
 ::: {align="justify"}
 El siguiente trabajo práctico es condición obligatoria para la promoción
@@ -170,7 +172,7 @@ fundamentar la elección de las variables.
 
 ------------------------------------------------------------------------
 
-Análisis España
+# Análisis España y Reino Unido
 
 ```{r}
 install.packages("tidyverse")
@@ -185,6 +187,66 @@ bbdd_uk=read.csv("reino_unido.csv")
 bbdd_espana=read.csv("espana.csv")
 ```
 
+## 1 
+
+Abrir y explorar las distintas bases de datos. Describir brevemente (en 1 párrafo) la metodología con que la encuesta es elaborada y explicar (en un tabulado) las variables que serán utilizadas en el TP.
+
+
+La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS) es la encuesta de hogares e individuos más extensa de la Unión Europea. Su objetivo estadístico principal es clasificar a las personas en tres categorías mutuamente excluyentes: empleados,desempleados y personas por fuera de la fuerza de trabajo. Esta encuesta se realiza de forma trimestral en todos los países de la Unión Europea en un formato estandarizado para todos los países, facilitando así la comparación entre ellos. La población a la cual se le puede realizar la encuesta es de 15 años o más.
+
+Las variables a utilizar, tanto para el caso de España como de Reino Unido, serán las siguentes:
+
 ```{r}
-head(bbdd_espana %>% select(COEFF,WSTATOR,STAPRO,MAINSTAT))
+
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU")
+Descripción <- c("Estado laboral durante la semana de referencia", 
+                  "Estado laboral general", 
+                  "Factor ponderador de la población", 
+                  "Estatus Profesional",
+                  "Tamaño de la empresa",
+                  "Trabajo Temporal o Permanente",
+                  "Cantidad de horas extras no pagas durante la semana de referencia")
+
+
+variable_table <- data.frame(Variable = Variables, Description = Descripción)
+
+variable_table %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
 ```
+
+## 2
+
+Estimar y presentar las tasas básicas del mercado de trabajo. Analizar 
+brevemente los resultados encontrados.
+
+```{r}
+# Calculate the estimated population
+population_estimate <- sum(bbdd_espana[["COEFF"]], na.rm = TRUE)
+
+# Print the estimated population
+print(paste("Estimated population:", population_estimate))
+```
+
+```{r warning=FALSE}
+if (!require('scales')) install.packages('scales'); library('scales')
+
+Cuadro_2_ESPAÑA <- bbdd_espana %>% 
+  summarise(Poblacion         = sum(COEFF))
+
+kable(Cuadro_2_ESPAÑA)
+
+```
+
+
+
+```{r}
+
+##            Ocupados          = sum(COEFF[VD4002 == "Pessoas ocupadas"],na.rm=TRUE),
+##            Desocupados       = sum(V1028[VD4002 == "Pessoas desocupadas"],na.rm=TRUE),
+##            PEA               = Ocupados + Desocupados
+##            )
+  
+```
+
