@@ -195,14 +195,15 @@ Las variables a utilizar, tanto para el caso de España como de Reino Unido, ser
 
 ```{r}
 
-Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU")
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK")
 Descripcion <- c("Estado laboral durante la semana de referencia", 
                   "Estado laboral general", 
                   "Factor ponderador de la poblacion", 
                   "Estatus Profesional",
                   "Tamaño de la empresa",
                   "Trabajo Temporal o Permanente",
-                  "Cantidad de horas extras no pagas durante la semana de referencia")
+                  "Cantidad de horas extras no pagas durante la semana de referencia",
+                  "En búsqueda laboral")
 
 
 variable_table <- data.frame(Variable = Variables, Description = Descripcion)
@@ -215,21 +216,21 @@ variable_table %>%
 
 ## 2) Estimar y presentar las tasas básicas del mercado de trabajo. Analizar brevemente los resultados encontrados.
 
-```{r}
-# Calculate the estimated population
-population_estimate <- sum(bbdd_espana[["COEFF"]], na.rm = TRUE)
-
-# Print the estimated population
-print(paste("Estimated population:", population_estimate))
-```
 
 ```{r warning=FALSE}
 if (!require('scales')) install.packages('scales'); library('scales')
 
 Cuadro_2_ESPAÑA <- bbdd_espana %>% 
-  summarise(Poblacion         = sum(COEFF))
+  summarise(Poblacion         = sum(COEFF*1000, na.rm = TRUE),
+            Ocupados          = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            Desocupados_Inactivos = sum((WSTATOR %in% c(3,4,5))*(COEFF*1000),na.rm=TRUE),
+            Menores           = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            Buscando_Trabajo  = sum((SEEKWORK %in% c(1,2,3,4))*(COEFF*1000),na.rm=TRUE),
+            PEA               = Ocupados + Desocupados_Inactivos
+            )
 
 kable(Cuadro_2_ESPAÑA)
+
 
 ```
 
@@ -237,10 +238,10 @@ kable(Cuadro_2_ESPAÑA)
 
 ```{r}
 
-##            Ocupados          = sum(COEFF[VD4002 == "Pessoas ocupadas"],na.rm=TRUE),
-##            Desocupados       = sum(V1028[VD4002 == "Pessoas desocupadas"],na.rm=TRUE),
-##            PEA               = Ocupados + Desocupados
-##            )
-  
+# Counting cases where WSTATOR is either 1 or 2
+count_cases <- sum(bbdd_espana$WSTATOR %in% c(1, 2))
+
+# Printing the result
+print(count_cases)
 ```
 
