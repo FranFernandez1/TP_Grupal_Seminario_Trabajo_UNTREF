@@ -221,12 +221,15 @@ variable_table %>%
 if (!require('scales')) install.packages('scales'); library('scales')
 
 Cuadro_2_ESPAÑA <- bbdd_espana %>% 
-  summarise(Poblacion         = sum(COEFF*1000, na.rm = TRUE),
-            Ocupados          = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+  summarise(Poblacion             = sum(COEFF*1000, na.rm = TRUE),
+            Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
             Desocupados_Inactivos = sum((WSTATOR %in% c(3,4,5))*(COEFF*1000),na.rm=TRUE),
-            Menores           = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
-            Buscando_Trabajo  = sum((SEEKWORK %in% c(1,2,3,4))*(COEFF*1000),na.rm=TRUE),
-            PEA               = Ocupados + Desocupados_Inactivos
+            Menores               = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            PEA                   = Ocupados + Desocupados,
+            'Tasa Actividad'      = percent(PEA/Poblacion, accuracy = 0.1),
+            'Tasa Empleo'         = percent(Ocupados/Poblacion, accuracy = 0.1),
+            'Tasa Desocupacion'   = percent(Desocupados/PEA, accuracy = 0.1)
             )
 
 kable(Cuadro_2_ESPAÑA)
