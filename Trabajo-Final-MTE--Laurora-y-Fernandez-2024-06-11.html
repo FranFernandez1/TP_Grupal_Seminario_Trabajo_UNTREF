@@ -2019,34 +2019,32 @@ fundamentar la elección de las variables.</p>
 </div>
 <div id="análisis-españa-y-reino-unido" class="section level1">
 <h1>Análisis España y Reino Unido</h1>
-<pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
-<pre><code>## Warning: package &#39;tidyverse&#39; is in use and will not be installed</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre class="r"><code>bbdd_uk=read.csv(&quot;reino_unido.csv&quot;)</code></pre>
-<pre class="r"><code>bbdd_espana=read.csv(&quot;espana.csv&quot;)</code></pre>
 <div id="abrir-y-explorar-las-distintas-bases-de-datos.-describir-brevemente-la-metodología-con-que-la-encuesta-es-elaborada-y-explicar-las-variables-que-serán-utilizadas-en-el-tp." class="section level2">
 <h2>1) Abrir y explorar las distintas bases de datos. Describir
 brevemente la metodología con que la encuesta es elaborada y explicar
 las variables que serán utilizadas en el TP.</h2>
-<p>La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS) es la
-encuesta de hogares e individuos más extensa de la Unión Europea. Su
-objetivo estadístico principal es clasificar a las personas en tres
-categorías mutuamente excluyentes: empleados,desempleados y personas por
-fuera de la fuerza de trabajo. Esta encuesta se realiza de forma
-trimestral en todos los países de la Unión Europea en un formato
+<p>La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS de ahora
+en más) es la encuesta de hogares e individuos más extensa de la Unión
+Europea. Su objetivo estadístico principal es clasificar a las personas
+en tres categorías mutuamente excluyentes: empleados,desempleados y
+personas por fuera de la fuerza de trabajo. Esta encuesta se realiza de
+forma trimestral en todos los países de la Unión Europea en un formato
 estandarizado para todos los países, facilitando así la comparación
 entre ellos. La población a la cual se le puede realizar la encuesta es
 de 15 años o más.</p>
 <p>Las variables a utilizar, tanto para el caso de España como de Reino
 Unido, serán las siguentes:</p>
-<pre class="r"><code>Variables &lt;- c(&quot;WSTATOR&quot;, &quot;MAINSTAT&quot;, &quot;COEFF&quot;, &quot;STAPRO&quot;,&quot;SIZEFIRM&quot;,&quot;TEMP&quot;,&quot;HWOVERPU&quot;)
+<pre class="r"><code>Variables &lt;- c(&quot;WSTATOR&quot;, &quot;MAINSTAT&quot;, &quot;COEFF&quot;, &quot;STAPRO&quot;,&quot;SIZEFIRM&quot;,&quot;TEMP&quot;,&quot;HWOVERPU&quot;,&quot;SEEKWORK&quot;,&quot;AVAILBLE&quot;,&quot;SIGNISAL&quot;)
 Descripcion &lt;- c(&quot;Estado laboral durante la semana de referencia&quot;, 
                   &quot;Estado laboral general&quot;, 
                   &quot;Factor ponderador de la poblacion&quot;, 
                   &quot;Estatus Profesional&quot;,
                   &quot;Tamaño de la empresa&quot;,
                   &quot;Trabajo Temporal o Permanente&quot;,
-                  &quot;Cantidad de horas extras no pagas durante la semana de referencia&quot;)
+                  &quot;Cantidad de horas extras no pagas durante la semana de referencia&quot;,
+                  &quot;En búsqueda laboral&quot;,
+                  &quot;Disponibilidad para empezar a trabajar en las próximas dos semanas&quot;,
+                  &quot;Percibe regularmente su salario, aunque no asistió al trabajo en la semana de referencia&quot;)
 
 
 variable_table &lt;- data.frame(Variable = Variables, Description = Descripcion)
@@ -2122,40 +2120,573 @@ HWOVERPU
 Cantidad de horas extras no pagas durante la semana de referencia
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+SEEKWORK
+</td>
+<td style="text-align:left;">
+En búsqueda laboral
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AVAILBLE
+</td>
+<td style="text-align:left;">
+Disponibilidad para empezar a trabajar en las próximas dos semanas
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SIGNISAL
+</td>
+<td style="text-align:left;">
+Percibe regularmente su salario, aunque no asistió al trabajo en la
+semana de referencia
+</td>
+</tr>
 </tbody>
 </table>
 </div>
 <div id="estimar-y-presentar-las-tasas-básicas-del-mercado-de-trabajo.-analizar-brevemente-los-resultados-encontrados." class="section level2">
 <h2>2) Estimar y presentar las tasas básicas del mercado de trabajo.
 Analizar brevemente los resultados encontrados.</h2>
-<pre class="r"><code># Calculate the estimated population
-population_estimate &lt;- sum(bbdd_espana[[&quot;COEFF&quot;]], na.rm = TRUE)
+<pre class="r"><code>## Cargamos las bases de datos
+bbdd_uk=read.csv(&quot;reino_unido.csv&quot;)
 
-# Print the estimated population
-print(paste(&quot;Estimated population:&quot;, population_estimate))</code></pre>
-<pre><code>## [1] &quot;Estimated population: 46296.3182&quot;</code></pre>
-<pre class="r"><code>if (!require(&#39;scales&#39;)) install.packages(&#39;scales&#39;); library(&#39;scales&#39;)
+bbdd_espana=read.csv(&quot;espana.csv&quot;)
+
+## Calculamos los indicadores básicos laborales para España y Reino Unido
 
 Cuadro_2_ESPAÑA &lt;- bbdd_espana %&gt;% 
-  summarise(Poblacion         = sum(COEFF))
+  summarise(País=&quot;España&quot;,
+            Poblacion             = sum(COEFF*1000, na.rm = TRUE),
+            Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            #Ocupados_OIT         = sum((ILOSTAT %in% c(1))*(COEFF*1000),na.rm=TRUE),
+            Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
+            #Desocupados_OIT      = sum((ILOSTAT %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos_OIT        = sum((ILOSTAT %in% c(3))*(COEFF*1000),na.rm=TRUE),
+            #Menores              = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            PEA                   = Ocupados + Desocupados,
+            &#39;Tasa Actividad&#39;      = percent(PEA/Poblacion, accuracy = 0.1),
+            &#39;Tasa Empleo&#39;         = percent(Ocupados/Poblacion, accuracy = 0.1),
+            &#39;Tasa Desocupacion&#39;   = percent(Desocupados/PEA, accuracy = 0.1)
+            )
 
-kable(Cuadro_2_ESPAÑA)</code></pre>
-<table>
+Cuadro_2_UK &lt;- bbdd_uk %&gt;% 
+  summarise(País=&quot;Reino Unido&quot;,
+            Poblacion             = sum(COEFF*1000, na.rm = TRUE),
+            Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            #Ocupados_OIT         = sum((ILOSTAT %in% c(1))*(COEFF*1000),na.rm=TRUE),
+            Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
+            #Desocupados_OIT      = sum((ILOSTAT %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos_OIT        = sum((ILOSTAT %in% c(3))*(COEFF*1000),na.rm=TRUE),
+            #Menores              = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            PEA                   = Ocupados + Desocupados,
+            &#39;Tasa Actividad&#39;      = percent(PEA/Poblacion, accuracy = 0.1),
+            &#39;Tasa Empleo&#39;         = percent(Ocupados/Poblacion, accuracy = 0.1),
+            &#39;Tasa Desocupacion&#39;   = percent(Desocupados/PEA, accuracy = 0.1)
+            )</code></pre>
+<pre class="r"><code># Agregamos separadores de miles 
+Cuadro_2_ESPAÑA &lt;- Cuadro_2_ESPAÑA %&gt;% 
+  mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+Cuadro_2_UK &lt;- Cuadro_2_UK %&gt;%
+  mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+# Unificar los datasets
+Cuadro_Indicadores_Basicos_Union &lt;- bind_rows(Cuadro_2_ESPAÑA, Cuadro_2_UK)
+
+#Visualizamos los indicadores básicos de España y Reino Unido
+kable(Cuadro_Indicadores_Basicos_Union, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Tasas Básicas del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Tasas Básicas del Mercado de Trabajo de España y Reino Unido - 2018.
+Fuente: EU LFS 2018-Q1
+</caption>
 <thead>
-<tr class="header">
-<th align="right">Poblacion</th>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Poblacion
+</th>
+<th style="text-align:left;">
+Ocupados
+</th>
+<th style="text-align:left;">
+Desocupados
+</th>
+<th style="text-align:left;">
+PEA
+</th>
+<th style="text-align:left;">
+Tasa Actividad
+</th>
+<th style="text-align:left;">
+Tasa Empleo
+</th>
+<th style="text-align:left;">
+Tasa Desocupacion
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">NA</td>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+46.296.318
+</td>
+<td style="text-align:left;">
+19.327.701
+</td>
+<td style="text-align:left;">
+3.701.006
+</td>
+<td style="text-align:left;">
+23.028.707
+</td>
+<td style="text-align:left;">
+49.7%
+</td>
+<td style="text-align:left;">
+41.7%
+</td>
+<td style="text-align:left;">
+16.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+65.624.754
+</td>
+<td style="text-align:left;">
+32.443.029
+</td>
+<td style="text-align:left;">
+1.706.992
+</td>
+<td style="text-align:left;">
+34.150.022
+</td>
+<td style="text-align:left;">
+52.0%
+</td>
+<td style="text-align:left;">
+49.4%
+</td>
+<td style="text-align:left;">
+5.0%
+</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>##            Ocupados          = sum(COEFF[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
-##            Desocupados       = sum(V1028[VD4002 == &quot;Pessoas desocupadas&quot;],na.rm=TRUE),
-##            PEA               = Ocupados + Desocupados
-##            )</code></pre>
+<p>Podemos observar que España tiene una tasa de actividad bastante
+similar a Reino Unido, mientras que encontramos diferencias
+significativas tanto en la tasa de Desocupación, como en la tasa de
+Empleo. Pongamos por tanto el foco en la tasa de Desocupación: España
+tiene 16,1% de desocupación en el período analizado, mientras que Reino
+Unido tiene 3 veces menos, siendo la tasa de 5%. Asimismo, al hacer una
+comparación de la tasa de Desocupación de España con Brasil, vemos que
+la de España también resulta ser ampliamente más alta. Posiblemente más
+adelante en el trabajo podamos observar si estos niveles de desocupación
+que observamos en España se explica por algún factor relacionado con la
+edad o el sexo de las personas.</p>
+</div>
+<div id="realizar-una-operacionalización-de-los-conceptos-de-sector-formal-y-sector-informal-de-modo-de-clasificar-a-toda-la-población-activa-en-alguno-de-estos-dos-sectores.-explicar-qué-variables-se-eligieron-y-por-qué." class="section level2">
+<h2>3) Realizar una operacionalización de los conceptos de Sector Formal
+y Sector Informal, de modo de clasificar a toda la población activa en
+alguno de estos dos sectores. Explicar qué variables se eligieron y por
+qué.</h2>
+<p>Para la operacionalización de los conceptos de Sector Formal e
+Informal se utilizaron múltiples variables de manera conjunta. Estas
+variables ya fueron detalladas en el punto 1) de este trabajo. Ahora
+bien, varias de esas variables se utilizaron en simultáneo para
+construir distintos conceptos o elementos que, a nuestro entender, dan
+cuenta del sector en la que se enmarca un trabajador/a. En primer lugar,
+utilizamos la variable SIGNISAL, que refiere a la percepción o no del
+salario completo cuando el trabajador no asistió al trabajo en la semana
+de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no
+percibió la totalidad de su salario cuando se ausentó del mismo durante
+la semana de referencia. Creemos que está es ciertamente una medida para
+identificar informalidad, aunque también precariedad laboral.</p>
+<p>Otras variables de importancia utilizadas para la construcción del
+indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus
+Profesional) y SIZEFIRM (Tamaño de la empresa). Estas variables se
+utilizaron para identificar a los cuentapropistas. En tal sentido, la
+variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99.
+Consideramos que aquellas personas que trabajan por cuenta propia y no
+tienen empleados a cargo, dependen exclusivamente de su fuerza de
+trabajo y sin los beneficios y estabilidad laboral que ofrece, en
+principio, un trabajo bajo relación de dependencia. Por lo tanto,
+decidimos incorporarlos dentro del sector informal. Queda claro que, al
+interior de este sector hay realidades muy variadas, con lo cual no en
+todos los casos es correcto de hablar de informalidad ciertamente. Pero
+para los propósitos de este trabajo, lo consideramos como una variable
+de utilidad para acercarnos al fenómeno de la informalidad.</p>
+<p>En definitiva, la construcción del indicador de Informalidad utilizó
+en simultáneo estos 2 elementos: 1) No percepción del salario completo
+ante ausencia laboral y 2) Cuentapropistas sin empleados. En el caso de
+cumplir con una de estas dos condiciones, se decide entonces que el
+trabajador está en el sector Informal.</p>
+<p>En todos los casos, se utilizó el factor de expansión COEFF, y la
+construcción de estos indicadores es tanto para la base de datos de
+España como para la de Reino Unido. Es importante mencionar que la EU
+LPS no tiene preguntas respecto del acceso a la salud o a la educación,
+a diferencia de buena parte de las encuestas latinoamericanas, con lo
+cual, el indicador de informalidad debe ser construido con variables de
+índole distinta a las que uno normalmente buscaría en una encuesta de
+Mercado de Trabajo.</p>
+</div>
+<div id="realizar-una-operacionalización-del-concepto-de-precariedad-laboral-clasificando-a-toda-la-población-asalariada." class="section level2">
+<h2>4) Realizar una operacionalización del concepto de precariedad
+laboral, clasificando a toda la población asalariada.</h2>
+<p>Para el concepto de precarización laboral, utilizamos en primer lugar
+la variable HWOVERPU, que captura la cantidad de horas extras trabajadas
+que no fueron pagadas en la semana de referecia por el empleador. En ese
+sentido, si ya existía una hora extra no paga, lo contabilizamos como
+precariedad laboral. A su vez, incorporamos otra variable de suma
+importancia, TEMP, que remite a los contratos de tipo temporario
+(TEMP=2). Por último, nos parece importante volver a utilizar una
+variable que entendemos aplica tanto para precarización como para
+indicar formalidad de la relación laboral, que es la variable SIGNISAL,
+que refiere a la percepción o no del salario completo cuando el
+trabajador no asistió al trabajo en la semana de referencia.Como nuestro
+denominador vamos a utilizar la variable STAPRO para identificar
+exclusivamente a los empleados y a los trabajadores familiares (código 3
+y 4 respectivamente), dejando por fuera a los cuentapropistas en este
+caso.</p>
+<p>Por lo tanto, para identificar a un trabajador en situación de
+precariedad laboral, se debe cumplir una de tres condiciones: 1) No
+haber recibido el pago correspondiente a horas extras trabajadas durante
+la semana de referencia, 2) Tener un contrato laboral de tipo temporal o
+3) No percepción del salario completo ante ausencia laboral.</p>
+</div>
+<div id="presentar-de-forma-tabulada-la-incidencia-de-la-informalidad-y-la-precariedad-en-la-población-ocupada-yo-asalariada." class="section level2">
+<h2>5) Presentar de forma tabulada la incidencia de la informalidad y la
+precariedad en la población ocupada y/o asalariada.</h2>
+<div id="informalidad-en-españa-y-reino-unido" class="section level3">
+<h3>Informalidad en España y Reino Unido</h3>
+<pre class="r"><code>## Calculamos la formalidad e informalidad en España 
+
+Cuadro_Formalidad_ESPAÑA &lt;- bbdd_espana %&gt;% 
+  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             cuenta_propistas = sum( ((STAPRO == 0)&amp;(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
+             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) |((STAPRO == 0)&amp;(SIZEFIRM == 99))    ) * (COEFF * 1000), na.rm = TRUE),
+             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
+             Formales=Ocupados-Informales,
+             &#39;Porcentaje de Informalidad&#39;      = percent(Informales/Ocupados, accuracy = 0.1),
+             &#39;Porcentaje de Formalidad&#39;      = percent(Formales/Ocupados, accuracy = 0.1),
+             País=&quot;España&quot;
+            )
+
+## Calculamos la formalidad e informalidad en Reino Unido
+
+Cuadro_Formalidad_Reino_Unido &lt;- bbdd_uk %&gt;% 
+  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             cuenta_propistas = sum( ((STAPRO == 0)&amp;(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
+             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) | ((STAPRO == 0)&amp;(SIZEFIRM == 99)) ) * (COEFF * 1000), na.rm = TRUE),
+             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
+             Formales=Ocupados-Informales,
+             &#39;Porcentaje de Informalidad&#39;      = percent(Informales/Ocupados, accuracy = 0.1),
+             &#39;Porcentaje de Formalidad&#39;      = percent(Formales/Ocupados, accuracy = 0.1),
+             País=&quot;Reino Unido&quot;
+            )</code></pre>
+<pre class="r"><code># Agregamos separadores de miles 
+Cuadro_Formalidad_ESPAÑA &lt;- Cuadro_Formalidad_ESPAÑA %&gt;%
+  select(País,Ocupados,Formales,Informales,&#39;Porcentaje de Formalidad&#39;,&#39;Porcentaje de Informalidad&#39;) %&gt;% 
+  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+Cuadro_Formalidad_Reino_Unido &lt;- Cuadro_Formalidad_Reino_Unido %&gt;%
+  select(País,Ocupados,Formales,Informales,&#39;Porcentaje de Formalidad&#39;,&#39;Porcentaje de Informalidad&#39;) %&gt;% 
+  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+# Unificar los datasets
+Cuadro_Formalidad_Union &lt;- bind_rows(Cuadro_Formalidad_ESPAÑA, Cuadro_Formalidad_Reino_Unido)
+
+#Visualizamos los indicadores adicionales de Formalidad e Informalidad en España y Reino Unido
+kable(Cuadro_Formalidad_Union, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores Adicionales del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores Adicionales del Mercado de Trabajo de España y Reino Unido -
+2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Ocupados
+</th>
+<th style="text-align:left;">
+Formales
+</th>
+<th style="text-align:left;">
+Informales
+</th>
+<th style="text-align:left;">
+Porcentaje de Formalidad
+</th>
+<th style="text-align:left;">
+Porcentaje de Informalidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+19.327.701
+</td>
+<td style="text-align:left;">
+16.345.447
+</td>
+<td style="text-align:left;">
+2.982.254
+</td>
+<td style="text-align:left;">
+84.6%
+</td>
+<td style="text-align:left;">
+15.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+32.443.029
+</td>
+<td style="text-align:left;">
+27.132.711
+</td>
+<td style="text-align:left;">
+5.310.318
+</td>
+<td style="text-align:left;">
+83.6%
+</td>
+<td style="text-align:left;">
+16.4%
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>library(ggplot2)
+library(gridExtra)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;gridExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre class="r"><code># Convertir porcentajes a números sin el símbolo de porcentaje y preparar los datos
+data &lt;- Cuadro_Formalidad_Union %&gt;%
+  select(País, &#39;Porcentaje de Formalidad&#39;, &#39;Porcentaje de Informalidad&#39;) %&gt;%
+  pivot_longer(cols = c(&#39;Porcentaje de Formalidad&#39;, &#39;Porcentaje de Informalidad&#39;),
+               names_to = &quot;Tipo&quot;,
+               values_to = &quot;Porcentaje&quot;) %&gt;%
+  mutate(Porcentaje = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, Porcentaje)))
+
+# Función para crear gráficos de torta con porcentajes dentro de los segmentos
+create_pie_chart &lt;- function(df, country) {
+  ggplot(df %&gt;% filter(País == country), aes(x = &quot;&quot;, y = Porcentaje, fill = Tipo)) +
+    geom_bar(stat = &quot;identity&quot;, width = 1) +
+    coord_polar(&quot;y&quot;, start = 0) +
+    theme_void() +
+    ggtitle(paste(&quot;Formalidad e Informalidad en&quot;, country)) +
+    scale_fill_manual(values = c(&quot;Porcentaje de Formalidad&quot; = &quot;#B3CDE3&quot;, &quot;Porcentaje de Informalidad&quot; = &quot;#FBB4AE&quot;)) +
+    geom_text(aes(label = paste0(Porcentaje, &quot;%&quot;)), position = position_stack(vjust = 0.5)) +  # Mostrar porcentajes dentro de los segmentos
+    theme(legend.position = &quot;right&quot;,
+          plot.title = element_text(size = 12, face = &quot;bold&quot;))  # Ajustar el tamaño del título
+}
+
+# Crear los gráficos con porcentajes dentro de los segmentos
+pie_chart_espana &lt;- create_pie_chart(data, &quot;España&quot;)
+pie_chart_reino_unido &lt;- create_pie_chart(data, &quot;Reino Unido&quot;)
+
+# Mostrar los gráficos lado a lado
+grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))</code></pre>
+<p><img src="data:image/png;base64,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IEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEPT/AzyfZe2vqhgbAAAAAElFTkSuQmCC" width="672" /></p>
+<p>En base a la construcción del indicador de formalidad e informalidad
+laboral en estas bases de datos, podemos observar que ambos países
+tienen porcentajes relativamente similares en términos de
+informalidad.Sorprende que Reino Unido tiene un punto porcentual más de
+porcentaje de Informalidad que España. Por otro lado, en términos
+absolutos Reino Unido casi duplica a España tanto en cantidad de
+Ocupados, trabajadores formales e informales, aunque en principio nos
+interesan más los porcentajes, dado que permiten comparar mejor las
+formas de trabajo formal e informal entre ambos países. Veamos ahora que
+sucede con la precarización laboral.</p>
+</div>
+<div id="precarización-laboral-en-españa-y-reino-unido" class="section level3">
+<h3>Precarización Laboral en España y Reino Unido</h3>
+<pre class="r"><code>## Calculamos la precarización laboral en España 
+
+Cuadro_Precarizacion_ESPAÑA &lt;- bbdd_espana %&gt;% 
+  summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
+             Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
+             Sin_pago_horas_extra   = sum((HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) * (COEFF * 1000), na.rm = TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2 )| (HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) | (SIGNISAL %in% c(1,2,3)))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
+             No_Precarizados=Empleados-Precarizados,
+             &#39;Porcentaje de Precarizados&#39;      = percent(Precarizados/Empleados, accuracy = 0.1),
+             &#39;Porcentaje de No Precarizados&#39;   = percent(No_Precarizados/Empleados, accuracy = 0.1),
+             País=&quot;España&quot;
+            )
+
+## Calculamos la precarización laboral en Reino Unido
+
+Cuadro_Precarizacion_Reino_Unido &lt;- bbdd_uk %&gt;% 
+  summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
+             Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
+             Sin_pago_horas_extra   = sum((HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) * (COEFF * 1000), na.rm = TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2 )| (HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) | (SIGNISAL %in% c(1,2,3)))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
+             No_Precarizados=Empleados-Precarizados,
+             &#39;Porcentaje de Precarizados&#39;      = percent(Precarizados/Empleados, accuracy = 0.1),
+             &#39;Porcentaje de No Precarizados&#39;   = percent(No_Precarizados/Empleados, accuracy = 0.1),
+             País=&quot;Reino Unido&quot;
+            )</code></pre>
+<pre class="r"><code># Agregamos separadores de miles 
+Cuadro_Precarizacion_ESPAÑA &lt;- Cuadro_Precarizacion_ESPAÑA %&gt;%
+  select(País,Empleados,No_Precarizados,Precarizados,&#39;Porcentaje de No Precarizados&#39;,&#39;Porcentaje de Precarizados&#39;) %&gt;% 
+  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+Cuadro_Precarizacion_Reino_Unido &lt;- Cuadro_Precarizacion_Reino_Unido %&gt;%
+  select(País,Empleados,No_Precarizados,Precarizados,&#39;Porcentaje de No Precarizados&#39;,&#39;Porcentaje de Precarizados&#39;) %&gt;% 
+  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;)))
+
+# Unificar los datasets
+Cuadro_Precarizacion_Union &lt;- bind_rows(Cuadro_Precarizacion_ESPAÑA, Cuadro_Precarizacion_Reino_Unido)
+
+#Visualizamos los indicadores de Precarización Laboral en España y Reino Unido
+kable(Cuadro_Precarizacion_Union, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores de Precarización del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores de Precarización del Mercado de Trabajo de España y Reino
+Unido - 2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Empleados
+</th>
+<th style="text-align:left;">
+No_Precarizados
+</th>
+<th style="text-align:left;">
+Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de No Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de Precarizados
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+16.288.731
+</td>
+<td style="text-align:left;">
+10.914.366
+</td>
+<td style="text-align:left;">
+5.374.366
+</td>
+<td style="text-align:left;">
+67.0%
+</td>
+<td style="text-align:left;">
+33.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+27.530.472
+</td>
+<td style="text-align:left;">
+21.568.683
+</td>
+<td style="text-align:left;">
+5.961.788
+</td>
+<td style="text-align:left;">
+78.3%
+</td>
+<td style="text-align:left;">
+21.7%
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Convertir porcentajes a números sin el símbolo de porcentaje y preparar los datos
+data &lt;- Cuadro_Precarizacion_Union %&gt;%
+  select(País, &#39;Porcentaje de No Precarizados&#39;, &#39;Porcentaje de Precarizados&#39;) %&gt;%
+  pivot_longer(cols = c(&#39;Porcentaje de No Precarizados&#39;, &#39;Porcentaje de Precarizados&#39;),
+               names_to = &quot;Tipo&quot;,
+               values_to = &quot;Porcentaje&quot;) %&gt;%
+  mutate(Porcentaje = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, Porcentaje)))
+
+# Función para crear gráficos de torta con porcentajes dentro de los segmentos
+create_pie_chart &lt;- function(df, country) {
+  ggplot(df %&gt;% filter(País == country), aes(x = &quot;&quot;, y = Porcentaje, fill = Tipo)) +
+    geom_bar(stat = &quot;identity&quot;, width = 1) +
+    coord_polar(&quot;y&quot;, start = 0) +
+    theme_void() +
+    ggtitle(paste(&quot;Precarización Laboral en&quot;, country)) +
+    scale_fill_manual(values = c(&quot;Porcentaje de No Precarizados&quot; = &quot;#B3CDE3&quot;, &quot;Porcentaje de Precarizados&quot; = &quot;#FBB4AE&quot;)) +
+    geom_text(aes(label = paste0(Porcentaje, &quot;%&quot;)), position = position_stack(vjust = 0.5)) +  # Mostrar porcentajes dentro de los segmentos
+    theme(legend.position = &quot;right&quot;,
+          plot.title = element_text(size = 12, face = &quot;bold&quot;))  # Ajustar el tamaño del título
+}
+
+# Crear los gráficos con porcentajes dentro de los segmentos
+pie_chart_espana &lt;- create_pie_chart(data, &quot;España&quot;)
+pie_chart_reino_unido &lt;- create_pie_chart(data, &quot;Reino Unido&quot;)
+
+# Mostrar los gráficos lado a lado
+grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))</code></pre>
+<p><img src="data:image/png;base64,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UqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEKRAAYIUKECQAgUIUqAAQQoUIEiBAgQpUIAgBQoQpEABghQoQJACBQhSoABBChQgSIECBClQgCAFChCkQAGCFChAkAIFCFKgAEEKFCBIgQIEKVCAIAUKEPT/AS4165gpDuPSAAAAAElFTkSuQmCC" width="672" /></p>
+<p>Analizando la precarización laboral en ambos países, ahora sí es
+posible ver diferencias más notorias, que a su vez van en la línea con
+lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en
+España es notablemente mayor que en el Reino Unido, de hecho es casi 50%
+mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en
+Empleados y No Precarizados, pero claro ya no en cantidad de personas
+precarizadas, siendo los números casi similares en términos
+absolutos.</p>
+</div>
 </div>
 </div>
 
