@@ -360,6 +360,41 @@ kable(Cuadro_Formalidad_Union, format = "html", table.attr = "class='table table
 
 ```
 
+```{r}
+library(ggplot2)
+library(gridExtra)
+
+# Convertir porcentajes a números sin el símbolo de porcentaje y preparar los datos
+data <- Cuadro_Formalidad_Union %>%
+  select(País, 'Porcentaje de Formalidad', 'Porcentaje de Informalidad') %>%
+  pivot_longer(cols = c('Porcentaje de Formalidad', 'Porcentaje de Informalidad'),
+               names_to = "Tipo",
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))
+
+# Función para crear gráficos de torta con porcentajes dentro de los segmentos
+create_pie_chart <- function(df, country) {
+  ggplot(df %>% filter(País == country), aes(x = "", y = Porcentaje, fill = Tipo)) +
+    geom_bar(stat = "identity", width = 1) +
+    coord_polar("y", start = 0) +
+    theme_void() +
+    ggtitle(paste("Formalidad e Informalidad en", country)) +
+    scale_fill_manual(values = c("Porcentaje de Formalidad" = "#B3CDE3", "Porcentaje de Informalidad" = "#FBB4AE")) +
+    geom_text(aes(label = paste0(Porcentaje, "%")), position = position_stack(vjust = 0.5)) +  # Mostrar porcentajes dentro de los segmentos
+    theme(legend.position = "right",
+          plot.title = element_text(size = 12, face = "bold"))  # Ajustar el tamaño del título
+}
+
+# Crear los gráficos con porcentajes dentro de los segmentos
+pie_chart_espana <- create_pie_chart(data, "España")
+pie_chart_reino_unido <- create_pie_chart(data, "Reino Unido")
+
+# Mostrar los gráficos lado a lado
+grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))
+
+```
+
+En  base a la construcción del indicador de formalidad e informalidad laboral en estas bases de datos, podemos observar que ambos países tienen porcentajes relativamente similares en términos de informalidad.Sorprende que Reino Unido tiene un punto porcentual más de porcentaje de Informalidad que España. Por otro lado, en términos absolutos Reino Unido casi duplica a España tanto en cantidad de Ocupados, trabajadores formales e informales, aunque en principio nos interesan más los porcentajes, dado que permiten comparar mejor las formas de trabajo formal e informal entre ambos países. Veamos ahora que sucede con la precarización laboral.
 
 ### Precarización Laboral en España y Reino Unido
 
@@ -417,4 +452,35 @@ kable(Cuadro_Precarizacion_Union, format = "html", table.attr = "class='table ta
   kable_styling(full_width = F, position = "center")
 
 ```
+
+```{r}
+# Convertir porcentajes a números sin el símbolo de porcentaje y preparar los datos
+data <- Cuadro_Precarizacion_Union %>%
+  select(País, 'Porcentaje de No Precarizados', 'Porcentaje de Precarizados') %>%
+  pivot_longer(cols = c('Porcentaje de No Precarizados', 'Porcentaje de Precarizados'),
+               names_to = "Tipo",
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))
+
+# Función para crear gráficos de torta con porcentajes dentro de los segmentos
+create_pie_chart <- function(df, country) {
+  ggplot(df %>% filter(País == country), aes(x = "", y = Porcentaje, fill = Tipo)) +
+    geom_bar(stat = "identity", width = 1) +
+    coord_polar("y", start = 0) +
+    theme_void() +
+    ggtitle(paste("Precarización Laboral en", country)) +
+    scale_fill_manual(values = c("Porcentaje de No Precarizados" = "#B3CDE3", "Porcentaje de Precarizados" = "#FBB4AE")) +
+    geom_text(aes(label = paste0(Porcentaje, "%")), position = position_stack(vjust = 0.5)) +  # Mostrar porcentajes dentro de los segmentos
+    theme(legend.position = "right",
+          plot.title = element_text(size = 12, face = "bold"))  # Ajustar el tamaño del título
+}
+
+# Crear los gráficos con porcentajes dentro de los segmentos
+pie_chart_espana <- create_pie_chart(data, "España")
+pie_chart_reino_unido <- create_pie_chart(data, "Reino Unido")
+
+# Mostrar los gráficos lado a lado
+grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))
+```
+Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos.
 
