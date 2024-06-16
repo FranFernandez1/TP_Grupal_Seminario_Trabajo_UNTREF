@@ -280,10 +280,10 @@ kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", 
 Podemos observar que España tiene una tasa de actividad bastante similar a Reino Unido, mientras que encontramos diferencias significativas tanto en la tasa de Desocupación, como en la tasa de Empleo. Pongamos por tanto el foco en la tasa de Desocupación: España tiene 16,1% de desocupación en el período analizado, mientras que Reino Unido tiene 3 veces menos, siendo la tasa de 5%. Asimismo, al hacer una comparación de la tasa de Desocupación de España con Brasil, vemos que la de España también resulta ser ampliamente más alta. Posiblemente más adelante en el trabajo podamos observar si estos niveles de desocupación que observamos en España se explica por algún factor relacionado con la edad o el sexo de las personas.
 
 
-## 3 Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
+## 3) Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
 
 Para la operacionalización de los conceptos de Sector Formal e Informal se utilizaron múltiples variables de manera conjunta. Estas variables ya fueron detalladas en el punto 1) de este trabajo. Ahora bien, varias de esas variables se utilizaron en simultáneo para construir distintos conceptos o elementos que, a nuestro entender, dan cuenta del sector en la que se enmarca un trabajador/a. 
-En primer lugar, utilizamos la variable SIGNISAL, que refiere a la precepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no percibió la totalidad de su salario cuando se ausentó del mismo durante la semana de referencia. Creemos que está es ciertamente una medida para identificar informalidad, aunque también precariedad laboral.
+En primer lugar, utilizamos la variable SIGNISAL, que refiere a la percepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no percibió la totalidad de su salario cuando se ausentó del mismo durante la semana de referencia. Creemos que está es ciertamente una medida para identificar informalidad, aunque también precariedad laboral.
 
 Otras variables de importancia utilizadas para la construcción del indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus Profesional) y SIZEFIRM (Tamaño de la empresa). Estas variables se utilizaron para identificar a los cuentapropistas. En tal sentido, la variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99. Consideramos que aquellas personas que trabajan por cuenta propia y no tienen empleados a cargo, dependen exclusivamente de su fuerza de trabajo y sin los beneficios y estabilidad laboral que ofrece, en principio, un trabajo bajo relación de dependencia. Por lo tanto, decidimos incorporarlos dentro del sector informal. Queda claro que, al interior de este sector hay realidades muy variadas, con lo cual no en todos los casos es correcto de hablar de informalidad ciertamente. Pero para los propósitos de este trabajo, lo consideramos como una variable de utilidad para acercarnos al fenómeno de la informalidad.
 
@@ -292,7 +292,23 @@ En definitiva, la construcción del indicador de Informalidad utilizó en simult
 En todos los casos, se utilizó el factor de expansión COEFF, y la construcción de estos indicadores es tanto para la base de datos de España como para la de Reino Unido. Es importante mencionar que la EU LPS no tiene preguntas respecto del acceso a la salud o a la educación, a diferencia de buena parte de las encuestas latinoamericanas, con lo cual, el indicador de informalidad debe ser construido con variables de índole distinta a las que uno normalmente buscaría en una encuesta de Mercado de Trabajo.
 
 
+## 4) Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
+
+
+Para el concepto de precarización laboral, utilizamos en primer lugar la variable HWOVERPU, que captura la cantidad de horas extras trabajadas que no fueron pagadas en la semana de referecia por el empleador. En ese sentido, si ya existía una hora extra no paga, lo contabilizamos como precariedad laboral. A su vez, incorporamos otra variable de suma importancia, TEMP, que remite a los contratos de tipo temporario (TEMP=2). Por último, nos parece importante volver a utilizar una variable que entendemos aplica tanto para precarización como para indicar formalidad de la relación laboral, que es la variable SIGNISAL, que refiere a la percepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia.Como nuestro denominador vamos a utilizar la variable STAPRO para identificar exclusivamente a los empleados y a los trabajadores familiares (código 3 y 4 respectivamente), dejando por fuera a los cuentapropistas en este caso.
+
+Por lo tanto, para identificar a un trabajador en situación de precariedad laboral, se debe cumplir una de tres condiciones: 1) No haber recibido el pago correspondiente a horas extras trabajadas durante la semana de referencia, 2) Tener un contrato laboral de tipo temporal o 3) No percepción del salario completo ante ausencia laboral.
+
+
+## 5) Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
+
+
+### Informalidad en España y Reino Unido
+
+
 ```{r warning=FALSE}
+
+## Calculamos la formalidad e informalidad en España 
 
 Cuadro_Formalidad_ESPAÑA <- bbdd_espana %>% 
   summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
@@ -302,24 +318,11 @@ Cuadro_Formalidad_ESPAÑA <- bbdd_espana %>%
              Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
              Formales=Ocupados-Informales,
              'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
-             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1)
+             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1),
+             País="España"
             )
 
-# Agregamos separadores de miles 
-Cuadro_Formalidad_ESPAÑA <- Cuadro_Formalidad_ESPAÑA %>%
-  select(Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
-  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = ".", decimal.mark = ",")))
-
-#Visualizamos los indicadores adicionales de Formalidad e Informalidad en España
-kable(Cuadro_Formalidad_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-Q1") %>%
-  kable_styling(full_width = F, position = "center")
-
-```
-
-
-
-
-```{r warning=FALSE}
+## Calculamos la formalidad e informalidad en Reino Unido
 
 Cuadro_Formalidad_Reino_Unido <- bbdd_uk %>% 
   summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
@@ -329,66 +332,88 @@ Cuadro_Formalidad_Reino_Unido <- bbdd_uk %>%
              Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
              Formales=Ocupados-Informales,
              'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
-             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1)
+             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1),
+             País="Reino Unido"
             )
 
+
+```
+
+
+```{r warning=FALSE}
+
 # Agregamos separadores de miles 
-Cuadro_Formalidad_Reino_Unido <- Cuadro_Formalidad_Reino_Unido %>%
-  select(Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
+Cuadro_Formalidad_ESPAÑA <- Cuadro_Formalidad_ESPAÑA %>%
+  select(País,Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
   mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = ".", decimal.mark = ",")))
 
-#Visualizamos los indicadores adicionales de Formalidad e Informalidad en Reino Unido
-kable(Cuadro_Formalidad_Reino_Unido, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
+Cuadro_Formalidad_Reino_Unido <- Cuadro_Formalidad_Reino_Unido %>%
+  select(País,Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
+  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+# Unificar los datasets
+Cuadro_Formalidad_Union <- bind_rows(Cuadro_Formalidad_ESPAÑA, Cuadro_Formalidad_Reino_Unido)
+
+#Visualizamos los indicadores adicionales de Formalidad e Informalidad en España y Reino Unido
+kable(Cuadro_Formalidad_Union, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
 
-## 4 Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
+
+### Precarización Laboral en España y Reino Unido
+
 
 ```{r warning=FALSE}
+
+## Calculamos la precarización laboral en España 
 
 Cuadro_Precarizacion_ESPAÑA <- bbdd_espana %>% 
   summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
              Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
              Sin_pago_horas_extra   = sum((HWOVERPU >= 1 & HWOVERPU <= 98) * (COEFF * 1000), na.rm = TRUE),
-             Temporales_o_SinPagoHSEXTRA = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98))*(COEFF*1000),na.rm=TRUE),
-             Precarizados=Temporales_o_SinPagoHSEXTRA,
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98) | (SIGNISAL %in% c(1,2,3)))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
              No_Precarizados=Empleados-Precarizados,
              'Porcentaje de Precarizados'      = percent(Precarizados/Empleados, accuracy = 0.1),
-             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1)
+             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1),
+             País="España"
             )
 
-# Agregamos separadores de miles 
-Cuadro_Precarizacion_ESPAÑA <- Cuadro_Precarizacion_ESPAÑA %>%
-  select(Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
-  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = ".", decimal.mark = ",")))
-
-#Visualizamos los indicadores de Precarización Laboral en España
-kable(Cuadro_Precarizacion_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Precarización del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-Q1") %>%
-  kable_styling(full_width = F, position = "center")
-
-```
-
-```{r warning=FALSE}
+## Calculamos la precarización laboral en Reino Unido
 
 Cuadro_Precarizacion_Reino_Unido <- bbdd_uk %>% 
   summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
              Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
              Sin_pago_horas_extra   = sum((HWOVERPU >= 1 & HWOVERPU <= 98) * (COEFF * 1000), na.rm = TRUE),
-             Temporales_o_SinPagoHSEXTRA = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98))*(COEFF*1000),na.rm=TRUE),
-             Precarizados=Temporales_o_SinPagoHSEXTRA,
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98) | (SIGNISAL %in% c(1,2,3)))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
              No_Precarizados=Empleados-Precarizados,
              'Porcentaje de Precarizados'      = percent(Precarizados/Empleados, accuracy = 0.1),
-             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1)
+             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1),
+             País="Reino Unido"
             )
 
+```
+
+```{r warning=FALSE}
+
 # Agregamos separadores de miles 
-Cuadro_Precarizacion_Reino_Unido <- Cuadro_Precarizacion_Reino_Unido %>%
-  select(Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
+Cuadro_Precarizacion_ESPAÑA <- Cuadro_Precarizacion_ESPAÑA %>%
+  select(País,Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
   mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = ".", decimal.mark = ",")))
 
-#Visualizamos los indicadores de Precarización Laboral en Reino Unido
-kable(Cuadro_Precarizacion_Reino_Unido, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Precarización del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
+Cuadro_Precarizacion_Reino_Unido <- Cuadro_Precarizacion_Reino_Unido %>%
+  select(País,Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
+  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+# Unificar los datasets
+Cuadro_Precarizacion_Union <- bind_rows(Cuadro_Precarizacion_ESPAÑA, Cuadro_Precarizacion_Reino_Unido)
+
+#Visualizamos los indicadores de Precarización Laboral en España y Reino Unido
+kable(Cuadro_Precarizacion_Union, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Precarización del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
