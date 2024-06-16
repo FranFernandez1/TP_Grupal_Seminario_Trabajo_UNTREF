@@ -195,7 +195,7 @@ Las variables a utilizar, tanto para el caso de España como de Reino Unido, ser
 
 ```{r}
 
-Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK")
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE")
 Descripcion <- c("Estado laboral durante la semana de referencia", 
                   "Estado laboral general", 
                   "Factor ponderador de la poblacion", 
@@ -203,7 +203,8 @@ Descripcion <- c("Estado laboral durante la semana de referencia",
                   "Tamaño de la empresa",
                   "Trabajo Temporal o Permanente",
                   "Cantidad de horas extras no pagas durante la semana de referencia",
-                  "En búsqueda laboral")
+                  "En búsqueda laboral",
+                  "Disponibilidad para empezar a trabajar en las próximas dos semanas")
 
 
 variable_table <- data.frame(Variable = Variables, Description = Descripcion)
@@ -218,33 +219,54 @@ variable_table %>%
 
 
 ```{r warning=FALSE}
-if (!require('scales')) install.packages('scales'); library('scales')
 
 Cuadro_2_ESPAÑA <- bbdd_espana %>% 
   summarise(Poblacion             = sum(COEFF*1000, na.rm = TRUE),
             Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
             Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
-            Desocupados_Inactivos = sum((WSTATOR %in% c(3,4,5))*(COEFF*1000),na.rm=TRUE),
-            Menores               = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Menores               = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
             PEA                   = Ocupados + Desocupados,
             'Tasa Actividad'      = percent(PEA/Poblacion, accuracy = 0.1),
             'Tasa Empleo'         = percent(Ocupados/Poblacion, accuracy = 0.1),
             'Tasa Desocupacion'   = percent(Desocupados/PEA, accuracy = 0.1)
             )
 
-kable(Cuadro_2_ESPAÑA)
 
+# Agregamos separadores de miles 
+Cuadro_2_ESPAÑA <- Cuadro_2_ESPAÑA %>%
+  mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores básicos de España
+kable(Cuadro_2_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-1") %>%
+  kable_styling(full_width = F, position = "center")
 
 ```
 
 
 
-```{r}
+```{r warning=FALSE}
 
-# Counting cases where WSTATOR is either 1 or 2
-count_cases <- sum(bbdd_espana$WSTATOR %in% c(1, 2))
+Cuadro_2_UK <- bbdd_uk %>% 
+  summarise(Poblacion             = sum(COEFF*1000, na.rm = TRUE),
+            Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Menores              = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            PEA                   = Ocupados + Desocupados,
+            'Tasa Actividad'      = percent(PEA/Poblacion, accuracy = 0.1),
+            'Tasa Empleo'         = percent(Ocupados/Poblacion, accuracy = 0.1),
+            'Tasa Desocupacion'   = percent(Desocupados/PEA, accuracy = 0.1)
+            )
 
-# Printing the result
-print(count_cases)
+
+# Agregamos separadores de miles 
+Cuadro_2_UK <- Cuadro_2_UK %>%
+  mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores básicos de España
+kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-1") %>%
+  kable_styling(full_width = F, position = "center")
+
 ```
 
