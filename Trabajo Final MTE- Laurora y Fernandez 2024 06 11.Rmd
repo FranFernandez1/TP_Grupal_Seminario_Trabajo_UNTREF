@@ -347,5 +347,49 @@ kable(Cuadro_Formalidad_Reino_Unido, format = "html", table.attr = "class='table
 
 ```{r warning=FALSE}
 
+Cuadro_Precarizacion_ESPAÑA <- bbdd_espana %>% 
+  summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
+             Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
+             Sin_pago_horas_extra   = sum((HWOVERPU >= 1 & HWOVERPU <= 98) * (COEFF * 1000), na.rm = TRUE),
+             Temporales_o_SinPagoHSEXTRA = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA,
+             No_Precarizados=Empleados-Precarizados,
+             'Porcentaje de Precarizados'      = percent(Precarizados/Empleados, accuracy = 0.1),
+             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1)
+            )
+
+# Agregamos separadores de miles 
+Cuadro_Precarizacion_ESPAÑA <- Cuadro_Precarizacion_ESPAÑA %>%
+  select(Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
+  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores de Precarización Laboral en España
+kable(Cuadro_Precarizacion_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Precarización del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
+```{r warning=FALSE}
+
+Cuadro_Precarizacion_Reino_Unido <- bbdd_uk %>% 
+  summarise( Empleados              = sum((STAPRO %in% c(3,4))*(COEFF*1000),na.rm=TRUE),
+             Temporales             = sum((TEMP == 2 )*(COEFF*1000),na.rm=TRUE),
+             Sin_pago_horas_extra   = sum((HWOVERPU >= 1 & HWOVERPU <= 98) * (COEFF * 1000), na.rm = TRUE),
+             Temporales_o_SinPagoHSEXTRA = sum(((TEMP == 2 )| (HWOVERPU >= 1 & HWOVERPU <= 98))*(COEFF*1000),na.rm=TRUE),
+             Precarizados=Temporales_o_SinPagoHSEXTRA,
+             No_Precarizados=Empleados-Precarizados,
+             'Porcentaje de Precarizados'      = percent(Precarizados/Empleados, accuracy = 0.1),
+             'Porcentaje de No Precarizados'   = percent(No_Precarizados/Empleados, accuracy = 0.1)
+            )
+
+# Agregamos separadores de miles 
+Cuadro_Precarizacion_Reino_Unido <- Cuadro_Precarizacion_Reino_Unido %>%
+  select(Empleados,No_Precarizados,Precarizados,'Porcentaje de No Precarizados','Porcentaje de Precarizados') %>% 
+  mutate(across(c(Empleados,Precarizados,No_Precarizados), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores de Precarización Laboral en Reino Unido
+kable(Cuadro_Precarizacion_Reino_Unido, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Precarización del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
 ```
 
