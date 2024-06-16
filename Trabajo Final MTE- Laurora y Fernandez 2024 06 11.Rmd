@@ -277,6 +277,9 @@ kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", 
 
 ```
 
+Podemos observar que España tiene una tasa de actividad bastante similar a Reino Unido, mientras que encontramos diferencias significativas tanto en la tasa de Desocupación, como en la tasa de Empleo. Pongamos por tanto el foco en la tasa de Desocupación: España tiene 16,1% de desocupación en el período analizado, mientras que Reino Unido tiene 3 veces menos, siendo la tasa de 5%. Asimismo, al hacer una comparación de la tasa de Desocupación de España con Brasil, vemos que la de España también resulta ser ampliamente más alta. Posiblemente más adelante en el trabajo podamos observar si estos niveles de desocupación que observamos en España se explica por algún factor relacionado con la edad o el sexo de las personas.
+
+
 ## 3 Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
 
 Para la operacionalización de los conceptos de Sector Formal e Informal se utilizaron múltiples variables de manera conjunta. Estas variables ya fueron detalladas en el punto 1) de este trabajo. Ahora bien, varias de esas variables se utilizaron en simultáneo para construir distintos conceptos o elementos que, a nuestro entender, dan cuenta del sector en la que se enmarca un trabajador/a. 
