@@ -282,7 +282,7 @@ kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", 
 Para la operacionalización de los conceptos de Sector Formal e Informal se utilizaron múltiples variables de manera conjunta. Estas variables ya fueron detalladas en el punto 1) de este trabajo. Ahora bien, varias de esas variables se utilizaron en simultáneo para construir distintos conceptos o elementos que, a nuestro entender, dan cuenta del sector en la que se enmarca un trabajador/a. 
 En primer lugar, utilizamos la variable SIGNISAL, que refiere a la precepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no percibió la totalidad de su salario cuando se ausentó del mismo durante la semana de referencia. Creemos que está es ciertamente una medida para identificar informalidad, aunque también precariedad laboral.
 
-Otras variables de importancia utilizadas para la construcción del indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus Profesional) y SIZEFIRM (Tamaño de la empresa). Para identificar a los cuenta propistas la variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99. 
+Otras variables de importancia utilizadas para la construcción del indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus Profesional) y SIZEFIRM (Tamaño de la empresa). Estas variables se utilizaron para identificar a los cuentapropistas. En tal sentido, la variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99. Consideramos que aquellas personas que trabajan por cuenta propia y no tienen empleados a cargo, dependen exclusivamente de su fuerza de trabajo y sin los beneficios y estabilidad laboral que ofrece, en principio, un trabajo bajo relación de dependencia. Por lo tanto, decidimos incorporarlos dentro del sector informal. Queda claro que, al interior de este sector hay realidades muy variadas, con lo cual no en todos los casos es correcto de hablar de informalidad ciertamente. Pero para los propósitos de este trabajo, lo consideramos como una variable de utilidad para acercarnos al fenómeno de la informalidad.
 
 En definitiva, la construcción del indicador de Informalidad utilizó en simultáneo estos 2 elementos: 1) No percepción del salario completo ante ausencia laboral y 2) Cuentapropistas sin empleados. En el caso de cumplir con una de estas dos condiciones, se decide entonces que el trabajador está en el sector Informal.
 
@@ -340,5 +340,9 @@ kable(Cuadro_Formalidad_Reino_Unido, format = "html", table.attr = "class='table
 
 ```
 
+## 4 Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
 
+```{r warning=FALSE}
+
+```
 
