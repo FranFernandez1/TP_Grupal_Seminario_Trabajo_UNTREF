@@ -189,13 +189,13 @@ bbdd_espana=read.csv("espana.csv")
 ## 1) Abrir y explorar las distintas bases de datos. Describir brevemente la metodología con que la encuesta es elaborada y explicar las variables que serán utilizadas en el TP.
 
 
-La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS) es la encuesta de hogares e individuos más extensa de la Unión Europea. Su objetivo estadístico principal es clasificar a las personas en tres categorías mutuamente excluyentes: empleados,desempleados y personas por fuera de la fuerza de trabajo. Esta encuesta se realiza de forma trimestral en todos los países de la Unión Europea en un formato estandarizado para todos los países, facilitando así la comparación entre ellos. La población a la cual se le puede realizar la encuesta es de 15 años o más.
+La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS de ahora en más) es la encuesta de hogares e individuos más extensa de la Unión Europea. Su objetivo estadístico principal es clasificar a las personas en tres categorías mutuamente excluyentes: empleados,desempleados y personas por fuera de la fuerza de trabajo. Esta encuesta se realiza de forma trimestral en todos los países de la Unión Europea en un formato estandarizado para todos los países, facilitando así la comparación entre ellos. La población a la cual se le puede realizar la encuesta es de 15 años o más.
 
 Las variables a utilizar, tanto para el caso de España como de Reino Unido, serán las siguentes:
 
 ```{r}
 
-Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE")
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE","SIGNISAL")
 Descripcion <- c("Estado laboral durante la semana de referencia", 
                   "Estado laboral general", 
                   "Factor ponderador de la poblacion", 
@@ -204,7 +204,8 @@ Descripcion <- c("Estado laboral durante la semana de referencia",
                   "Trabajo Temporal o Permanente",
                   "Cantidad de horas extras no pagas durante la semana de referencia",
                   "En búsqueda laboral",
-                  "Disponibilidad para empezar a trabajar en las próximas dos semanas")
+                  "Disponibilidad para empezar a trabajar en las próximas dos semanas",
+                  "Percibe regularmente su salario, aunque no asistió al trabajo en la semana de referencia")
 
 
 variable_table <- data.frame(Variable = Variables, Description = Descripcion)
@@ -223,9 +224,12 @@ variable_table %>%
 Cuadro_2_ESPAÑA <- bbdd_espana %>% 
   summarise(Poblacion             = sum(COEFF*1000, na.rm = TRUE),
             Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            #Ocupados_OIT         = sum((ILOSTAT %in% c(1))*(COEFF*1000),na.rm=TRUE),
             Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
+            #Desocupados_OIT      = sum((ILOSTAT %in% c(2))*(COEFF*1000),na.rm=TRUE),
             #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
-            #Menores               = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos_OIT        = sum((ILOSTAT %in% c(3))*(COEFF*1000),na.rm=TRUE),
+            #Menores              = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
             PEA                   = Ocupados + Desocupados,
             'Tasa Actividad'      = percent(PEA/Poblacion, accuracy = 0.1),
             'Tasa Empleo'         = percent(Ocupados/Poblacion, accuracy = 0.1),
@@ -238,7 +242,7 @@ Cuadro_2_ESPAÑA <- Cuadro_2_ESPAÑA %>%
   mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = ".", decimal.mark = ",")))
 
 #Visualizamos los indicadores básicos de España
-kable(Cuadro_2_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-1") %>%
+kable(Cuadro_2_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-Q1") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
@@ -250,8 +254,11 @@ kable(Cuadro_2_ESPAÑA, format = "html", table.attr = "class='table table-stripe
 Cuadro_2_UK <- bbdd_uk %>% 
   summarise(Poblacion             = sum(COEFF*1000, na.rm = TRUE),
             Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+            #Ocupados_OIT         = sum((ILOSTAT %in% c(1))*(COEFF*1000),na.rm=TRUE),
             Desocupados           = sum((SEEKWORK %in% c(1,2,4))*(COEFF*1000),na.rm=TRUE),
+            #Desocupados_OIT      = sum((ILOSTAT %in% c(2))*(COEFF*1000),na.rm=TRUE),
             #Inactivos   = sum((SEEKWORK %in% c(3)|AVAILBLE %in% c(2))*(COEFF*1000),na.rm=TRUE),
+            #Inactivos_OIT        = sum((ILOSTAT %in% c(3))*(COEFF*1000),na.rm=TRUE),
             #Menores              = sum((WSTATOR %in% c(9))*(COEFF*1000),na.rm=TRUE),
             PEA                   = Ocupados + Desocupados,
             'Tasa Actividad'      = percent(PEA/Poblacion, accuracy = 0.1),
@@ -264,9 +271,74 @@ Cuadro_2_UK <- bbdd_uk %>%
 Cuadro_2_UK <- Cuadro_2_UK %>%
   mutate(across(c(Poblacion, Ocupados, Desocupados, PEA), ~ format(., big.mark = ".", decimal.mark = ",")))
 
-#Visualizamos los indicadores básicos de España
-kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-1") %>%
+#Visualizamos los indicadores básicos de Reino Unido
+kable(Cuadro_2_UK, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
+
+## 3 Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
+
+Para la operacionalización de los conceptos de Sector Formal e Informal se utilizaron múltiples variables de manera conjunta. Estas variables ya fueron detalladas en el punto 1) de este trabajo. Ahora bien, varias de esas variables se utilizaron en simultáneo para construir distintos conceptos o elementos que, a nuestro entender, dan cuenta del sector en la que se enmarca un trabajador/a. 
+En primer lugar, utilizamos la variable SIGNISAL, que refiere a la precepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no percibió la totalidad de su salario cuando se ausentó del mismo durante la semana de referencia. Creemos que está es ciertamente una medida para identificar informalidad, aunque también precariedad laboral.
+
+Otras variables de importancia utilizadas para la construcción del indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus Profesional) y SIZEFIRM (Tamaño de la empresa). Para identificar a los cuenta propistas la variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99. 
+
+En definitiva, la construcción del indicador de Informalidad utilizó en simultáneo estos 2 elementos: 1) No percepción del salario completo ante ausencia laboral y 2) Cuentapropistas sin empleados. En el caso de cumplir con una de estas dos condiciones, se decide entonces que el trabajador está en el sector Informal.
+
+En todos los casos, se utilizó el factor de expansión COEFF, y la construcción de estos indicadores es tanto para la base de datos de España como para la de Reino Unido. Es importante mencionar que la EU LPS no tiene preguntas respecto del acceso a la salud o a la educación, a diferencia de buena parte de las encuestas latinoamericanas, con lo cual, el indicador de informalidad debe ser construido con variables de índole distinta a las que uno normalmente buscaría en una encuesta de Mercado de Trabajo.
+
+
+```{r warning=FALSE}
+
+Cuadro_Formalidad_ESPAÑA <- bbdd_espana %>% 
+  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             cuenta_propistas = sum( ((STAPRO == 0)&(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
+             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) |((STAPRO == 0)&(SIZEFIRM == 99))    ) * (COEFF * 1000), na.rm = TRUE),
+             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
+             Formales=Ocupados-Informales,
+             'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
+             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1)
+            )
+
+# Agregamos separadores de miles 
+Cuadro_Formalidad_ESPAÑA <- Cuadro_Formalidad_ESPAÑA %>%
+  select(Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
+  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores adicionales de Formalidad e Informalidad en España
+kable(Cuadro_Formalidad_ESPAÑA, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de España - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
+
+
+
+```{r warning=FALSE}
+
+Cuadro_Formalidad_Reino_Unido <- bbdd_uk %>% 
+  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
+             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
+             cuenta_propistas = sum( ((STAPRO == 0)&(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
+             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) | ((STAPRO == 0)&(SIZEFIRM == 99)) ) * (COEFF * 1000), na.rm = TRUE),
+             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
+             Formales=Ocupados-Informales,
+             'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
+             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1)
+            )
+
+# Agregamos separadores de miles 
+Cuadro_Formalidad_Reino_Unido <- Cuadro_Formalidad_Reino_Unido %>%
+  select(Ocupados,Formales,Informales,'Porcentaje de Formalidad','Porcentaje de Informalidad') %>% 
+  mutate(across(c(Ocupados,Formales,Informales), ~ format(., big.mark = ".", decimal.mark = ",")))
+
+#Visualizamos los indicadores adicionales de Formalidad e Informalidad en Reino Unido
+kable(Cuadro_Formalidad_Reino_Unido, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
+
 
