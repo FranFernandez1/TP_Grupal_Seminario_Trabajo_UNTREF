@@ -183,7 +183,7 @@ Las variables a utilizar, tanto para el caso de España como de Reino Unido, ser
 
 ```{r}
 
-Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE","SIGNISAL")
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE","SIGNISAL","SEX","AGE")
 Descripcion <- c("Estado laboral durante la semana de referencia", 
                   "Estado laboral general", 
                   "Factor ponderador de la poblacion", 
@@ -193,7 +193,9 @@ Descripcion <- c("Estado laboral durante la semana de referencia",
                   "Cantidad de horas extras no pagas durante la semana de referencia",
                   "En búsqueda laboral",
                   "Disponibilidad para empezar a trabajar en las próximas dos semanas",
-                  "Percibe regularmente su salario, aunque no asistió al trabajo en la semana de referencia")
+                  "Percibe regularmente su salario, aunque no asistió al trabajo en la semana de referencia",
+                  "Sexo",
+                  "Edad")
 
 
 variable_table <- data.frame(Variable = Variables, Description = Descripcion)
@@ -477,4 +479,79 @@ grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 
 ```
 
 Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos.
+
+
+## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
+
+En primer lugar construimos las pirámides poblacionales de ambos países para tener una idea inicial de sus estructuras poblacionales por edad y género.
+
+```{r warning=FALSE}
+
+## Cálculo de datos para Pirámide Poblacional de España
+
+# Transformar los valores de SEX a "Hombre" y "Mujer"
+bbdd_espana2 <- bbdd_espana %>%
+  mutate(Sexo = ifelse(SEX == 1, "Hombre", "Mujer"))
+
+# Crear intervalos de edad en la base de datos
+bbdd_espana2 <- bbdd_espana2 %>%
+  mutate(Edad_Grupo = cut(AGE, breaks = seq(0, 100, by = 10), right = FALSE, labels = c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90+")))
+
+# Asegurar que Edad_Grupo es un factor
+bbdd_espana2$Edad_Grupo <- as.factor(bbdd_espana2$Edad_Grupo)
+
+# Agrupar los datos por intervalos de edad y sexo considerando el factor de expansión
+edad_sexo <- bbdd_espana2 %>%
+  group_by(Edad_Grupo, Sexo) %>%
+  summarise(Count = sum(COEFF * 1000, na.rm = TRUE)) %>%
+  ungroup()
+
+
+
+# Crear gráfico de pirámide poblacional de España
+ggplot(data = edad_sexo, aes(x = Edad_Grupo, y = ifelse(Sexo == "Hombre", -Count, Count), fill = Sexo)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) format(abs(x), big.mark = ".", decimal.mark = ".", scientific = FALSE)) +
+  labs(y = "Cantidad de Personas", x = "Grupo de Edad", title = "Pirámide Poblacional por Edad y Género en España") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Hombre" = "#77dd77", "Mujer" = "#cba0dc"))
+
+
+```
+```{r warning=FALSE}
+
+## Cálculo de datos para Pirámide Poblacional de Reino Unido
+
+# Transformar los valores de SEX a "Hombre" y "Mujer"
+bbdd_uk2 <- bbdd_uk %>%
+  mutate(Sexo = ifelse(SEX == 1, "Hombre", "Mujer"))
+
+# Crear intervalos de edad en la base de datos
+bbdd_uk2 <- bbdd_uk2 %>%
+  mutate(Edad_Grupo = cut(AGE, breaks = seq(0, 100, by = 10), right = FALSE, labels = c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90+")))
+
+# Asegurar que Edad_Grupo es un factor
+bbdd_uk2$Edad_Grupo <- as.factor(bbdd_uk2$Edad_Grupo)
+
+# Agrupar los datos por intervalos de edad y sexo considerando el factor de expansión
+edad_sexo_uk <- bbdd_uk2 %>%
+  group_by(Edad_Grupo, Sexo) %>%
+  summarise(Count = sum(COEFF * 1000, na.rm = TRUE)) %>%
+  ungroup()
+
+# Crear gráfico de pirámide poblacional de Reino Unido
+ggplot(data = edad_sexo_uk, aes(x = Edad_Grupo, y = ifelse(Sexo == "Hombre", -Count, Count), fill = Sexo)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) format(abs(x), big.mark = ".", scientific = FALSE)) +
+  labs(y = "Cantidad de Personas", x = "Grupo de Edad", title = "Pirámide Poblacional por Edad y Género en Reino Unido") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Hombre" = "#77dd77", "Mujer" = "#cba0dc"))
+
+```
+
+Podemos observar que España tiene una parte significativa de su población entre los 30 y los 60 años, es decir en su edad económicamente activa. Aunque también es posible afirmar que tiene una población bastante envejecida al analizar la cantidad de personas mayores a 70 años, no deja de llamar la atención que una parte significativa de su población, las barras más importantes de la pirámide población se encuentran en el medio de la pirámide, lo cual resulta algo sorpresivo para un país europeo. Esto puede deberse a una multiplicidad de factores como la inmigración, que no vienen al caso para este trabajo. 
+
+Por otra parte, la pirámide poblacional de Reino Unido nos revela una típica población envejecida, con una forma de cóncava o de bala, donde a su vez una parte muy importante de su población se encuentra cerca o ya en estado inactivo por su edad.
 
