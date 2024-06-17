@@ -555,3 +555,111 @@ Podemos observar que España tiene una parte significativa de su población entr
 
 Por otra parte, la pirámide poblacional de Reino Unido nos revela una típica población envejecida, con una forma de cóncava o de bala, donde a su vez una parte muy importante de su población se encuentra cerca o ya en estado inactivo por su edad.
 
+Ahora bien, pasemos a analizar la incidencia de la informalidad y la precariedad laboral en estas poblaciones.
+
+
+```{r}
+
+## Transformamos las variables Sexo y Edad
+
+bbdd_espana3 <- mutate(bbdd_espana,
+                      Edad_Periodo = cut(AGE,
+                                         breaks = c(15, 30, 45, 60, Inf),
+                                         labels = c("15-30", "30-45", "45-60", "60 o más"),
+                                         include.lowest = TRUE))%>%
+  filter(!is.na(Edad_Periodo))  
+
+bbdd_espana3 <- bbdd_espana3 %>%
+  mutate(Sexo = case_when(
+    SEX == 1 ~ "Hombre",
+    SEX == 2 ~ "Mujer",
+    TRUE ~ as.character(SEX)  
+  ))
+
+## Calculamos la informalidad por Sexo y Edad
+Cuadro_Formalidad_ESPAÑA2 <- bbdd_espana3 %>% 
+  group_by(Edad_Periodo, Sexo) %>%  # Agrupar por edad y sexo
+  summarise(
+    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
+    cuenta_propistas = sum(((STAPRO == 0) & (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
+    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) & (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+    Formales = Ocupados - Informales,
+    'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
+    'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
+    País = "España"
+  )
+
+# Formatear y redondear las columnas
+Cuadro_Formalidad_ESPAÑA2 <- Cuadro_Formalidad_ESPAÑA2 %>%
+  select(País, Edad_Periodo, Sexo, Ocupados, Formales, Informales, 'Porcentaje de Formalidad', 'Porcentaje de Informalidad') %>% 
+  mutate(
+    across(c(Ocupados, Formales, Informales), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Ocupados, Formales, Informales), ~ format(., big.mark = ".", decimal.mark = ","))
+  )
+
+# Visualizar los indicadores en formato HTML
+kable(Cuadro_Formalidad_ESPAÑA2, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Formalidad e Informalidad del Mercado de Trabajo de España según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
+
+Del cuadro anterior es posible extraer que en España el porcentaje de Informalidad tiene a ser mayor para los hombres que para las mujeres. A su vez, en la medida que aumenta la edad, la informalidad tiende a crecer de manera de constante para ambos sexos. De tal forma que, por ejemplo, mientras la informalidad para Hombres y Mujeres de los 15 a los 30 años es de 11,2% y 7,4% respectivamente, en el rango de edades de 60 o más estos números más que se duplican pasando al 25,2% en los hombres y al 20,8% para las mujeres. Veamos qué sucede con el Reino Unido. 
+
+
+
+```{r}
+
+## Transformamos las variables Sexo y Edad
+
+bbdd_uk3 <- mutate(bbdd_uk,
+                      Edad_Periodo = cut(AGE,
+                                         breaks = c(15, 30, 45, 60, Inf),
+                                         labels = c("15-30", "30-45", "45-60", "60 o más"),
+                                         include.lowest = TRUE))%>%
+  filter(!is.na(Edad_Periodo))  
+
+bbdd_uk3 <- bbdd_uk3 %>%
+  mutate(Sexo = case_when(
+    SEX == 1 ~ "Hombre",
+    SEX == 2 ~ "Mujer",
+    TRUE ~ as.character(SEX)  
+  ))
+
+## Calculamos la informalidad por Sexo y Edad
+Cuadro_Formalidad_UK2 <- bbdd_uk3 %>% 
+  group_by(Edad_Periodo, Sexo) %>%  # Agrupar por edad y sexo
+  summarise(
+    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
+    cuenta_propistas = sum(((STAPRO == 0) & (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
+    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) & (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+    Formales = Ocupados - Informales,
+    'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
+    'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
+    País = "Reino Unido"
+  )
+
+# Formatear y redondear las columnas
+Cuadro_Formalidad_UK2 <- Cuadro_Formalidad_UK2 %>%
+  select(País, Edad_Periodo, Sexo, Ocupados, Formales, Informales, 'Porcentaje de Formalidad', 'Porcentaje de Informalidad') %>% 
+  mutate(
+    across(c(Ocupados, Formales, Informales), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Ocupados, Formales, Informales), ~ format(., big.mark = ".", decimal.mark = ","))
+  )
+
+# Visualizar los indicadores en formato HTML
+kable(Cuadro_Formalidad_UK2, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Formalidad e Informalidad del Mercado de Trabajo de Reino Unido según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
+Al igual que en el caso de España, los hombres en Reino Unido tienden a tener un nivel de informalidad más alto que las mujeres en todos los grupos de edad. Y también muy en línea con lo que vimos para España, en Reino Unido la edad también es un factor clave para entender el fenómeno de la informalidad. Al aumentar la edad la informalidad crece, y de forma mucho más marcada que en el caso español. Retomando un ejemplo similar, en el grupo de edad de 15 a 30 la informalidad para hombres es de 10,9% y de 7,3% para las mujeres (nótese la similitud de los porcentajes con España). Ahora bien, al analizar el grupo de edad mayor (60 o más años) la informalidad se triplica para ambos géneros: pasa al 32,1% en Hombres y al 21,7% en mujeres.
+
+Analicemos por último el fenómeno de la precariedad laboral.
+
+
+
