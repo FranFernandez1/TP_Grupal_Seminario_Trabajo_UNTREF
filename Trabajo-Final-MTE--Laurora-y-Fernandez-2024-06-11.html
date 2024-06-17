@@ -1737,12 +1737,11 @@ en un repositorio de Github que pueda correrse desde cualquier
 computadora, con la base datos correspondiente en el directorio de
 trabajo.</p>
 </div>
-<div id="section" class="section level2">
-<h2>1</h2>
-<p>Abrir y explorar las distintas bases de datos. Describir brevemente
-(en 1 párrafo) la metodología con que la encuesta es elaborada y
-explicar (en un tabulado) las variables que serán utilizadas en el
-TP.</p>
+<div id="abrir-y-explorar-las-distintas-bases-de-datos.-describir-brevemente-en-1-párrafo-la-metodología-con-que-la-encuesta-es-elaborada-y-explicar-en-un-tabulado-las-variables-que-serán-utilizadas-en-el-tp." class="section level2">
+<h2>1 Abrir y explorar las distintas bases de datos. Describir
+brevemente (en 1 párrafo) la metodología con que la encuesta es
+elaborada y explicar (en un tabulado) las variables que serán utilizadas
+en el TP.</h2>
 <div id="pnad-continua---encuesta-nacional-continua-por-muestra-de-hogares" class="section level3">
 <h3>PNAD Continua - Encuesta Nacional Continua por Muestra de
 Hogares</h3>
@@ -1759,140 +1758,194 @@ cubierta por la investigación (Grandes Regiones, Unidades de Federación,
 Municipios de las Capitales y Región de Desarrollo Integrado de la Gran
 Teresina).</p>
 <p>Fuente: <a href="https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&amp;t=o-que-e" class="uri">https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&amp;t=o-que-e</a></p>
-<pre class="r"><code>var &lt;- read.csv(&quot;Variables.csv&quot;)
-kable(var)</code></pre>
-<table>
-<colgroup>
-<col width="100%" />
-</colgroup>
+<pre class="r"><code>var&lt;-read.csv(&quot;Variables.csv&quot;, sep=&quot;;&quot;,na.strings=c(&quot;NA&quot;,&quot;NULL&quot;),encoding=&quot;UTF-8&quot;)
+
+var%&gt;%
+  kable() %&gt;%
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;, &quot;responsive&quot;))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Indicadores.Operacionalización.Variables.utilizadas</th>
+<tr>
+<th style="text-align:left;">
+Indicadores
+</th>
+<th style="text-align:left;">
+Operacionalización
+</th>
+<th style="text-align:left;">
+Variables.utilizadas
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">Tasa de empleo:;porcentaje entre la población ocupada y
-la población total de referencia. ;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de empleo:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población ocupada y la población total de
+referencia.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">Tasa de desocupación:;porcentaje entre la población
-desocupada y la población económicamente activa. ;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de desocupación:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población desocupada y la población económicamente
+activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Tasa de demandantes de empleo:;porcentaje entre la
-población de demandantes de empleo y la población económicamente activa.
-;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de demandantes de empleo:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población de demandantes de empleo y la población
+económicamente activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">Tasa de ocupados demandantes de empleo:;porcentaje
-entre la población de ocupados demandantes de empleo y la población
-económicamente activa.;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de ocupados demandantes de empleo:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población de ocupados demandantes de empleo y la
+población económicamente activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Tasa de subocupación horaria:;porcentaje entre la
-población subocupada y la población económicamente activa.;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de subocupación horaria:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población subocupada y la población económicamente
+activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">Tasa de sobreocupación horaria:;porcentaje entre la
-población sobreocupada y la población económicamente activa. ;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de sobreocupación horaria:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población sobreocupada y la población económicamente
+activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Tasa de subocupación demandante:;porcentaje entre la
-población de subocupados demandantes y la población económicamente
-activa. ;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de subocupación demandante:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población de subocupados demandantes y la población
+económicamente activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">Tasa de subocupación no demandante:;porcentaje entre la
-población de subocupados no demandantes y la población económicamente
-activa.;</td>
+<tr>
+<td style="text-align:left;">
+Tasa de subocupación no demandante:
+</td>
+<td style="text-align:left;">
+porcentaje entre la población de subocupados no demandantes y la
+población económicamente activa.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Población económicamente activa:;la integran las
-personas que tienen una ocupación o que</td>
+<tr>
+<td style="text-align:left;">
+Población económicamente activa:
+</td>
+<td style="text-align:left;">
+la integran las personas que tienen una ocupación o que, sin tenerla, la
+están buscando activamente. Está compuesta por la población ocupada más
+la población desocupada.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">sin tenerla</td>
+<tr>
+<td style="text-align:left;">
+Población ocupada:
+</td>
+<td style="text-align:left;">
+conjunto de personas que tienen por lo menos una ocupación, es decir que
+en la semana de referencia han trabajado como mínimo una hora (en una
+actividad económica). El criterio de una hora trabajada, además de
+preservar la comparabilidad con otros países, permite captar las
+múltiples ocupaciones informales o de baja intensidad que realiza la
+población. Para poder discriminar dentro del nivel de empleo qué parte
+corresponde al empleo de baja intensidad, pueden restarse del empleo
+total aquellos que trabajan menos de cierta cantidad de horas (por
+ejemplo, las personas subocupados). La información recogida permite
+realizar distintos recortes según la necesidad de información de que se
+trate, así como caracterizar ese tipo de empleos.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="odd">
-<td align="left">la están buscando activamente. Está compuesta por la
-población ocupada más la población desocupada. ;</td>
+<tr>
+<td style="text-align:left;">
+Población desocupada:
+</td>
+<td style="text-align:left;">
+personas que, no teniendo ocupación, están buscando activamente trabajo
+y están disponibles para trabajar. Corresponde a la desocupación
+abierta. Este concepto no incluye otras formas de precariedad laboral
+tales como personas que realizan trabajos transitorios mientras buscan
+activamente una ocupación, aquellas que trabajan jornadas
+involuntariamente por debajo de lo normal, las personas desocupadas que
+han suspendido la búsqueda por falta de oportunidades visibles de
+empleo, las ocupadas en puestos por debajo de la remuneración mínima o
+en puestos por debajo de su calificación, etc. Estas modalidades son
+también relevadas por la EPH, como indicadores separados.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
-<tr class="even">
-<td align="left">Población ocupada: ;conjunto de personas que tienen por
-lo menos una ocupación</td>
-</tr>
-<tr class="odd">
-<td align="left">es decir que en la semana de referencia han trabajado
-como mínimo una hora (en una actividad económica). El criterio de una
-hora trabajada</td>
-</tr>
-<tr class="even">
-<td align="left">además de preservar la comparabilidad con otros
-países</td>
-</tr>
-<tr class="odd">
-<td align="left">permite captar las múltiples ocupaciones informales o
-de baja intensidad que realiza la población. Para poder discriminar
-dentro del nivel de empleo qué parte corresponde al empleo de baja
-intensidad</td>
-</tr>
-<tr class="even">
-<td align="left">pueden restarse del empleo total aquellos que trabajan
-menos de cierta cantidad de horas (por ejemplo</td>
-</tr>
-<tr class="odd">
-<td align="left">las personas subocupados). La información recogida
-permite realizar distintos recortes según la necesidad de información de
-que se trate</td>
-</tr>
-<tr class="even">
-<td align="left">así como caracterizar ese tipo de empleos. ;</td>
-</tr>
-<tr class="odd">
-<td align="left">Población desocupada: ;personas que</td>
-</tr>
-<tr class="even">
-<td align="left">no teniendo ocupación</td>
-</tr>
-<tr class="odd">
-<td align="left">están buscando activamente trabajo y están disponibles
-para trabajar. Corresponde a la desocupación abierta. Este concepto no
-incluye otras formas de precariedad laboral tales como personas que
-realizan trabajos transitorios mientras buscan activamente una
-ocupación</td>
-</tr>
-<tr class="even">
-<td align="left">aquellas que trabajan jornadas involuntariamente por
-debajo de lo normal</td>
-</tr>
-<tr class="odd">
-<td align="left">las personas desocupadas que han suspendido la búsqueda
-por falta de oportunidades visibles de empleo</td>
-</tr>
-<tr class="even">
-<td align="left">las ocupadas en puestos por debajo de la remuneración
-mínima o en puestos por debajo de su calificación</td>
-</tr>
-<tr class="odd">
-<td align="left">etc. Estas modalidades son también relevadas por la
-EPH</td>
-</tr>
-<tr class="even">
-<td align="left">como indicadores separados.;</td>
-</tr>
-<tr class="odd">
-<td align="left">Población ocupada demandante de empleo: ;población
-ocupada que busca activamente otra ocupación.;</td>
+<tr>
+<td style="text-align:left;">
+Población ocupada demandante de empleo:
+</td>
+<td style="text-align:left;">
+población ocupada que busca activamente otra ocupación.
+</td>
+<td style="text-align:left;">
+NA
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="section-1" class="section level2">
-<h2>2</h2>
-<p>Estimar y presentar las tasas básicas del mercado de trabajo.
-Analizar brevemente los resultados encontrados.</p>
+<div id="estimar-y-presentar-las-tasas-básicas-del-mercado-de-trabajo.-analizar-brevemente-los-resultados-encontrados." class="section level2">
+<h2>2 Estimar y presentar las tasas básicas del mercado de trabajo.
+Analizar brevemente los resultados encontrados.</h2>
 <pre class="r"><code>if (!require(&#39;scales&#39;)) install.packages(&#39;scales&#39;); library(&#39;scales&#39;)</code></pre>
 <pre><code>## Loading required package: scales</code></pre>
 <pre><code>## 
@@ -1908,98 +1961,254 @@ Analizar brevemente los resultados encontrados.</p>
             Ocupados          = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
             Desocupados       = sum(V1028[VD4002 == &quot;Pessoas desocupadas&quot;],na.rm=TRUE),
             PEA               = Ocupados + Desocupados,
-            Ocupados_demand   = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot; &amp; V4071 ==&quot;Sim&quot;],na.rm=TRUE),
-            Suboc_demandante  = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;) &amp; (V4063==&quot;Sim&quot;|V4063A==&quot;Sim&quot;|VD4005==&quot;Pessoas desalentadas&quot;)],na.rm=TRUE),#VD4005
-            Suboc_no_demand   = sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;) &amp; (V4063==&quot;Não&quot;|V4063A==&quot;Não&quot;)],na.rm=TRUE),
             Subocupados       =  sum(V1028[(VD4004 ==&quot;Pessoas subocupadas&quot;|VD4004A==&quot;Pessoas subocupadas&quot;)],na.rm=TRUE),
             &#39;Tasa Actividad&#39;                  = percent(PEA/Poblacion, accuracy = 0.1),
             &#39;Tasa Empleo&#39;                     = percent(Ocupados/Poblacion, accuracy = 0.1),
             &#39;Tasa Desocupacion&#39;               = percent(Desocupados/PEA, accuracy = 0.1),
-            &#39;Tasa ocupados demandantes&#39;       = percent(Ocupados_demand/PEA, accuracy = 0.1),
-            &#39;Tasa Subocupación&#39;               = percent(Subocupados/PEA, accuracy = 0.1),                       &#39;Tasa Subocupación demandante&#39;    = percent(Suboc_demandante/PEA, accuracy = 0.1),
-            &#39;Tasa Subocupación no demandante&#39; = percent(Suboc_no_demand/PEA, accuracy = 0.1))
-  
-kable(Cuadro_1.1a)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="3%" />
-<col width="3%" />
-<col width="4%" />
-<col width="3%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="4%" />
-<col width="5%" />
-<col width="4%" />
-<col width="7%" />
-<col width="10%" />
-<col width="7%" />
-<col width="11%" />
-<col width="12%" />
-</colgroup>
+            &#39;Tasa Subocupación&#39;               = percent(Subocupados/PEA, accuracy = 0.1))
+
+#Visualizamos los indicadores básicos de España y Reino Unido
+kable(Cuadro_1.1a, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Tasas Básicas del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Tasas Básicas del Mercado de Trabajo de Brasil - 2019, 3er trimestre.
+Fuente: PNAD continua
+</caption>
 <thead>
-<tr class="header">
-<th align="right">Poblacion</th>
-<th align="right">Ocupados</th>
-<th align="right">Desocupados</th>
-<th align="right">PEA</th>
-<th align="right">Ocupados_demand</th>
-<th align="right">Suboc_demandante</th>
-<th align="right">Suboc_no_demand</th>
-<th align="right">Subocupados</th>
-<th align="left">Tasa Actividad</th>
-<th align="left">Tasa Empleo</th>
-<th align="left">Tasa Desocupacion</th>
-<th align="left">Tasa ocupados demandantes</th>
-<th align="left">Tasa Subocupación</th>
-<th align="left">Tasa Subocupación demandante</th>
-<th align="left">Tasa Subocupación no demandante</th>
+<tr>
+<th style="text-align:right;">
+Poblacion
+</th>
+<th style="text-align:right;">
+Ocupados
+</th>
+<th style="text-align:right;">
+Desocupados
+</th>
+<th style="text-align:right;">
+PEA
+</th>
+<th style="text-align:right;">
+Subocupados
+</th>
+<th style="text-align:left;">
+Tasa Actividad
+</th>
+<th style="text-align:left;">
+Tasa Empleo
+</th>
+<th style="text-align:left;">
+Tasa Desocupacion
+</th>
+<th style="text-align:left;">
+Tasa Subocupación
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">209677912</td>
-<td align="right">93800646</td>
-<td align="right">12514772</td>
-<td align="right">106315418</td>
-<td align="right">0</td>
-<td align="right">7043809</td>
-<td align="right">0</td>
-<td align="right">7043809</td>
-<td align="left">50.7%</td>
-<td align="left">44.7%</td>
-<td align="left">11.8%</td>
-<td align="left">0.0%</td>
-<td align="left">6.6%</td>
-<td align="left">6.6%</td>
-<td align="left">0.0%</td>
+<tr>
+<td style="text-align:right;">
+209677912
+</td>
+<td style="text-align:right;">
+93800646
+</td>
+<td style="text-align:right;">
+12514772
+</td>
+<td style="text-align:right;">
+106315418
+</td>
+<td style="text-align:right;">
+7043809
+</td>
+<td style="text-align:left;">
+50.7%
+</td>
+<td style="text-align:left;">
+44.7%
+</td>
+<td style="text-align:left;">
+11.8%
+</td>
+<td style="text-align:left;">
+6.6%
+</td>
+</tr>
+</tbody>
+</table>
+<p>Se observa que la tasa de actividad es de un 50,7%, la tasa de empleo
+44,7% y la de desocupación 11,8%.</p>
+</div>
+<div id="realizar-una-operacionalización-de-los-conceptos-de-sector-formal-y-sector-informal-de-modo-de-clasificar-a-toda-la-población-activa-en-alguno-de-estos-dos-sectores.-explicar-qué-variables-se-eligieron-y-por-qué." class="section level2">
+<h2>3 Realizar una operacionalización de los conceptos de Sector Formal
+y Sector Informal, de modo de clasificar a toda la población activa en
+alguno de estos dos sectores. Explicar qué variables se eligieron y por
+qué.</h2>
+<p>Se considerará a las personas que se encuentran dentro del sector
+formal las que cuentan con documentación oficial laboral. Quedarán fuera
+del sector laboral quienes no cuenten con esto. Para la construcción del
+indicador de formalidad, se utilizó la variable VD4029, la cual indaga
+por la posesión de una cartera o documento de trabajo. Para los casos de
+cuentapropistas o empleadores, se consideró la variable V4019, la cual
+indaga sobre la inscripción al registro nacional de personas
+jurídicas.</p>
+</div>
+<div id="realizar-una-operacionalización-del-concepto-de-precariedad-laboral-clasificando-a-toda-la-población-asalariada." class="section level2">
+<h2>4 Realizar una operacionalización del concepto de precariedad
+laboral, clasificando a toda la población asalariada.</h2>
+<p>Se considerará trabajadores precarios a quienes sean empleados (del
+sector público o privado) y tengan un trabajo de tipo temporario.
+Además, se considerará a quienes sean trabajadores familiares
+auxiliares. También se considerará a quienes realizan el trabajo en el
+domicilio del empleador, patron o socio.</p>
+<p>Se considerará trabajadores no precarios a quienes sean empleados
+(del sector público o privado) y tengan un trabajo de tipo permanente.
+Además, se considerará a quienes sean militares o servidores
+estatutarios.</p>
+</div>
+<div id="presentar-de-forma-tabulada-la-incidencia-de-la-informalidad-y-la-precariedad-en-la-población-ocupada-yo-asalariada." class="section level2">
+<h2>5 Presentar de forma tabulada la incidencia de la informalidad y la
+precariedad en la población ocupada y/o asalariada.</h2>
+<pre class="r"><code>base&lt;-base %&gt;% mutate(Formalidad = case_when(VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;~ &quot;Formal&quot;,###Formal
+                                             VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;~ &quot;Formal&quot;,
+                                             VD4009 == &quot;Empregado no setor público com carteira de trabalho assinada&quot;~ &quot;Formal&quot;,
+                                             VD4009 == &quot;Militar e servidor estatutário&quot;~ &quot;Formal&quot;,
+                                             VD4009 == &quot;Trabalhador doméstico com carteira de trabalho assinada&quot;~ &quot;Formal&quot;,
+                                             ((VD4009 == &quot;Conta-própria&quot;| VD4009 == &quot;Empregador&quot;)&amp;V4019 == &quot;Sim&quot;)~ &quot;Formal&quot;,
+                                             
+                                             VD4009 == &quot;Empregado no setor privado sem carteira de trabalho assinada&quot;~ &quot;Informal&quot;,###Informal
+                                             VD4009 == &quot;Empregado no setor público sem carteira de trabalho assinada&quot;~ &quot;Informal&quot;,
+                                             VD4009 == &quot;Trabalhador doméstico sem carteira de trabalho assinada&quot;~ &quot;Informal&quot;,
+                                             VD4009 == &quot;Trabalhador familiar auxiliar&quot;~ &quot;Informal&quot;,
+                                             ((VD4009 == &quot;Conta-própria&quot;| VD4009 == &quot;Empregador&quot;)&amp;V4019 == &quot;Não&quot;)~ &quot;Informal&quot;))
+
+Formalidad &lt;- base %&gt;% 
+  summarise(Ocupados          = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
+            Sector_formal= sum(V1028[Formalidad == &quot;Formal&quot;],na.rm=TRUE),
+            Sector_informal= sum(V1028[Formalidad == &quot;Informal&quot;],na.rm=TRUE),
+            &#39;Tasa Formalidad&#39;= percent(Sector_formal/Ocupados, accuracy = 0.1),
+            &#39;Tasa Informalidad&#39;= percent(Sector_informal/Ocupados, accuracy = 0.1))
+
+base&lt;-base %&gt;% mutate(Precariedad = case_when(((VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor privado sem carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público sem carteira de trabalho assinada&quot;)&amp;
+                                                 (V4025==&quot;Sim&quot;|V4022==&quot;Em domicílio de empregador, patrão, sócio ou freguês&quot;))~&quot;Precario&quot;,
+                                              (VD4009 == &quot;Trabalhador familiar auxiliar&quot;|
+                                                VD4009 == &quot;Trabalhador doméstico com carteira de trabalho assinada&quot;|
+                                              VD4009 == &quot;Trabalhador doméstico sem carteira de trabalho assinada&quot;)~&quot;Precario&quot;,
+                                              ((VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor privado sem carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público sem carteira de trabalho assinada&quot;)&amp;
+                                                (V4025==&quot;Não&quot;))~&quot;No precario&quot;,
+                                              VD4009 == &quot;Militar e servidor estatutário&quot;~&quot;No precario&quot;))
+base&lt;-base %&gt;% mutate(Asalariado = case_when((VD4009 == &quot;Empregado no setor privado com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público com carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor privado sem carteira de trabalho assinada&quot;|
+                                                 VD4009 == &quot;Empregado no setor público sem carteira de trabalho assinada&quot;|
+                                                VD4009 == &quot;Trabalhador familiar auxiliar&quot;|
+                                                VD4009 == &quot;Militar e servidor estatutário&quot;|
+                                                VD4009 == &quot;Trabalhador doméstico com carteira de trabalho assinada&quot;|
+                                              VD4009 == &quot;Trabalhador doméstico sem carteira de trabalho assinada&quot;)~&quot;Asalariado&quot;))
+
+PrecariedadyFormalidad &lt;- base %&gt;% 
+  summarise(Asalariados          = sum(V1028[Asalariado == &quot;Asalariado&quot;],na.rm=TRUE),
+            Sector_precario= sum(V1028[Precariedad == &quot;Precario&quot;],na.rm=TRUE),
+            Sector_no_precario= sum(V1028[Precariedad == &quot;No precario&quot;],na.rm=TRUE),
+            &#39;Tasa Precariedad&#39;= percent(Sector_precario/Asalariados, accuracy = 0.1),
+            &#39;Tasa No precariedad&#39;= percent(Sector_no_precario/Asalariados, accuracy = 0.1),
+            Ocupados          = sum(V1028[VD4002 == &quot;Pessoas ocupadas&quot;],na.rm=TRUE),
+            Sector_formal= sum(V1028[Formalidad == &quot;Formal&quot;],na.rm=TRUE),
+            Sector_informal= sum(V1028[Formalidad == &quot;Informal&quot;],na.rm=TRUE),
+            &#39;Tasa Formalidad&#39;= percent(Sector_formal/Ocupados, accuracy = 0.1),
+            &#39;Tasa Informalidad&#39;= percent(Sector_informal/Ocupados, accuracy = 0.1))
+
+
+#Visualizamos los indicadores básicos de España y Reino Unido
+kable(PrecariedadyFormalidad, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil -
+2019, 3er trimestre. Fuente: PNAD continua
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Asalariados
+</th>
+<th style="text-align:right;">
+Sector_precario
+</th>
+<th style="text-align:right;">
+Sector_no_precario
+</th>
+<th style="text-align:left;">
+Tasa Precariedad
+</th>
+<th style="text-align:left;">
+Tasa No precariedad
+</th>
+<th style="text-align:right;">
+Ocupados
+</th>
+<th style="text-align:right;">
+Sector_formal
+</th>
+<th style="text-align:right;">
+Sector_informal
+</th>
+<th style="text-align:left;">
+Tasa Formalidad
+</th>
+<th style="text-align:left;">
+Tasa Informalidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+64998833
+</td>
+<td style="text-align:right;">
+14779199
+</td>
+<td style="text-align:right;">
+50219634
+</td>
+<td style="text-align:left;">
+22.7%
+</td>
+<td style="text-align:left;">
+77.3%
+</td>
+<td style="text-align:right;">
+93800646
+</td>
+<td style="text-align:right;">
+52417814
+</td>
+<td style="text-align:right;">
+41382832
+</td>
+<td style="text-align:left;">
+55.9%
+</td>
+<td style="text-align:left;">
+44.1%
+</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="section-2" class="section level2">
-<h2>3</h2>
-<p>Realizar una operacionalización de los conceptos de Sector Formal y
-Sector Informal, de modo de clasificar a toda la población activa en
-alguno de estos dos sectores. Explicar qué variables se eligieron y por
-qué.</p>
-</div>
-<div id="section-3" class="section level2">
-<h2>4</h2>
-<p>Realizar una operacionalización del concepto de precariedad laboral,
-clasificando a toda la población asalariada.</p>
-</div>
-<div id="section-4" class="section level2">
-<h2>5</h2>
-<p>Presentar de forma tabulada la incidencia de la informalidad y la
-precariedad en la población ocupada y/o asalariada.</p>
-<pre class="r"><code># Join</code></pre>
-</div>
-<div id="section-5" class="section level2">
-<h2>6</h2>
-<p>Analizar la incidencia de la informalidad y la precariedad según sexo
-y edad.</p>
+<div id="analizar-la-incidencia-de-la-informalidad-y-la-precariedad-según-sexo-y-edad." class="section level2">
+<h2>6 Analizar la incidencia de la informalidad y la precariedad según
+sexo y edad.</h2>
 <p>Consignas para todos los países Analizar brevemente las diferencias
 en la estructura demográfica y del mercado de trabajo entre países.
 Luego comparar entre países todas las dimensiones estudiadas en las
@@ -2166,7 +2375,7 @@ Edad
 </tbody>
 </table>
 </div>
-<div id="estimar-y-presentar-las-tasas-básicas-del-mercado-de-trabajo.-analizar-brevemente-los-resultados-encontrados." class="section level2">
+<div id="estimar-y-presentar-las-tasas-básicas-del-mercado-de-trabajo.-analizar-brevemente-los-resultados-encontrados.-1" class="section level2">
 <h2>2) Estimar y presentar las tasas básicas del mercado de trabajo.
 Analizar brevemente los resultados encontrados.</h2>
 <pre class="r"><code>## Cargamos las bases de datos
@@ -2320,7 +2529,7 @@ adelante en el trabajo podamos observar si estos niveles de desocupación
 que observamos en España se explica por algún factor relacionado con la
 edad o el sexo de las personas.</p>
 </div>
-<div id="realizar-una-operacionalización-de-los-conceptos-de-sector-formal-y-sector-informal-de-modo-de-clasificar-a-toda-la-población-activa-en-alguno-de-estos-dos-sectores.-explicar-qué-variables-se-eligieron-y-por-qué." class="section level2">
+<div id="realizar-una-operacionalización-de-los-conceptos-de-sector-formal-y-sector-informal-de-modo-de-clasificar-a-toda-la-población-activa-en-alguno-de-estos-dos-sectores.-explicar-qué-variables-se-eligieron-y-por-qué.-1" class="section level2">
 <h2>3) Realizar una operacionalización de los conceptos de Sector Formal
 y Sector Informal, de modo de clasificar a toda la población activa en
 alguno de estos dos sectores. Explicar qué variables se eligieron y por
@@ -2365,7 +2574,7 @@ cual, el indicador de informalidad debe ser construido con variables de
 índole distinta a las que uno normalmente buscaría en una encuesta de
 Mercado de Trabajo.</p>
 </div>
-<div id="realizar-una-operacionalización-del-concepto-de-precariedad-laboral-clasificando-a-toda-la-población-asalariada." class="section level2">
+<div id="realizar-una-operacionalización-del-concepto-de-precariedad-laboral-clasificando-a-toda-la-población-asalariada.-1" class="section level2">
 <h2>4) Realizar una operacionalización del concepto de precariedad
 laboral, clasificando a toda la población asalariada.</h2>
 <p>Para el concepto de precarización laboral, utilizamos en primer lugar
@@ -2389,7 +2598,7 @@ haber recibido el pago correspondiente a horas extras trabajadas durante
 la semana de referencia, 2) Tener un contrato laboral de tipo temporal o
 3) No percepción del salario completo ante ausencia laboral.</p>
 </div>
-<div id="presentar-de-forma-tabulada-la-incidencia-de-la-informalidad-y-la-precariedad-en-la-población-ocupada-yo-asalariada." class="section level2">
+<div id="presentar-de-forma-tabulada-la-incidencia-de-la-informalidad-y-la-precariedad-en-la-población-ocupada-yo-asalariada.-1" class="section level2">
 <h2>5) Presentar de forma tabulada la incidencia de la informalidad y la
 precariedad en la población ocupada y/o asalariada.</h2>
 <div id="informalidad-en-españa-y-reino-unido" class="section level3">
@@ -2706,7 +2915,7 @@ precarizadas, siendo los números casi similares en términos
 absolutos.</p>
 </div>
 </div>
-<div id="analizar-la-incidencia-de-la-informalidad-y-la-precariedad-según-sexo-y-edad." class="section level2">
+<div id="analizar-la-incidencia-de-la-informalidad-y-la-precariedad-según-sexo-y-edad.-1" class="section level2">
 <h2>6 Analizar la incidencia de la informalidad y la precariedad según
 sexo y edad.</h2>
 <p>En primer lugar construimos las pirámides poblacionales de ambos
@@ -2783,6 +2992,1170 @@ como la inmigración, que no vienen al caso para este trabajo.</p>
 típica población envejecida, con una forma de cóncava o de bala, donde a
 su vez una parte muy importante de su población se encuentra cerca o ya
 en estado inactivo por su edad.</p>
+<p>Ahora bien, pasemos a analizar la incidencia de la informalidad y la
+precariedad laboral en estas poblaciones.</p>
+<pre class="r"><code>## Transformamos las variables Sexo y Edad
+
+bbdd_espana3 &lt;- mutate(bbdd_espana,
+                      Edad_Periodo = cut(AGE,
+                                         breaks = c(15, 30, 45, 60, Inf),
+                                         labels = c(&quot;15-30&quot;, &quot;30-45&quot;, &quot;45-60&quot;, &quot;60 o más&quot;),
+                                         include.lowest = TRUE))%&gt;%
+  filter(!is.na(Edad_Periodo))  
+
+bbdd_espana3 &lt;- bbdd_espana3 %&gt;%
+  mutate(Sexo = case_when(
+    SEX == 1 ~ &quot;Hombre&quot;,
+    SEX == 2 ~ &quot;Mujer&quot;,
+    TRUE ~ as.character(SEX)  
+  ))
+
+## Calculamos la informalidad por Sexo y Edad
+Cuadro_Formalidad_ESPAÑA2 &lt;- bbdd_espana3 %&gt;% 
+  group_by(Edad_Periodo, Sexo) %&gt;%  # Agrupar por edad y sexo
+  summarise(
+    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
+    cuenta_propistas = sum(((STAPRO == 0) &amp; (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
+    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) &amp; (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+    Formales = Ocupados - Informales,
+    &#39;Porcentaje de Informalidad&#39; = percent(Informales / Ocupados, accuracy = 0.1),
+    &#39;Porcentaje de Formalidad&#39; = percent(Formales / Ocupados, accuracy = 0.1),
+    País = &quot;España&quot;
+  )</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Edad_Periodo&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code># Formatear y redondear las columnas
+Cuadro_Formalidad_ESPAÑA2 &lt;- Cuadro_Formalidad_ESPAÑA2 %&gt;%
+  select(País, Edad_Periodo, Sexo, Ocupados, Formales, Informales, &#39;Porcentaje de Formalidad&#39;, &#39;Porcentaje de Informalidad&#39;) %&gt;% 
+  mutate(
+    across(c(Ocupados, Formales, Informales), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Ocupados, Formales, Informales), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;))
+  )
+
+# Visualizar los indicadores en formato HTML
+kable(Cuadro_Formalidad_ESPAÑA2, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores de Formalidad e Informalidad del Mercado de Trabajo de España según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores de Formalidad e Informalidad del Mercado de Trabajo de
+España según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Edad_Periodo
+</th>
+<th style="text-align:left;">
+Sexo
+</th>
+<th style="text-align:left;">
+Ocupados
+</th>
+<th style="text-align:left;">
+Formales
+</th>
+<th style="text-align:left;">
+Informales
+</th>
+<th style="text-align:left;">
+Porcentaje de Formalidad
+</th>
+<th style="text-align:left;">
+Porcentaje de Informalidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+1.373.808
+</td>
+<td style="text-align:left;">
+1.219.682
+</td>
+<td style="text-align:left;">
+154.126
+</td>
+<td style="text-align:left;">
+88.8%
+</td>
+<td style="text-align:left;">
+11.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+1.238.688
+</td>
+<td style="text-align:left;">
+1.146.969
+</td>
+<td style="text-align:left;">
+91.719
+</td>
+<td style="text-align:left;">
+92.6%
+</td>
+<td style="text-align:left;">
+7.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+4.328.531
+</td>
+<td style="text-align:left;">
+3.658.078
+</td>
+<td style="text-align:left;">
+670.453
+</td>
+<td style="text-align:left;">
+84.5%
+</td>
+<td style="text-align:left;">
+15.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+3.682.731
+</td>
+<td style="text-align:left;">
+3.207.701
+</td>
+<td style="text-align:left;">
+475.030
+</td>
+<td style="text-align:left;">
+87.1%
+</td>
+<td style="text-align:left;">
+12.9%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+4.079.566
+</td>
+<td style="text-align:left;">
+3.259.703
+</td>
+<td style="text-align:left;">
+819.864
+</td>
+<td style="text-align:left;">
+79.9%
+</td>
+<td style="text-align:left;">
+20.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+3.321.597
+</td>
+<td style="text-align:left;">
+2.854.168
+</td>
+<td style="text-align:left;">
+467.429
+</td>
+<td style="text-align:left;">
+85.9%
+</td>
+<td style="text-align:left;">
+14.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+750.057
+</td>
+<td style="text-align:left;">
+561.139
+</td>
+<td style="text-align:left;">
+188.918
+</td>
+<td style="text-align:left;">
+74.8%
+</td>
+<td style="text-align:left;">
+25.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+552.722
+</td>
+<td style="text-align:left;">
+438.006
+</td>
+<td style="text-align:left;">
+114.716
+</td>
+<td style="text-align:left;">
+79.2%
+</td>
+<td style="text-align:left;">
+20.8%
+</td>
+</tr>
+</tbody>
+</table>
+<p>Del cuadro anterior es posible extraer que en España el porcentaje de
+Informalidad tiene a ser mayor para los hombres que para las mujeres. A
+su vez, en la medida que aumenta la edad, la informalidad tiende a
+crecer de manera de constante para ambos sexos. De tal forma que, por
+ejemplo, mientras la informalidad para Hombres y Mujeres de los 15 a los
+30 años es de 11,2% y 7,4% respectivamente, en el rango de edades de 60
+o más estos números más que se duplican pasando al 25,2% en los hombres
+y al 20,8% para las mujeres. Veamos qué sucede con el Reino Unido.</p>
+<pre class="r"><code>## Transformamos las variables Sexo y Edad
+
+bbdd_uk3 &lt;- mutate(bbdd_uk,
+                      Edad_Periodo = cut(AGE,
+                                         breaks = c(15, 30, 45, 60, Inf),
+                                         labels = c(&quot;15-30&quot;, &quot;30-45&quot;, &quot;45-60&quot;, &quot;60 o más&quot;),
+                                         include.lowest = TRUE))%&gt;%
+  filter(!is.na(Edad_Periodo))  
+
+bbdd_uk3 &lt;- bbdd_uk3 %&gt;%
+  mutate(Sexo = case_when(
+    SEX == 1 ~ &quot;Hombre&quot;,
+    SEX == 2 ~ &quot;Mujer&quot;,
+    TRUE ~ as.character(SEX)  
+  ))
+
+## Calculamos la informalidad por Sexo y Edad
+Cuadro_Formalidad_UK2 &lt;- bbdd_uk3 %&gt;% 
+  group_by(Edad_Periodo, Sexo) %&gt;%  # Agrupar por edad y sexo
+  summarise(
+    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
+    cuenta_propistas = sum(((STAPRO == 0) &amp; (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
+    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) &amp; (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+    Formales = Ocupados - Informales,
+    &#39;Porcentaje de Informalidad&#39; = percent(Informales / Ocupados, accuracy = 0.1),
+    &#39;Porcentaje de Formalidad&#39; = percent(Formales / Ocupados, accuracy = 0.1),
+    País = &quot;Reino Unido&quot;
+  )</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Edad_Periodo&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code># Formatear y redondear las columnas
+Cuadro_Formalidad_UK2 &lt;- Cuadro_Formalidad_UK2 %&gt;%
+  select(País, Edad_Periodo, Sexo, Ocupados, Formales, Informales, &#39;Porcentaje de Formalidad&#39;, &#39;Porcentaje de Informalidad&#39;) %&gt;% 
+  mutate(
+    across(c(Ocupados, Formales, Informales), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Ocupados, Formales, Informales), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;))
+  )
+
+# Visualizar los indicadores en formato HTML
+kable(Cuadro_Formalidad_UK2, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores de Formalidad e Informalidad del Mercado de Trabajo de Reino Unido según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores de Formalidad e Informalidad del Mercado de Trabajo de Reino
+Unido según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Edad_Periodo
+</th>
+<th style="text-align:left;">
+Sexo
+</th>
+<th style="text-align:left;">
+Ocupados
+</th>
+<th style="text-align:left;">
+Formales
+</th>
+<th style="text-align:left;">
+Informales
+</th>
+<th style="text-align:left;">
+Porcentaje de Formalidad
+</th>
+<th style="text-align:left;">
+Porcentaje de Informalidad
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+3.956.489
+</td>
+<td style="text-align:left;">
+3.526.622
+</td>
+<td style="text-align:left;">
+429.867
+</td>
+<td style="text-align:left;">
+89.1%
+</td>
+<td style="text-align:left;">
+10.9%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+3.563.962
+</td>
+<td style="text-align:left;">
+3.302.048
+</td>
+<td style="text-align:left;">
+261.914
+</td>
+<td style="text-align:left;">
+92.7%
+</td>
+<td style="text-align:left;">
+7.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+5.802.848
+</td>
+<td style="text-align:left;">
+4.757.829
+</td>
+<td style="text-align:left;">
+1.045.018
+</td>
+<td style="text-align:left;">
+82.0%
+</td>
+<td style="text-align:left;">
+18.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+5.032.640
+</td>
+<td style="text-align:left;">
+4.383.197
+</td>
+<td style="text-align:left;">
+649.443
+</td>
+<td style="text-align:left;">
+87.1%
+</td>
+<td style="text-align:left;">
+12.9%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+5.587.477
+</td>
+<td style="text-align:left;">
+4.360.780
+</td>
+<td style="text-align:left;">
+1.226.697
+</td>
+<td style="text-align:left;">
+78.0%
+</td>
+<td style="text-align:left;">
+22.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+5.262.195
+</td>
+<td style="text-align:left;">
+4.460.230
+</td>
+<td style="text-align:left;">
+801.966
+</td>
+<td style="text-align:left;">
+84.8%
+</td>
+<td style="text-align:left;">
+15.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+1.848.435
+</td>
+<td style="text-align:left;">
+1.254.208
+</td>
+<td style="text-align:left;">
+594.227
+</td>
+<td style="text-align:left;">
+67.9%
+</td>
+<td style="text-align:left;">
+32.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+1.388.985
+</td>
+<td style="text-align:left;">
+1.087.799
+</td>
+<td style="text-align:left;">
+301.186
+</td>
+<td style="text-align:left;">
+78.3%
+</td>
+<td style="text-align:left;">
+21.7%
+</td>
+</tr>
+</tbody>
+</table>
+<p>Al igual que en el caso de España, los hombres en Reino Unido tienden
+a tener un nivel de informalidad más alto que las mujeres en todos los
+grupos de edad. Y también muy en línea con lo que vimos para España, en
+Reino Unido la edad también es un factor clave para entender el fenómeno
+de la informalidad. Al aumentar la edad la informalidad crece, y de
+forma mucho más marcada que en el caso español. Retomando un ejemplo
+similar, en el grupo de edad de 15 a 30 la informalidad para hombres es
+de 10,9% y de 7,3% para las mujeres (nótese la similitud de los
+porcentajes con España). Ahora bien, al analizar el grupo de edad mayor
+(60 o más años) la informalidad se triplica para ambos géneros: pasa al
+32,1% en Hombres y al 21,7% en mujeres.</p>
+<p>Analicemos por último el fenómeno de la precariedad laboral.</p>
+<pre class="r"><code>## Calculamos la precariedad laboral por Sexo y Edad para España
+
+Cuadro_Precarizacion_ESPAÑA3 &lt;- bbdd_espana3 %&gt;% 
+  group_by(Edad_Periodo, Sexo) %&gt;%  # Agrupar por edad y sexo
+  summarise(
+    Empleados = sum((STAPRO %in% c(3,4)) * (COEFF * 1000), na.rm = TRUE),
+    Temporales = sum((TEMP == 2) * (COEFF * 1000), na.rm = TRUE),
+    Sin_pago_horas_extra = sum((HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1,2,3)) * (COEFF * 1000), na.rm = TRUE),
+    Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2) | (HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) | (SIGNISAL %in% c(1,2,3))) * (COEFF * 1000), na.rm = TRUE),
+    Precarizados = Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
+    No_Precarizados = Empleados - Precarizados,
+    &#39;Porcentaje de Precarizados&#39; = percent(Precarizados / Empleados, accuracy = 0.1),
+    &#39;Porcentaje de No Precarizados&#39; = percent(No_Precarizados / Empleados, accuracy = 0.1),
+    País = &quot;España&quot;
+  ) %&gt;%
+  mutate(
+    across(where(is.numeric), ~ ifelse(is.na(.), 0, .)),  # Manejo de NA (si aplica)
+    across(c(Empleados,Precarizados, No_Precarizados), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Empleados,Precarizados, No_Precarizados), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;))  # Formatear números
+  ) %&gt;%
+  select(País, Edad_Periodo, Sexo, Empleados, No_Precarizados, Precarizados, &#39;Porcentaje de No Precarizados&#39;, &#39;Porcentaje de Precarizados&#39;)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Edad_Periodo&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code># Visualizar los indicadores en formato HTML
+kable(Cuadro_Precarizacion_ESPAÑA3, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores de Precarización del Mercado de Trabajo de España según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores de Precarización del Mercado de Trabajo de España según Sexo
+y Edad - 2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Edad_Periodo
+</th>
+<th style="text-align:left;">
+Sexo
+</th>
+<th style="text-align:left;">
+Empleados
+</th>
+<th style="text-align:left;">
+No_Precarizados
+</th>
+<th style="text-align:left;">
+Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de No Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de Precarizados
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+1.259.786
+</td>
+<td style="text-align:left;">
+531.748
+</td>
+<td style="text-align:left;">
+728.037
+</td>
+<td style="text-align:left;">
+42.2%
+</td>
+<td style="text-align:left;">
+57.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+1.167.506
+</td>
+<td style="text-align:left;">
+457.853
+</td>
+<td style="text-align:left;">
+709.653
+</td>
+<td style="text-align:left;">
+39.2%
+</td>
+<td style="text-align:left;">
+60.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+3.611.833
+</td>
+<td style="text-align:left;">
+2.469.974
+</td>
+<td style="text-align:left;">
+1.141.859
+</td>
+<td style="text-align:left;">
+68.4%
+</td>
+<td style="text-align:left;">
+31.6%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+3.307.415
+</td>
+<td style="text-align:left;">
+2.198.160
+</td>
+<td style="text-align:left;">
+1.109.255
+</td>
+<td style="text-align:left;">
+66.5%
+</td>
+<td style="text-align:left;">
+33.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+3.127.444
+</td>
+<td style="text-align:left;">
+2.372.215
+</td>
+<td style="text-align:left;">
+755.229
+</td>
+<td style="text-align:left;">
+75.9%
+</td>
+<td style="text-align:left;">
+24.1%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+2.890.505
+</td>
+<td style="text-align:left;">
+2.128.824
+</td>
+<td style="text-align:left;">
+761.681
+</td>
+<td style="text-align:left;">
+73.6%
+</td>
+<td style="text-align:left;">
+26.4%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+484.221
+</td>
+<td style="text-align:left;">
+400.774
+</td>
+<td style="text-align:left;">
+83.448
+</td>
+<td style="text-align:left;">
+82.8%
+</td>
+<td style="text-align:left;">
+17.2%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+España
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+440.020
+</td>
+<td style="text-align:left;">
+354.816
+</td>
+<td style="text-align:left;">
+85.204
+</td>
+<td style="text-align:left;">
+80.6%
+</td>
+<td style="text-align:left;">
+19.4%
+</td>
+</tr>
+</tbody>
+</table>
+<p>Ahora bien, a la hora de analizar la precarización laboral, lo que
+notamos en primer lugar es que las mujeres tienden a tener un porcentaje
+más elevado, lo cual es justamente lo contrario a lo que notamos con la
+informalidad laboral. Asimismo, la variable de edad vuelve a tener un
+rol preponderante, aunque esta vez de forma inversa a lo que notamos con
+la informalidad. En este caso, la precarización laboral afecta de manera
+mucho más fuerte a los jóvenes y a medida que aumenta la edad se reduce
+notablemente la precarización. A modo de ejemplo, mientras que la
+precarización es de 60,8% y de 57,8% para mujeres y hombres de 15 a 30
+(respectivamente), la misma se reduce a un tercio en el rango de edad
+más alto (pasa a 19,4% en mujeres y 17,2% en hombres). En este sentido,
+el fenómeno de la precarización en España afecta de manera notablemente
+fuerte a los jóvenes, y sobre todo a las mujeres jóvenes. Pasemos al
+caso de Reino Unido.</p>
+<pre class="r"><code>## Calculamos la precariedad laboral por Sexo y Edad para Reino Unido
+
+Cuadro_Precarizacion_UK3 &lt;- bbdd_uk3 %&gt;% 
+  group_by(Edad_Periodo, Sexo) %&gt;%  # Agrupar por edad y sexo
+  summarise(
+    Empleados = sum((STAPRO %in% c(3,4)) * (COEFF * 1000), na.rm = TRUE),
+    Temporales = sum((TEMP == 2) * (COEFF * 1000), na.rm = TRUE),
+    Sin_pago_horas_extra = sum((HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) * (COEFF * 1000), na.rm = TRUE),
+    No_perciben_salario_completo = sum((SIGNISAL %in% c(1,2,3)) * (COEFF * 1000), na.rm = TRUE),
+    Temporales_o_SinPagoHSEXTRA_sin_salario_completo = sum(((TEMP == 2) | (HWOVERPU &gt;= 1 &amp; HWOVERPU &lt;= 98) | (SIGNISAL %in% c(1,2,3))) * (COEFF * 1000), na.rm = TRUE),
+    Precarizados = Temporales_o_SinPagoHSEXTRA_sin_salario_completo,
+    No_Precarizados = Empleados - Precarizados,
+    &#39;Porcentaje de Precarizados&#39; = percent(Precarizados / Empleados, accuracy = 0.1),
+    &#39;Porcentaje de No Precarizados&#39; = percent(No_Precarizados / Empleados, accuracy = 0.1),
+    País = &quot;Reino Unido&quot;
+  ) %&gt;%
+  mutate(
+    across(where(is.numeric), ~ ifelse(is.na(.), 0, .)),  # Manejo de NA (si aplica)
+    across(c(Empleados,Precarizados, No_Precarizados), ~ round(., digits = 0)),  # Redondear a enteros
+    across(c(Empleados,Precarizados, No_Precarizados), ~ format(., big.mark = &quot;.&quot;, decimal.mark = &quot;,&quot;))  # Formatear números
+  ) %&gt;%
+  select(País, Edad_Periodo, Sexo, Empleados, No_Precarizados, Precarizados, &#39;Porcentaje de No Precarizados&#39;, &#39;Porcentaje de Precarizados&#39;)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Edad_Periodo&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code># Visualizar los indicadores en formato HTML
+kable(Cuadro_Precarizacion_UK3, format = &quot;html&quot;, table.attr = &quot;class=&#39;table table-striped&#39;&quot;, caption = &quot;Indicadores de Precarización del Mercado de Trabajo de Reino Unido según Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1&quot;) %&gt;%
+  kable_styling(full_width = F, position = &quot;center&quot;)</code></pre>
+<table class="table table-striped table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Indicadores de Precarización del Mercado de Trabajo de Reino Unido según
+Sexo y Edad - 2018. Fuente: EU LFS 2018-Q1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+País
+</th>
+<th style="text-align:left;">
+Edad_Periodo
+</th>
+<th style="text-align:left;">
+Sexo
+</th>
+<th style="text-align:left;">
+Empleados
+</th>
+<th style="text-align:left;">
+No_Precarizados
+</th>
+<th style="text-align:left;">
+Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de No Precarizados
+</th>
+<th style="text-align:left;">
+Porcentaje de Precarizados
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+3.587.647
+</td>
+<td style="text-align:left;">
+2.895.318
+</td>
+<td style="text-align:left;">
+692.329
+</td>
+<td style="text-align:left;">
+80.7%
+</td>
+<td style="text-align:left;">
+19.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+15-30
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+3.419.313
+</td>
+<td style="text-align:left;">
+2.701.245
+</td>
+<td style="text-align:left;">
+718.068
+</td>
+<td style="text-align:left;">
+79.0%
+</td>
+<td style="text-align:left;">
+21.0%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+4.773.511
+</td>
+<td style="text-align:left;">
+3.707.723
+</td>
+<td style="text-align:left;">
+1.065.788
+</td>
+<td style="text-align:left;">
+77.7%
+</td>
+<td style="text-align:left;">
+22.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+30-45
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+4.527.575
+</td>
+<td style="text-align:left;">
+3.509.641
+</td>
+<td style="text-align:left;">
+1.017.934
+</td>
+<td style="text-align:left;">
+77.5%
+</td>
+<td style="text-align:left;">
+22.5%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+4.290.413
+</td>
+<td style="text-align:left;">
+3.358.770
+</td>
+<td style="text-align:left;">
+931.643
+</td>
+<td style="text-align:left;">
+78.3%
+</td>
+<td style="text-align:left;">
+21.7%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+45-60
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+4.608.433
+</td>
+<td style="text-align:left;">
+3.510.692
+</td>
+<td style="text-align:left;">
+1.097.741
+</td>
+<td style="text-align:left;">
+76.2%
+</td>
+<td style="text-align:left;">
+23.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Hombre
+</td>
+<td style="text-align:left;">
+1.211.538
+</td>
+<td style="text-align:left;">
+983.368
+</td>
+<td style="text-align:left;">
+228.171
+</td>
+<td style="text-align:left;">
+81.2%
+</td>
+<td style="text-align:left;">
+18.8%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reino Unido
+</td>
+<td style="text-align:left;">
+60 o más
+</td>
+<td style="text-align:left;">
+Mujer
+</td>
+<td style="text-align:left;">
+1.112.042
+</td>
+<td style="text-align:left;">
+901.927
+</td>
+<td style="text-align:left;">
+210.114
+</td>
+<td style="text-align:left;">
+81.1%
+</td>
+<td style="text-align:left;">
+18.9%
+</td>
+</tr>
+</tbody>
+</table>
+<p>En el caso del Reino Unido, vemos que la precarización es algo más
+elevada para las mujeres en el rango de 15-30 años y de 45-60 años,
+mientras que es bastante pareja para ambos sexos en los otros rangos
+etarios. Por otro parte, y muy a diferencia de España, la precarización
+afecta en menor medida a los jóvenes de 15 a 30 años, que en los demás
+rangos etarios, con la excepción del rango etario de 60 o más años. De
+todas formas, lo que queda claro es que la precarización es notablemente
+más baja en todos los rangos etarios y que varía considerablemente poco,
+en relación a España. Con lo cual, es posible afirmar que la
+precarización laboral en Reino Unido es un problema notablemente menos
+significativo que en España, no afecta de manera tan fuerte a jóvenes y
+mujeres, como sí sucede en el caso de España.</p>
 </div>
 </div>
 
