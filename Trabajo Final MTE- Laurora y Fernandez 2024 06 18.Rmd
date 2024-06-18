@@ -285,32 +285,6 @@ ggplot(FormalidadxSexo, aes(fill=Formalidad, y=n, x=V2007)) +
 
 ```
 
-Consignas para todos los países Analizar brevemente las diferencias en
-la estructura demográfica y del mercado de trabajo entre países. Luego
-comparar entre países todas las dimensiones estudiadas en las consignas
-anteriores. A la hora de realizar comparaciones, tener en cuenta y
-reflexionar sobre los distintos criterios adoptados para operacionalizar
-los conceptos estudiados para cada fuente de datos.
-
-```{r}
-
-
-```
-
-Otras aclaraciones: Describir todas las decisiones metodológicas
-realizadas, en cuanto a la operacionalización de conceptos, las
-variables utilizadas y el universo de análisis. Tener en cuenta que para
-la mayoría de las consignas hay más de una respuesta válida. No es
-necesario incluir una revisión de la literatura sobre informalidad y
-precariedad en el TP, tan sólo las referencias necesarias para
-fundamentar la elección de las variables.
-:::
-
-```{r warning=FALSE}
-
-```
-
-
 ------------------------------------------------------------------------
 
 # Análisis España y Reino Unido
@@ -531,7 +505,7 @@ grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 
 
 ```
 
-En  base a la construcción del indicador de formalidad e informalidad laboral en estas bases de datos, podemos observar que ambos países tienen porcentajes relativamente similares en términos de informalidad.Sorprende que Reino Unido tiene un punto porcentual más de porcentaje de Informalidad que España. Por otro lado, en términos absolutos Reino Unido casi duplica a España tanto en cantidad de Ocupados, trabajadores formales e informales, aunque en principio nos interesan más los porcentajes, dado que permiten comparar mejor las formas de trabajo formal e informal entre ambos países. Veamos ahora que sucede con la precarización laboral.
+En  base a la construcción del indicador de formalidad e informalidad laboral en estas bases de datos, podemos observar que ambos países tienen porcentajes relativamente similares en términos de informalidad.Sorprende que Reino Unido tiene un punto porcentual más de porcentaje de Informalidad que España. Por otro lado, en términos absolutos Reino Unido casi duplica a España tanto en cantidad de Ocupados, trabajadores formales e informales, aunque en principio nos interesan más los porcentajes, dado que permiten comparar mejor las formas de trabajo formal e informal entre ambos países. Veamos ahora que sucede con la precarización laboral. Como era de esperar, al comparar la informalidad en un país latinoamericano como Brasil, vemos que la informalidad allí es notablemente mayor, alcanzo niveles del 44,1%, aunque debe quedar claro que se tomaron decisiones metodológicas distintas para medir este país y los europeos.
 
 ### Precarización Laboral en España y Reino Unido
 
@@ -620,7 +594,7 @@ pie_chart_reino_unido <- create_pie_chart(data, "Reino Unido")
 grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))
 ```
 
-Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos.
+Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos. Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente mejor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
 
 
 ## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
