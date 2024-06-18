@@ -74,10 +74,10 @@ var%>%
 
 ## 2 Estimar y presentar las tasas básicas del mercado de trabajo. Analizar brevemente los resultados encontrados.
 
-```{r warning=FALSE}
+```{r}
 if (!require('scales')) install.packages('scales'); library('scales')
 
-Cuadro_1.1a <- base %>% 
+Tasas_basicas <- base %>% 
   summarise(Poblacion         = sum(V1028),
             Ocupados          = sum(V1028[VD4002 == "Pessoas ocupadas"],na.rm=TRUE),
             Desocupados       = sum(V1028[VD4002 == "Pessoas desocupadas"],na.rm=TRUE),
@@ -89,7 +89,7 @@ Cuadro_1.1a <- base %>%
             'Tasa Subocupación'               = percent(Subocupados/PEA, accuracy = 0.1))
 
 #Visualizamos los indicadores básicos de España y Reino Unido
-kable(Cuadro_1.1a, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+kable(Tasas_basicas, format = "html", table.attr = "class='table table-striped'", caption = "Tasas Básicas del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
@@ -112,7 +112,7 @@ Se considerará trabajadores no precarios a quienes sean empleados (del sector p
 
 ## 5 Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
 
-```{r warning=FALSE}
+```{r}
 base<-base %>% mutate(Formalidad = case_when(VD4009 == "Empregado no setor privado com carteira de trabalho assinada"~ "Formal",###Formal
                                              VD4009 == "Empregado no setor privado com carteira de trabalho assinada"~ "Formal",
                                              VD4009 == "Empregado no setor público com carteira de trabalho assinada"~ "Formal",
@@ -171,42 +171,44 @@ PrecariedadyFormalidad <- base %>%
 
 
 #Visualizamos los indicadores básicos de España y Reino Unido
-kable(PrecariedadyFormalidad, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
-  kable_styling(full_width = F, position = "center")
-
+kable(PrecariedadyFormalidad, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%  kable_styling(full_width = F, position = "center")
 
 ```
 
 
 ## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
-```{r warning=FALSE}
-library(janitor)
-PrecariedadyFormalidadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
+```{r}
+######Precariedad
+if (!require('janitor')) install.packages('janitor'); library('janitor')
+if (!require('viridis')) install.packages('viridis'); library('viridis')
+PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
       adorn_totals(c("row", "col"))  %>%
   adorn_percentages("row") %>%
   adorn_pct_formatting(digits = 1) %>%
   adorn_ns()
 
 
-kable(PrecariedadyFormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+kable(PrecariedadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 
-PrecariedadyFormalidadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())
+```
 
-install.packages("viridis")
-library(viridis)
-ggplot(PrecariedadyFormalidadxSexo, aes(fill=Precariedad, y=n, x=V2007)) + 
+```{r}
+PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())
+
+
+ggplot(PrecariedadxSexo, aes(fill=Precariedad, y=n, x=V2007)) + 
     geom_bar(position="fill", stat="identity") + 
     scale_fill_viridis(discrete = T, option = "D")+
-  labs(title = "Precariedad laboral por sexo. Brasil, 2019",
+  labs(title = "Precariedad laboral por sexo. Población asalariada de 14 años y más. Brasil, 2019",
        x="Sexo",
        y="Proporción")+ theme_minimal()
 
 
 ```
 Cruzo con edad
-```{r warning=FALSE}
+```{r}
 
 #### Genero rangos etarios
 base$V2009<-as.numeric(base$V2009)
@@ -243,7 +245,7 @@ PrecariedadxEdad <- base %>% filter(V2009<100)%>%filter(Precariedad=="Precario"|
   adorn_pct_formatting(digits = 1) %>%
   adorn_ns()
 
-kable(PrecariedadxEdad, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según edad  - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+kable(PrecariedadxEdad, format = "html", table.attr = "class='table table-striped'", caption = "Precariedad e Informalidad del Mercado de Trabajo de Brasil según edad  - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 
 PrecariedadxEdad <- base %>% filter(V2009<100)%>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,GRUPO_EDAD) %>% summarise(n=n())
@@ -255,6 +257,33 @@ ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) +
 
 ```
 
+```{r}
+######Formalidad
+FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
+      adorn_totals(c("row", "col"))  %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 1) %>%
+  adorn_ns()
+
+
+kable(FormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+```{r}
+
+FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())
+
+
+ggplot(FormalidadxSexo, aes(fill=Formalidad, y=n, x=V2007)) + 
+    geom_bar(position="fill", stat="identity") + 
+    scale_fill_viridis(discrete = T, option = "D")+
+  labs(title = "Formalidad laboral por sexo. Población asalariada de 14 años y más. Brasil, 2019",
+       x="Sexo",
+       y="Proporción")+ theme_minimal()
+
+
+```
 
 Consignas para todos los países Analizar brevemente las diferencias en
 la estructura demográfica y del mercado de trabajo entre países. Luego
@@ -263,7 +292,7 @@ anteriores. A la hora de realizar comparaciones, tener en cuenta y
 reflexionar sobre los distintos criterios adoptados para operacionalizar
 los conceptos estudiados para cada fuente de datos.
 
-```{r warning=FALSE}
+```{r}
 
 
 ```
