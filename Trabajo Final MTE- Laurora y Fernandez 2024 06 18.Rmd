@@ -194,6 +194,9 @@ kable(PrecariedadxSexo, format = "html", table.attr = "class='table table-stripe
 
 ```
 
+
+Se observa mayor proporción de precariedad entre el sexo femenino, respecto al masculino.
+
 ```{r}
 PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())
 
@@ -207,7 +210,8 @@ ggplot(PrecariedadxSexo, aes(fill=Precariedad, y=n, x=V2007)) +
 
 
 ```
-Cruzo con edad
+
+Al diferenciar según edad, se observa mayor proporción de precariedad en menores de 20 y mayores de 75.
 ```{r}
 
 #### Genero rangos etarios
@@ -257,6 +261,8 @@ ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) +
 
 ```
 
+Se observa niveles similares de formalidad entre ambos sexos.
+
 ```{r}
 ######Formalidad
 FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
@@ -266,24 +272,26 @@ FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>
   adorn_ns()
 
 
-kable(FormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+kable(FormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Sector formal y Sector Informal del Mercado de Trabajo según edad. Población Económicamente Activa. Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 ```
 
+Se observan mayores tasas de informalidad en menores de 20 y mayores de 70.
+
 ```{r}
-
-FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())
-
-
-ggplot(FormalidadxSexo, aes(fill=Formalidad, y=n, x=V2007)) + 
+FormalidadxEdad <- base %>% filter(V2009<100)%>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,GRUPO_EDAD) %>% summarise(n=n())
+ggplot(FormalidadxEdad, aes(fill=Formalidad, y=n, x=GRUPO_EDAD)) + 
     geom_bar(position="fill", stat="identity") + 
     scale_fill_viridis(discrete = T, option = "D")+
-  labs(title = "Formalidad laboral por sexo. Población asalariada de 14 años y más. Brasil, 2019",
-       x="Sexo",
-       y="Proporción")+ theme_minimal()
+  labs(title = "Formalidad laboral por sexo. Población Económicamente Activa. Brasil, 2019",
+       x="Edad",y="Proporción")+ theme_minimal() +theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 ```
+
+
+
+
 
 ------------------------------------------------------------------------
 
@@ -773,7 +781,7 @@ kable(Cuadro_Formalidad_UK2, format = "html", table.attr = "class='table table-s
 
 ```
 
-Al igual que en el caso de España, los hombres en Reino Unido tienden a tener un nivel de informalidad más alto que las mujeres en todos los grupos de edad. Y también muy en línea con lo que vimos para España, en Reino Unido la edad también es un factor clave para entender el fenómeno de la informalidad. Al aumentar la edad la informalidad crece, y de forma mucho más marcada que en el caso español. Retomando un ejemplo similar, en el grupo de edad de 15 a 30 la informalidad para hombres es de 10,9% y de 7,3% para las mujeres (nótese la similitud de los porcentajes con España). Ahora bien, al analizar el grupo de edad mayor (60 o más años) la informalidad se triplica para ambos géneros: pasa al 32,1% en Hombres y al 21,7% en mujeres.
+Al igual que en el caso de España, los hombres en Reino Unido tienden a tener un nivel de informalidad más alto que las mujeres en todos los grupos de edad. Y también muy en línea con lo que vimos para España, en Reino Unido la edad también es un factor clave para entender el fenómeno de la informalidad. Al aumentar la edad la informalidad crece, y de forma mucho más marcada que en el caso español. Retomando un ejemplo similar, en el grupo de edad de 15 a 30 la informalidad para hombres es de 10,9% y de 7,3% para las mujeres (nótese la similitud de los porcentajes con España). Ahora bien, al analizar el grupo de edad mayor (60 o más años) la informalidad se triplica para ambos géneros: pasa al 32,1% en Hombres y al 21,7% en mujeres. Por otra parte, comparando contra Brasil, vemos que la informalidad también parece afectar de manera diferencial a los hombres por sobre las mujeres, aunque de una manera menos marca que como notamos en los países europeos. En ese sentido, parece ser que la informalidad es un fenómeno más extendido en el país latinoamericano, pero la variable sexo no parece afectar tanto como lo hace en España y Reino Unido.
 
 Analicemos por último el fenómeno de la precariedad laboral.
 
@@ -847,4 +855,4 @@ kable(Cuadro_Precarizacion_UK3, format = "html", table.attr = "class='table tabl
 
 ```
 
-En el caso del Reino Unido, vemos que la precarización es algo más elevada para las mujeres en el rango de 15-30 años y de 45-60 años, mientras que es bastante pareja para ambos sexos en los otros rangos etarios. Por otro parte, y muy a diferencia de España, la precarización afecta en menor medida a los jóvenes de 15 a 30 años, que en los demás rangos etarios, con la excepción del rango etario de 60 o más años. De todas formas, lo que queda claro es que la precarización es notablemente más baja en todos los rangos etarios y que varía considerablemente poco, en relación a España. Con lo cual, es posible afirmar que la precarización laboral en Reino Unido es un problema notablemente menos significativo que en España, no afecta de manera tan fuerte a jóvenes y mujeres, como sí sucede en el caso de España.
+En el caso del Reino Unido, vemos que la precarización es algo más elevada para las mujeres en el rango de 15-30 años y de 45-60 años, mientras que es bastante pareja para ambos sexos en los otros rangos etarios. Por otro parte, y muy a diferencia de España, la precarización afecta en menor medida a los jóvenes de 15 a 30 años, que en los demás rangos etarios, con la excepción del rango etario de 60 o más años. De todas formas, lo que queda claro es que la precarización es notablemente más baja en todos los rangos etarios y que varía considerablemente poco, en relación a España. Con lo cual, es posible afirmar que la precarización laboral en Reino Unido es un problema notablemente menos significativo que en España, no afecta de manera tan fuerte a jóvenes y mujeres, como sí sucede en el caso de España. Por último, al comparar con Brasil, en primer lugar es posible notar que la precarización también afecta de manera más profunda a las mujeres y al sector más joven. Por otra parte, en Brasil, a diferencia de España, los niveles de precarización son muy altos en la juventud, bajan fuertemente en la mediana edad o adultez, y por último vuelven a subir en los últimos años de actividad de las personas.
