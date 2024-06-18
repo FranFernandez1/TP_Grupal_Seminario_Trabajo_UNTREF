@@ -181,10 +181,62 @@ kable(PrecariedadyFormalidad, format = "html", table.attr = "class='table table-
 ## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
 ```{r warning=FALSE}
+library(janitor)
+PrecariedadyFormalidadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
+      adorn_totals(c("row", "col"))  %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 1) %>%
+  adorn_ns()
 
+
+kable(PrecariedadyFormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+  kable_styling(full_width = F, position = "center")
 
 
 ```
+Cruzo con edad
+```{r warning=FALSE}
+
+#### Genero rangos etarios
+base$V2009<-as.numeric(base$V2009)
+base <-base %>% mutate (GRUPO_EDAD = case_when(V2009 < 5 ~ "00 a 04",
+                                               V2009 < 10 ~ "05 a 09",
+                                               V2009 < 15 ~ "10 a 14",
+                                               V2009 < 20 ~ "15 a 19",
+                                               V2009 < 25 ~ "20 a 24",
+                                               V2009 < 30 ~ "25 a 29",
+                                               V2009 < 35 ~ "30 a 34",
+                                               V2009 < 40 ~ "35 a 39",
+                                               V2009 < 45 ~ "40 a 44",
+                                               V2009 < 50 ~ "45 a 49",
+                                               V2009 < 55 ~ "50 a 54",
+                                               V2009 < 60 ~ "55 a 59",
+                                               V2009 < 65 ~ "60 a 64",
+                                               V2009 < 70 ~ "65 a 69",
+                                               V2009 < 75 ~ "70 a 74",
+                                               V2009 < 80 ~ "75 a 79",
+                                               V2009 < 85 ~ "80 a 84",
+                                               V2009 < 90 ~ "85 a 89",
+                                               V2009 < 95 ~ "90 a 94",
+                                               V2009 < 100 ~ "95 a 99",
+                                               V2009 <= 130 ~ "100 y más"))
+
+base$GRUPO_EDAD <- factor(base$GRUPO_EDAD, levels = c("00 a 04","05 a 09","10 a 14","15 a 19","20 a 24",
+                                                      "25 a 29","30 a 34","35 a 39","40 a 44","45 a 49",
+                                                      "50 a 54","55 a 59","60 a 64","65 a 69","70 a 74",
+                                                      "75 a 79","80 a 84","85 a 89","90 a 94","95 a 99",
+                                                      "100 y más"))
+PrecariedadyFormalidadxEdad <- base %>% filter(V2009<=130)%>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,GRUPO_EDAD) %>% summarise(n=n())%>% spread(Precariedad,n) %>%
+    adorn_totals(c("row", "col"))  %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 1) %>%
+  adorn_ns()
+
+kable(PrecariedadyFormalidadxEdad, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según edad  - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+
 
 Consignas para todos los países Analizar brevemente las diferencias en
 la estructura demográfica y del mercado de trabajo entre países. Luego
