@@ -20,7 +20,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Análisis Brasil
 
-::: {align="justify"}
 El siguiente trabajo práctico es condición obligatoria para la promoción
 de la materia **Mercado de trabajo y empleo de la Maestría en Generación
 y Analisis de Información Estadística de la UNTREF**. El mismo es de
@@ -32,7 +31,7 @@ Martes 18 de junio. La entrega será un informe en Rmarkdown alojado en
 un repositorio de Github que pueda correrse desde cualquier computadora,
 con la base datos correspondiente en el directorio de trabajo.
 
-## 1 Abrir y explorar las distintas bases de datos. Describir brevemente (en 1 párrafo) la metodología con que la encuesta es elaborada y explicar (en un tabulado) las variables que serán utilizadas en el TP.
+## 1) Abrir y explorar las distintas bases de datos. Describir brevemente (en 1 párrafo) la metodología con que la encuesta es elaborada y explicar (en un tabulado) las variables que serán utilizadas en el TP.
 
 ```{r warning=FALSE, message = FALSE,include=FALSE}
 # librerias
@@ -64,7 +63,7 @@ Teresina).
 Fuente:
 <https://www.ibge.gov.br/estatisticas/sociais/trabalho/17270-pnad-continua.html?=&t=o-que-e>
 
-```{r}
+```{r warning=FALSE, message = FALSE}
 var<-read.csv("Variables.csv", sep=";",na.strings=c("NA","NULL"),encoding="UTF-8")
 
 var%>%
@@ -72,9 +71,9 @@ var%>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-## 2 Estimar y presentar las tasas básicas del mercado de trabajo. Analizar brevemente los resultados encontrados.
+## 2) Estimar y presentar las tasas básicas del mercado de trabajo. Analizar brevemente los resultados encontrados.
 
-```{r}
+```{r warning=FALSE, message = FALSE}
 if (!require('scales')) install.packages('scales'); library('scales')
 
 Tasas_basicas <- base %>% 
@@ -97,22 +96,22 @@ Se observa que la tasa de actividad es de un 50,7%, la tasa de empleo 44,7% y la
 
 
 
-## 3 Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
+## 3) Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
 
 Se considerará a las personas que se encuentran dentro del sector formal las que cuentan con documentación oficial laboral. Quedarán fuera del sector laboral quienes no cuenten con esto.
 Para la construcción del indicador de formalidad, se utilizó la variable VD4029, la cual indaga por la posesión de una cartera o documento de trabajo.
 Para los casos de cuentapropistas o empleadores, se consideró la variable V4019, la cual indaga sobre la inscripción al registro nacional de personas jurídicas.
 
-## 4 Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
+## 4) Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
 
 Se considerará trabajadores precarios a quienes sean empleados (del sector público o privado) y tengan un trabajo de tipo temporario. Además, se considerará a quienes sean trabajadores familiares auxiliares. También se considerará a quienes realizan el trabajo en el domicilio del empleador, patron o socio.
 
 Se considerará trabajadores no precarios a quienes sean empleados (del sector público o privado) y tengan un trabajo de tipo permanente. Además, se considerará a quienes sean militares o servidores estatutarios.
 
 
-## 5 Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
+## 5) Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
 
-```{r}
+```{r warning=FALSE, message = FALSE}
 base<-base %>% mutate(Formalidad = case_when(VD4009 == "Empregado no setor privado com carteira de trabalho assinada"~ "Formal",###Formal
                                              VD4009 == "Empregado no setor privado com carteira de trabalho assinada"~ "Formal",
                                              VD4009 == "Empregado no setor público com carteira de trabalho assinada"~ "Formal",
@@ -176,10 +175,14 @@ kable(PrecariedadyFormalidad, format = "html", table.attr = "class='table table-
 ```
 
 
-## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
+## 6) Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
-```{r}
-######Precariedad
+### Precariedad por sexo
+
+Se observa mayor proporción de precariedad entre el sexo femenino, respecto al masculino.
+
+
+```{r warning=FALSE, message = FALSE}
 if (!require('janitor')) install.packages('janitor'); library('janitor')
 if (!require('viridis')) install.packages('viridis'); library('viridis')
 PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
@@ -188,16 +191,13 @@ PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No prec
   adorn_pct_formatting(digits = 1) %>%
   adorn_ns()
 
-
 kable(PrecariedadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Tasas de Precariedad e Informalidad del Mercado de Trabajo de Brasil según sexo - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
 
 
-Se observa mayor proporción de precariedad entre el sexo femenino, respecto al masculino.
-
-```{r}
+```{r warning=FALSE, message = FALSE}
 PrecariedadxSexo <- base %>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,V2007) %>% summarise(n=n())
 
 
@@ -211,8 +211,13 @@ ggplot(PrecariedadxSexo, aes(fill=Precariedad, y=n, x=V2007)) +
 
 ```
 
+
+### Precariedad por edad
+
 Al diferenciar según edad, se observa mayor proporción de precariedad en menores de 20 y mayores de 75.
-```{r}
+
+
+```{r warning=FALSE, message = FALSE}
 
 #### Genero rangos etarios
 base$V2009<-as.numeric(base$V2009)
@@ -256,15 +261,17 @@ PrecariedadxEdad <- base %>% filter(V2009<100)%>%filter(Precariedad=="Precario"|
 ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) + 
     geom_bar(position="fill", stat="identity") + 
     scale_fill_viridis(discrete = T, option = "D")+
-  labs(title = "Precariedad laboral por sexo. Población asalariada de 14 años y más. Brasil, 2019",
+  labs(title = "Precariedad laboral por edad. Población asalariada de 14 años y más. Brasil, 2019",
        x="Edad",y="Proporción")+ theme_minimal() +theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
+### Formalidad por sexo
+
 Se observa niveles similares de formalidad entre ambos sexos.
 
-```{r}
-######Formalidad
+```{r warning=FALSE, message = FALSE}
+######Formalidad por sexo
 FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())%>% spread(V2007,n) %>%
       adorn_totals(c("row", "col"))  %>%
   adorn_percentages("row") %>%
@@ -272,24 +279,44 @@ FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>
   adorn_ns()
 
 
-kable(FormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Sector formal y Sector Informal del Mercado de Trabajo según edad. Población Económicamente Activa. Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
+kable(FormalidadxSexo, format = "html", table.attr = "class='table table-striped'", caption = "Sector formal y Sector Informal del Mercado de Trabajo según sexo. Población Económicamente Activa. Brasil - 2019, 3er trimestre. Fuente: PNAD continua") %>%
   kable_styling(full_width = F, position = "center")
 ```
 
+```{r warning=FALSE, message = FALSE}
+FormalidadxSexo <- base %>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,V2007) %>% summarise(n=n())
+
+ggplot(FormalidadxSexo, aes(fill=Formalidad, y=n, x=V2007)) + 
+    geom_bar(position="fill", stat="identity") + 
+    scale_fill_viridis(discrete = T, option = "D")+
+  labs(title = "Formalidad laboral por sexo. Población económicamente activa. Brasil, 2019",
+       x="Sexo",
+       y="Proporción")+ theme_minimal()
+```
+
+### Formalidad Por edad
+
 Se observan mayores tasas de informalidad en menores de 20 y mayores de 70.
 
-```{r}
+```{r warning=FALSE, message = FALSE}
+FormalidadxEdad <- base %>% filter(V2009<100)%>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,GRUPO_EDAD) %>% summarise(n=n())%>% spread(Formalidad,n) %>%
+    adorn_totals(c("row", "col"))  %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 1) %>%
+  adorn_ns()
+
+kable(FormalidadxEdad, format = "html", table.attr = "class='table table-striped'", caption = "Formalidad del Mercado de Trabajo de Brasil según edad. Población Económicamente Activa. 2019, 3er trimestre. Fuente: PNAD continua") %>%
+  kable_styling(full_width = F, position = "center")
+
 FormalidadxEdad <- base %>% filter(V2009<100)%>%filter(Formalidad=="Formal"|Formalidad=="Informal")%>% group_by(Formalidad,GRUPO_EDAD) %>% summarise(n=n())
 ggplot(FormalidadxEdad, aes(fill=Formalidad, y=n, x=GRUPO_EDAD)) + 
     geom_bar(position="fill", stat="identity") + 
     scale_fill_viridis(discrete = T, option = "D")+
-  labs(title = "Formalidad laboral por sexo. Población Económicamente Activa. Brasil, 2019",
+  labs(title = "Formalidad laboral por edad. Población Económicamente Activa. Brasil, 2019",
        x="Edad",y="Proporción")+ theme_minimal() +theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 ```
-
-
 
 
 
@@ -605,7 +632,7 @@ grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 
 Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos. Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente mejor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
 
 
-## 6 Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
+## 6) Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
 En primer lugar construimos las pirámides poblacionales de ambos países para tener una idea inicial de sus estructuras poblacionales por edad y género.
 
