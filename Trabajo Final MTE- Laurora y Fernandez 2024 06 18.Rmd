@@ -334,7 +334,7 @@ Las variables a utilizar, tanto para el caso de España como de Reino Unido, ser
 
 ```{r}
 
-Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE","SIGNISAL","SEX","AGE")
+Variables <- c("WSTATOR", "MAINSTAT", "COEFF", "STAPRO","SIZEFIRM","TEMP","HWOVERPU","SEEKWORK","AVAILBLE","SIGNISAL","SEX","AGE","ISCO3D")
 Descripcion <- c("Estado laboral durante la semana de referencia", 
                   "Estado laboral general", 
                   "Factor ponderador de la poblacion", 
@@ -346,7 +346,8 @@ Descripcion <- c("Estado laboral durante la semana de referencia",
                   "Disponibilidad para empezar a trabajar en las próximas dos semanas",
                   "Percibe regularmente su salario, aunque no asistió al trabajo en la semana de referencia",
                   "Sexo",
-                  "Edad")
+                  "Edad",
+                  "Tipo de Ocupación")
 
 
 variable_table <- data.frame(Variable = Variables, Description = Descripcion)
@@ -429,19 +430,19 @@ Podemos observar que España tiene una tasa de actividad bastante similar a Rein
 ## 3) Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
 
 Para la operacionalización de los conceptos de Sector Formal e Informal se utilizaron múltiples variables de manera conjunta. Estas variables ya fueron detalladas en el punto 1) de este trabajo. Ahora bien, varias de esas variables se utilizaron en simultáneo para construir distintos conceptos o elementos que, a nuestro entender, dan cuenta del sector en la que se enmarca un trabajador/a. 
-En primer lugar, utilizamos la variable SIGNISAL, que refiere a la percepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia. En los casos que SIGNISAL sea 1,2,3 el trabajador no percibió la totalidad de su salario cuando se ausentó del mismo durante la semana de referencia. Creemos que está es ciertamente una medida para identificar informalidad, aunque también precariedad laboral.
+En primer lugar, utilizamos la variable ISCO3D que refiere a una clasificación estandarizada del tipo de Ocupación desarrollada por la Organización Internacional del Trabajo. Para que esta variable resulte más operacionalizable se tomó el primer dígito de la misma (salvo caso que sea 999, que indica casos nulos) puesto que hace referencia al tipo de empleo y su nivel de calificación. La nueva variable toma el nombre de nuevo_ISCO3D en ambos datasets. Si la variable toma un valor entre 1 y 3 consideramos que se trata de un puesto de calificación intermedia y alta (Gerentes, Profesionales, Técnicos). Si toma los valores de 4,5,6,7 y 8 hace referencia a una calificación intermedia-baja y si toma el valor de 9 la calificación es baja. 
 
-Otras variables de importancia utilizadas para la construcción del indicador de Formalidad/Informalidad laboral fueron STAPRO (Estatus Profesional) y SIZEFIRM (Tamaño de la empresa). Estas variables se utilizaron para identificar a los cuentapropistas. En tal sentido, la variable STAPRO debe equivaler a cero y en simultáneo SIZEFIRM a 99. Consideramos que aquellas personas que trabajan por cuenta propia y no tienen empleados a cargo, dependen exclusivamente de su fuerza de trabajo y sin los beneficios y estabilidad laboral que ofrece, en principio, un trabajo bajo relación de dependencia. Por lo tanto, decidimos incorporarlos dentro del sector informal. Queda claro que, al interior de este sector hay realidades muy variadas, con lo cual no en todos los casos es correcto de hablar de informalidad ciertamente. Pero para los propósitos de este trabajo, lo consideramos como una variable de utilidad para acercarnos al fenómeno de la informalidad.
+En segundo lugar, se utiliza la variable de SIZEFIRM, que remite al tamaño de la empresa. Si la misma toma el valor de 10, se tiene 10 o menos empleados, mientras que si toma el valor de 99 refiere a que es una empresa sin empleados (es decir, se trata de un empleado a cuenta propia). 
 
-En definitiva, la construcción del indicador de Informalidad utilizó en simultáneo estos 2 elementos: 1) No percepción del salario completo ante ausencia laboral y 2) Cuentapropistas sin empleados. En el caso de cumplir con una de estas dos condiciones, se decide entonces que el trabajador está en el sector Informal.
+Ahora bien, para cumplir con la condición de estar en el sector informal se deben combinar ambas variables. En definitiva, para ser considerado un empleado del sector Informal se debe: 1) Tener una calificación intermedia-baja o baja y, a su vez, 2) trabajar en una empresa pequeña o ser cuentapropistas. Es importante remarcar que se deben cumplir ambas condiciones. A modo de ejemplo, ser cuentapropista no es razón suficiente para ser identificado dentro del sector informal, sino que además que el mismo debe tener una ocupación de intermedia-baja o baja calificación. De la misma manera, no es suficiente ser asalariado para ser considerado del sector formal. Para estar en el sector formal, el empleado asalariado debe tener una calificación intermedia o alta, y a la vez, trabajar en una empresa de tamaño mayor a 10 personas.
 
-En todos los casos, se utilizó el factor de expansión COEFF, y la construcción de estos indicadores es tanto para la base de datos de España como para la de Reino Unido. Es importante mencionar que la EU LPS no tiene preguntas respecto del acceso a la salud o a la educación, a diferencia de buena parte de las encuestas latinoamericanas, con lo cual, el indicador de informalidad debe ser construido con variables de índole distinta a las que uno normalmente buscaría en una encuesta de Mercado de Trabajo.
+En todos los casos, se utilizó el factor de expansión COEFF, y la construcción de estos indicadores es tanto para la base de datos de España como para la de Reino Unido. De la misma manera, se utilizó como denominador a la población ocupada, identificada por la variable WSTATOR igual a 1 o 2.
 
 
 ## 4) Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
 
 
-Para el concepto de precarización laboral, utilizamos en primer lugar la variable HWOVERPU, que captura la cantidad de horas extras trabajadas que no fueron pagadas en la semana de referecia por el empleador. En ese sentido, si ya existía una hora extra no paga, lo contabilizamos como precariedad laboral. A su vez, incorporamos otra variable de suma importancia, TEMP, que remite a los contratos de tipo temporario (TEMP=2). Por último, nos parece importante volver a utilizar una variable que entendemos aplica tanto para precarización como para indicar formalidad de la relación laboral, que es la variable SIGNISAL, que refiere a la percepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia.Como nuestro denominador vamos a utilizar la variable STAPRO para identificar exclusivamente a los empleados y a los trabajadores familiares (código 3 y 4 respectivamente), dejando por fuera a los cuentapropistas en este caso.
+Para el concepto de precarización laboral, utilizamos en primer lugar la variable HWOVERPU, que captura la cantidad de horas extras trabajadas que no fueron pagadas en la semana de referecia por el empleador. En ese sentido, si ya existía una hora extra no paga, lo contabilizamos como precariedad laboral. A su vez, incorporamos otra variable de suma importancia, TEMP, que remite a los contratos de tipo temporario (TEMP=2). Por último, nos parece importante utilizar la variable SIGNISAL, que refiere a la percepción o no del salario completo cuando el trabajador no asistió al trabajo en la semana de referencia.Como nuestro denominador vamos a utilizar la variable STAPRO para identificar exclusivamente a los empleados y a los trabajadores familiares (código 3 y 4 respectivamente), dejando por fuera a los cuentapropistas en este caso.
 
 Por lo tanto, para identificar a un trabajador en situación de precariedad laboral, se debe cumplir una de tres condiciones: 1) No haber recibido el pago correspondiente a horas extras trabajadas durante la semana de referencia, 2) Tener un contrato laboral de tipo temporal o 3) No percepción del salario completo ante ausencia laboral.
 
@@ -454,36 +455,48 @@ Por lo tanto, para identificar a un trabajador en situación de precariedad labo
 
 ```{r warning=FALSE}
 
+# Primero, genero una nueva columna en nuestros datasets que tome solo el primer dígito de ISCO3D, que refiere al Tipo de Ocupación de acuerdo a la clasificación de la Organización Internacional del Trabajo. Con este dato, ya podemos empezar a determinar el nivel de calificación de la actividad.
+
+bbdd_espana <- bbdd_espana %>%
+  mutate(nuevo_ISCO3D = ifelse(ISCO3D == 999, 999, as.numeric(substr(ISCO3D, 1, 1))))
+
+bbdd_uk <- bbdd_uk %>%
+  mutate(nuevo_ISCO3D = ifelse(ISCO3D == 999, 999, as.numeric(substr(ISCO3D, 1, 1))))
+
+
 ## Calculamos la formalidad e informalidad en España 
 
 Cuadro_Formalidad_ESPAÑA <- bbdd_espana %>% 
-  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
-             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
-             cuenta_propistas = sum( ((STAPRO == 0)&(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
-             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) |((STAPRO == 0)&(SIZEFIRM == 99))    ) * (COEFF * 1000), na.rm = TRUE),
-             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
-             Formales=Ocupados-Informales,
-             'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
-             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1),
-             País="España"
-            )
+  summarise( 
+    Ocupados = sum((WSTATOR %in% c(1,2)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja = sum((WSTATOR %in% c(1,2)) * (nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) * (COEFF * 1000), na.rm = TRUE),
+    Empresas_Pequeñas_O_Sin_Empleados = sum((WSTATOR %in% c(1,2)) * (SIZEFIRM %in% c(10,99)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja_Y_Empre_Peq = sum((WSTATOR %in% c(1,2)) * ((nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) & (SIZEFIRM %in% c(10,99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Calificacion_Baja_Y_Empre_Peq,
+    Formales = Ocupados - Informales,
+    'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
+    'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
+    País = "España"
+  )
+
 
 ## Calculamos la formalidad e informalidad en Reino Unido
 
-Cuadro_Formalidad_Reino_Unido <- bbdd_uk %>% 
-  summarise( Ocupados              = sum((WSTATOR %in% c(1,2))*(COEFF*1000),na.rm=TRUE),
-             No_perciben_salario_completo  = sum((SIGNISAL %in% c(1,2,3))*(COEFF*1000),na.rm=TRUE),
-             cuenta_propistas = sum( ((STAPRO == 0)&(SIZEFIRM == 99))  *(COEFF*1000),na.rm=TRUE),
-             Salario_Parcial_o_Cuenta_propia_sin_empleados = sum( ((SIGNISAL %in% c(1,2,3)) | ((STAPRO == 0)&(SIZEFIRM == 99)) ) * (COEFF * 1000), na.rm = TRUE),
-             Informales=Salario_Parcial_o_Cuenta_propia_sin_empleados,
-             Formales=Ocupados-Informales,
-             'Porcentaje de Informalidad'      = percent(Informales/Ocupados, accuracy = 0.1),
-             'Porcentaje de Formalidad'      = percent(Formales/Ocupados, accuracy = 0.1),
-             País="Reino Unido"
-            )
-
+Cuadro_Formalidad_UK <- bbdd_uk %>% 
+  summarise( 
+    Ocupados = sum((WSTATOR %in% c(1,2)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja = sum((WSTATOR %in% c(1,2)) * (nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) * (COEFF * 1000), na.rm = TRUE),
+    Empresas_Pequeñas_o_Sin_Empleados = sum((WSTATOR %in% c(1,2)) * (SIZEFIRM %in% c(10,99)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja_Y_Empre_Peq = sum((WSTATOR %in% c(1,2)) * ((nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) & (SIZEFIRM %in% c(10,99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Calificacion_Baja_Y_Empre_Peq,
+    Formales = Ocupados - Informales,
+    'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
+    'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
+    País = "Reino Unido"
+  )
 
 ```
+
 
 
 ```{r warning=FALSE}
@@ -501,7 +514,7 @@ Cuadro_Formalidad_Reino_Unido <- Cuadro_Formalidad_Reino_Unido %>%
 Cuadro_Formalidad_Union <- bind_rows(Cuadro_Formalidad_ESPAÑA, Cuadro_Formalidad_Reino_Unido)
 
 #Visualizamos los indicadores adicionales de Formalidad e Informalidad en España y Reino Unido
-kable(Cuadro_Formalidad_Union, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores Adicionales del Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
+kable(Cuadro_Formalidad_Union, format = "html", table.attr = "class='table table-striped'", caption = "Indicadores de Formalidad e Informalidad en el Mercado de Trabajo de España y Reino Unido - 2018. Fuente: EU LFS 2018-Q1") %>%
   kable_styling(full_width = F, position = "center")
 
 ```
@@ -540,7 +553,7 @@ grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 
 
 ```
 
-En  base a la construcción del indicador de formalidad e informalidad laboral en estas bases de datos, podemos observar que ambos países tienen porcentajes relativamente similares en términos de informalidad.Sorprende que Reino Unido tiene un punto porcentual más de porcentaje de Informalidad que España. Por otro lado, en términos absolutos Reino Unido casi duplica a España tanto en cantidad de Ocupados, trabajadores formales e informales, aunque en principio nos interesan más los porcentajes, dado que permiten comparar mejor las formas de trabajo formal e informal entre ambos países. Veamos ahora que sucede con la precarización laboral. Como era de esperar, al comparar la informalidad en un país latinoamericano como Brasil, vemos que la informalidad allí es notablemente mayor, alcanzo niveles del 44,1%, aunque debe quedar claro que se tomaron decisiones metodológicas distintas para medir este país y los europeos.
+En  base a la construcción del indicador de formalidad e informalidad laboral en estas bases de datos, podemos observar que España tiene un nivel notablemente más elevado de Informalidad Laboral en relación al Reino Unido; cerca de 10 puntos porcentuales más. Por otro lado, en términos absolutos ambos países tienen cantidades similares de trabajadores informales, mientras que Reino Unido prácticamente duplica a España en trabajores formales y cantidad de trabajadores ocupados. Aunque en principio nos interesan más los porcentajes, dado que permiten comparar mejor las formas de trabajo formal e informal entre ambos países. Veamos ahora que sucede con la precarización laboral. Como era de esperar, al comparar la informalidad en un país latinoamericano como Brasil, vemos que la informalidad allí es notablemente mayor, alcanzando niveles del 44,1%, aunque debe quedar claro que se tomaron decisiones metodológicas distintas para medir este país y los europeos.
 
 ### Precarización Laboral en España y Reino Unido
 
@@ -629,7 +642,7 @@ pie_chart_reino_unido <- create_pie_chart(data, "Reino Unido")
 grid.arrange(pie_chart_espana, pie_chart_reino_unido, ncol = 2, widths = c(1.5, 1.5), heights = c(1, 1.2))
 ```
 
-Analizando la precarización laboral en ambos países, ahora sí es posible ver diferencias más notorias, que a su vez van en la línea con lo esperado. En ese sentido, vemos que el porcentaje de Precarizados en España es notablemente mayor que en el Reino Unido, de hecho es casi 50% mayor. Nuevamente, en términos absolutos Reino Unido duplica a España en Empleados y No Precarizados, pero claro ya no en cantidad de personas precarizadas, siendo los números casi similares en términos absolutos. Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente mejor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
+Analizando la precarización laboral en ambos países, nuevamente es posible observar que las condiciones de los trabajadores en España son peores que en Reino Unido, esto es tanto midiendo formalidad como precariedad. En este sentido la precarización laboral es casi 50% mayor en España por sobre el Reino Unido, siendo 1 de cada 3 trabajadores asalariados españoles afectados por esta condición. A su vez, en términos absolutos, volvemos a observar que Reino Unido casi duplica a España en cantidad de empleados y empleados no precarizados, pero no así en empleados precarizados donde los valores absolutos son muy similares, dando cuenta de lo que ya nos explican los porcentajes: esto es, la precarización afecta fuertemente a los trabajadores de España, al compararlos con Reino Unido. Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente mejor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
 
 
 ## 6) Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
@@ -730,12 +743,12 @@ bbdd_espana3 <- bbdd_espana3 %>%
 ## Calculamos la informalidad por Sexo y Edad
 Cuadro_Formalidad_ESPAÑA2 <- bbdd_espana3 %>% 
   group_by(Edad_Periodo, Sexo) %>%  # Agrupar por edad y sexo
-  summarise(
-    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
-    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
-    cuenta_propistas = sum(((STAPRO == 0) & (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
-    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) & (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
-    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+ summarise( 
+    Ocupados = sum((WSTATOR %in% c(1,2)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja = sum((WSTATOR %in% c(1,2)) * (nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) * (COEFF * 1000), na.rm = TRUE),
+    Empresas_Pequeñas_O_Sin_Empleados = sum((WSTATOR %in% c(1,2)) * (SIZEFIRM %in% c(10,99)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja_Y_Empre_Peq = sum((WSTATOR %in% c(1,2)) * ((nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) & (SIZEFIRM %in% c(10,99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Calificacion_Baja_Y_Empre_Peq,
     Formales = Ocupados - Informales,
     'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
     'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
@@ -757,7 +770,7 @@ kable(Cuadro_Formalidad_ESPAÑA2, format = "html", table.attr = "class='table ta
 ```
 
 
-Del cuadro anterior es posible extraer que en España el porcentaje de Informalidad tiene a ser mayor para los hombres que para las mujeres. A su vez, en la medida que aumenta la edad, la informalidad tiende a crecer de manera de constante para ambos sexos. De tal forma que, por ejemplo, mientras la informalidad para Hombres y Mujeres de los 15 a los 30 años es de 11,2% y 7,4% respectivamente, en el rango de edades de 60 o más estos números más que se duplican pasando al 25,2% en los hombres y al 20,8% para las mujeres. Veamos qué sucede con el Reino Unido. 
+Del cuadro anterior es posible extraer que en España el porcentaje de Informalidad tiene a ser mayor para las mujeres que para los hombres. A su vez, la variable de la edad tiende a mantenerse bastante estable a lo largo de los distintos grupos etarios, con la salvedad del último grupo (60 años o más), donde la informalidad tiende a ser más preponderante y la brecha entre hombres y mujeres, a su vez, se vuelve más importante. Veamos qué sucede con el Reino Unido. 
 
 
 
@@ -782,12 +795,12 @@ bbdd_uk3 <- bbdd_uk3 %>%
 ## Calculamos la informalidad por Sexo y Edad
 Cuadro_Formalidad_UK2 <- bbdd_uk3 %>% 
   group_by(Edad_Periodo, Sexo) %>%  # Agrupar por edad y sexo
-  summarise(
-    Ocupados = sum((WSTATOR %in% c(1, 2)) * (COEFF * 1000), na.rm = TRUE),
-    No_perciben_salario_completo = sum((SIGNISAL %in% c(1, 2, 3)) * (COEFF * 1000), na.rm = TRUE),
-    cuenta_propistas = sum(((STAPRO == 0) & (SIZEFIRM == 99)) * (COEFF * 1000), na.rm = TRUE),
-    Salario_Parcial_o_Cuenta_propia_sin_empleados = sum(((SIGNISAL %in% c(1, 2, 3)) | ((STAPRO == 0) & (SIZEFIRM == 99))) * (COEFF * 1000), na.rm = TRUE),
-    Informales = Salario_Parcial_o_Cuenta_propia_sin_empleados,
+  summarise( 
+    Ocupados = sum((WSTATOR %in% c(1,2)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja = sum((WSTATOR %in% c(1,2)) * (nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) * (COEFF * 1000), na.rm = TRUE),
+    Empresas_Pequeñas_O_Sin_Empleados = sum((WSTATOR %in% c(1,2)) * (SIZEFIRM %in% c(10,99)) * (COEFF * 1000), na.rm = TRUE),
+    Calificacion_Baja_Y_Empre_Peq = sum((WSTATOR %in% c(1,2)) * ((nuevo_ISCO3D %in% c(4,5,6,7,8,9,999)) & (SIZEFIRM %in% c(10,99))) * (COEFF * 1000), na.rm = TRUE),
+    Informales = Calificacion_Baja_Y_Empre_Peq,
     Formales = Ocupados - Informales,
     'Porcentaje de Informalidad' = percent(Informales / Ocupados, accuracy = 0.1),
     'Porcentaje de Formalidad' = percent(Formales / Ocupados, accuracy = 0.1),
@@ -808,7 +821,9 @@ kable(Cuadro_Formalidad_UK2, format = "html", table.attr = "class='table table-s
 
 ```
 
-Al igual que en el caso de España, los hombres en Reino Unido tienden a tener un nivel de informalidad más alto que las mujeres en todos los grupos de edad. Y también muy en línea con lo que vimos para España, en Reino Unido la edad también es un factor clave para entender el fenómeno de la informalidad. Al aumentar la edad la informalidad crece, y de forma mucho más marcada que en el caso español. Retomando un ejemplo similar, en el grupo de edad de 15 a 30 la informalidad para hombres es de 10,9% y de 7,3% para las mujeres (nótese la similitud de los porcentajes con España). Ahora bien, al analizar el grupo de edad mayor (60 o más años) la informalidad se triplica para ambos géneros: pasa al 32,1% en Hombres y al 21,7% en mujeres. Por otra parte, comparando contra Brasil, vemos que la informalidad también parece afectar de manera diferencial a los hombres por sobre las mujeres, aunque de una manera menos marca que como notamos en los países europeos. En ese sentido, parece ser que la informalidad es un fenómeno más extendido en el país latinoamericano, pero la variable sexo no parece afectar tanto como lo hace en España y Reino Unido.
+Lo primero que notamos al analizar esta tabla es que, a diferencia de lo que observamos en España, en Reino Unido la informalidad laboral afecta de manera más notoria a los hombres por sobre las mujeres en todos los grupos etarios. Por otro lado, el factor etario presenta comportamientos similares a lo analizado en el caso español. Esto es, en los primeros tres grupos etarios las diferencias en los niveles de informalidad no son demasiado notorios, mientras que en el grupo etario de 60 años o más, se observa un salto importante, aumentando cerca de un 30% respecto de los otros grupos etarios y sobrepasando el umbral del 20% para ambos sexos.
+
+Por otra parte, comparando contra Brasil, vemos que la informalidad parece afectar de manera diferencial a los hombres por sobre las mujeres, aunque de una manera menos marcada que como notamos en los países europeos. En ese sentido, parece ser que la informalidad es un fenómeno más extendido en el país latinoamericano, pero la variable sexo no parece afectar tanto como lo hace en España y Reino Unido.
 
 Analicemos por último el fenómeno de la precariedad laboral.
 
@@ -882,4 +897,5 @@ kable(Cuadro_Precarizacion_UK3, format = "html", table.attr = "class='table tabl
 
 ```
 
-En el caso del Reino Unido, vemos que la precarización es algo más elevada para las mujeres en el rango de 15-30 años y de 45-60 años, mientras que es bastante pareja para ambos sexos en los otros rangos etarios. Por otro parte, y muy a diferencia de España, la precarización afecta en menor medida a los jóvenes de 15 a 30 años, que en los demás rangos etarios, con la excepción del rango etario de 60 o más años. De todas formas, lo que queda claro es que la precarización es notablemente más baja en todos los rangos etarios y que varía considerablemente poco, en relación a España. Con lo cual, es posible afirmar que la precarización laboral en Reino Unido es un problema notablemente menos significativo que en España, no afecta de manera tan fuerte a jóvenes y mujeres, como sí sucede en el caso de España. Por último, al comparar con Brasil, en primer lugar es posible notar que la precarización también afecta de manera más profunda a las mujeres y al sector más joven. Por otra parte, en Brasil, a diferencia de España, los niveles de precarización son muy altos en la juventud, bajan fuertemente en la mediana edad o adultez, y por último vuelven a subir en los últimos años de actividad de las personas.
+En el caso del Reino Unido, vemos que la precarización es algo más elevada para las mujeres en el rango de 15-30 años y de 45-60 años, mientras que es bastante pareja para ambos sexos en los otros rangos etarios. Por otro parte, y muy a diferencia de España, la precarización afecta en menor medida a los jóvenes de 15 a 30 años, que en los demás rangos etarios, con la excepción del rango etario de 60 o más años. De todas formas, lo que queda claro es que la precarización es notablemente más baja en todos los rangos etarios y que varía considerablemente poco, en relación a España. Con lo cual, es posible afirmar que la precarización laboral en Reino Unido es un problema notablemente menos significativo que en España, no afecta de manera tan fuerte a jóvenes y mujeres, como sí sucede en el caso de España. 
+Por último, al comparar con Brasil, en primer lugar es posible notar que la precarización también afecta de manera más profunda a las mujeres y al sector más joven. Por otra parte, en Brasil, a diferencia de España, los niveles de precarización son muy altos en la juventud, bajan fuertemente en la mediana edad o adultez, y por último vuelven a subir en los últimos años de actividad de las personas.
