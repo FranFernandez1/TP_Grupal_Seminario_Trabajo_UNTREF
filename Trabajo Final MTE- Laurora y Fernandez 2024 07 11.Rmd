@@ -19,7 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Análisis Brasil
+
 <div align="justify">
+
 El siguiente trabajo práctico es condición obligatoria para la promoción
 de la materia **Mercado de trabajo y empleo de la Maestría en Generación
 y Analisis de Información Estadística de la UNTREF**. El mismo es de
@@ -307,7 +309,9 @@ ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) +
 ------------------------------------------------------------------------
 
 # Análisis España y Reino Unido
+
 <div align="justify">
+
 ## 1) Abrir y explorar las distintas bases de datos. Describir brevemente la metodología con que la encuesta es elaborada y explicar las variables que serán utilizadas en el TP.
 
 La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS de ahora en
@@ -424,6 +428,16 @@ el trabajo podamos observar si estos niveles de desocupación que
 observamos en España se explica por algún factor relacionado con la edad
 o el sexo de las personas.
 
+Por otra parte, hacemos la aclaración de que se decide trabajar con las
+variables WSTATOR y SEEKWORK debido a que en la encuesta se utilizan
+estas variables para ir definiendo futuras preguntas a realizar o no en
+el cuestionario. Aunque se reconoce la practicidad del uso de la
+variable ILOSTAT, preferimos utilizar las dos variables antes
+mencionadas para mantener la coherencia de los cruces posteriores que
+utilizan dichas variables. Por último, las diferencias númericas entre
+usar WSTATOR/SEEKWORK frente a ILOSTAT son muy pequeñas y consideramos
+no alteran las conclusiones finales del trabajo.
+
 ## 3) Realizar una operacionalización de los conceptos de Sector Formal y Sector Informal, de modo de clasificar a toda la población activa en alguno de estos dos sectores. Explicar qué variables se eligieron y por qué.
 
 Para la operacionalización de los conceptos de Sector Formal e Informal
@@ -473,17 +487,16 @@ Nuestro marco conceptual para la elección de las variables de tamaño de
 establecimiento y calificación para la determinación del sector formal e
 informal parten de los aportes de Pok:
 
-"En el marco de este abordaje
-general, una variable de aproximación habitualmente utilizada --y
-adoptada en la EPH de Argentina- ha sido el tamaño de los
-establecimientos, considerado en términos de la cantidad de personal
-ocupado. Una de las aproximaciones consistió, entonces, en considerar
-como integrantes del Sector Informal, a los asalariados, patrones,
-cuenta propia y trabajadores sin salario del mismo estrato en términos
-de tamaño --pequeño- de las unidades económicas en las que están
-insertos. Su inclusión requirió sin embargo, de restricciones, entre
-cuales la más potente pareció ser la de la calificación. " (Pok, 2013,
-p:11-12)
+"En el marco de este abordaje general, una variable de aproximación
+habitualmente utilizada --y adoptada en la EPH de Argentina- ha sido el
+**tamaño de los establecimientos**, considerado en términos de la
+cantidad de personal ocupado. Una de las aproximaciones consistió,
+entonces, en considerar como integrantes del Sector Informal, a los
+asalariados, patrones, cuenta propia y trabajadores sin salario del
+mismo estrato en términos de tamaño --pequeño- de las unidades
+económicas en las que están insertos. Su inclusión requirió sin embargo,
+de restricciones, entre cuales la más potente pareció ser la de la
+**calificación**." (Pok, 2013, p:11-12)
 
 ## 4) Realizar una operacionalización del concepto de precariedad laboral, clasificando a toda la población asalariada.
 
@@ -507,12 +520,27 @@ haber recibido el pago correspondiente a horas extras trabajadas durante
 la semana de referencia, 2) Tener un contrato laboral de tipo temporal o
 3) No percepción del salario completo ante ausencia laboral.
 
-Nuevamente, el marco conceptual para determinar las variables que nos sirven para determinar un trabajo como precario o no, parte de los aportes de Pok:
+Nuevamente, el marco conceptual para determinar las variables que nos
+sirven para determinar un trabajo como precario o no, parte de los
+aportes de Pok:
 
-“Es de señalar que ya en la formulación inicial de la EPH se incluyó la medición de la falta de  percepción de los distintos componentes de la cobertura propia del asalariado (descuento  jubilatorio, obra social, aguinaldo, vacaciones, indemnización por despido, etc.). Estos rasgos se  entendían como indicadores de pertenencia al sector formal de la economía, puesto que, para la  época, la falta de cobertura sólo podía indicar la inserción en el sector informal. Esto, desde  luego, con el advenimiento de la precariedad laboral, pasó a ser un indicador de esta última  condición, con independencia del sector de ocurrencia.” (Pok, 2013, p:12) 
+"Es de señalar que ya en la formulación inicial de la EPH se incluyó la
+medición de la falta de percepción de los distintos componentes de la
+cobertura propia del asalariado (descuento jubilatorio, obra social,
+aguinaldo, vacaciones, indemnización por despido, etc.). Estos rasgos se
+entendían como indicadores de pertenencia al sector formal de la
+economía, puesto que, para la época, la falta de cobertura sólo podía
+indicar la inserción en el sector informal. Esto, desde luego, con el
+advenimiento de la precariedad laboral, pasó a ser un indicador de esta
+última condición, con independencia del sector de ocurrencia." (Pok,
+2013, p:12)
 
-Aunque muchas de estas variables mencionadas por Pok no se encuentran en los datos que recoge la encuesta EU-LFS, si pudimos establecer algunos indicadores de los países europeos que, teniendo en cuenta la realidad laboral y normativa, pueden dar cuenta de precarización laboral, como son las ya mencionadas variables de trabajo temporario, no pago de horas extra y recibo parcial del sueldo ante ausencia.
-
+Aunque muchas de estas variables mencionadas por Pok no se encuentran en
+los datos que recoge la encuesta EU-LFS, si pudimos establecer algunos
+indicadores de los países europeos que, teniendo en cuenta la realidad
+laboral y normativa, pueden dar cuenta de precarización laboral, como
+son las ya mencionadas variables de trabajo temporario, no pago de horas
+extra y recibo parcial del sueldo ante ausencia.
 
 ## 5) Presentar de forma tabulada la incidencia de la informalidad y la precariedad en la población ocupada y/o asalariada.
 
@@ -732,9 +760,15 @@ España en cantidad de empleados y empleados no precarizados, pero no así
 en empleados precarizados donde los valores absolutos son muy similares,
 dando cuenta de lo que ya nos explican los porcentajes: esto es, la
 precarización afecta fuertemente a los trabajadores de España, al
-compararlos con Reino Unido. 
+compararlos con Reino Unido.
 
-Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este último es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente menor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
+Por otro lado, es notable que en Brasil el porcentaje de precarizados es
+bastante similar al de Reino Unido, aunque este último es algo menor. A
+su vez, en comparación con España, Brasil tiene un porcentaje
+significativamente menor de precarizados. Como ya sabemos, tenemos que
+tener en cuenta que los criterios utilizados para medir precarización en
+los dos países europeos difiere mucho del utilizado en el capítulo de
+Brasil.
 
 ## 6) Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
@@ -942,7 +976,12 @@ sexos.
 
 Por otra parte, comparando contra Brasil, vemos que la informalidad
 parece afectar de manera diferencial a los hombres por sobre las
-mujeres. Por otro lado, al ver los grupos por edad, notamos aquí también que la informalidad es mayor a medida que aumenta la edad, en especial en el grupo de edad de 60 años o más, de la misma forma que acontece en los países europeos analizados. Debe quedar claro que el fenómeno de informalidad es una problemática mayor en el país latinoamericano, como podíamos presuponer.
+mujeres. Por otro lado, al ver los grupos por edad, notamos aquí también
+que la informalidad es mayor a medida que aumenta la edad, en especial
+en el grupo de edad de 60 años o más, de la misma forma que acontece en
+los países europeos analizados. Debe quedar claro que el fenómeno de
+informalidad es una problemática mayor en el país latinoamericano, como
+podíamos presuponer.
 
 Analicemos por último el fenómeno de la precariedad laboral.
 
@@ -1039,13 +1078,20 @@ más baja en todos los rangos etarios y que varía considerablemente poco,
 en relación a España. Con lo cual, es posible afirmar que la
 precarización laboral en Reino Unido es un problema notablemente menos
 significativo que en España, no afecta de manera tan fuerte a jóvenes y
-mujeres, como sí sucede en el caso de España. 
+mujeres, como sí sucede en el caso de España.
 
-Por último, al comparar con Brasil, en primer lugar es posible notar que la precarización también afecta de manera más profunda a las mujeres. Pero, por otro lado, la variable de edad dista de ser tan influyente en el análisis, como sí acontece en España, donde los jóvenes sufren de manera diferencial este problema. 
+Por último, al comparar con Brasil, en primer lugar es posible notar que
+la precarización también afecta de manera más profunda a las mujeres.
+Pero, por otro lado, la variable de edad dista de ser tan influyente en
+el análisis, como sí acontece en España, donde los jóvenes sufren de
+manera diferencial este problema.
 
 # Bibliografía
 
-Organización Internacional del Trabajo (2024). International Standard Classification of Occupations (ISCO). Disponible en línea: https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/
+Organización Internacional del Trabajo (2024). International Standard
+Classification of Occupations (ISCO). Disponible en línea:
+<https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/>
 
-Pok, C. (2013) Informalidad y precariedad laboral: Los desarrollos conceptuales de su  abordaje frente a los desafíos de su medición. Congreso Nacional de Estudios del Trabajo. Buenos Aires, 2013.
-
+Pok, C. (2013) Informalidad y precariedad laboral: Los desarrollos
+conceptuales de su abordaje frente a los desafíos de su medición.
+Congreso Nacional de Estudios del Trabajo. Buenos Aires, 2013.
