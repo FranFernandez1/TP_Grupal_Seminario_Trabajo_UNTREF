@@ -169,31 +169,6 @@ Formalidad <- base %>%
             'Tasa Formalidad'= percent(Sector_formal/Ocupados, accuracy = 0.1),
             'Tasa Informalidad'= percent(Sector_informal/Ocupados, accuracy = 0.1))
 
-<<<<<<< HEAD:Trabajo Final MTE- Laurora y Fernandez 2024 06 18.Rmd
-base<-base %>% mutate(Precariedad = case_when(((VD4009 == "Empregado no setor privado com carteira de trabalho assinada"|
-                                                VD4009 == "Empregado no setor privado com carteira de trabalho assinada"|
-                                                VD4009 == "Empregado no setor público com carteira de trabalho assinada"|
-                                                VD4009 == "Empregado no setor privado sem carteira de trabalho assinada"|
-                                                VD4009 == "Empregado no setor público sem carteira de trabalho assinada")&
-                                                (V4025=="Sim"|V4022=="Em domicílio de empregador, patrão, sócio ou freguês"))~"Precario",
-                                              (VD4009 == "Trabalhador familiar auxiliar"|
-                                                VD4009 == "Trabalhador doméstico com carteira de trabalho assinada"|
-                                              VD4009 == "Trabalhador doméstico sem carteira de trabalho assinada")~"Precario",
-                                              ((VD4009 == "Empregado no setor privado com carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor público com carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor privado sem carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor público sem carteira de trabalho assinada")&
-                                                (V4025=="Não"))~"No precario",
-                                              VD4009 == "Militar e servidor estatutário"~"No precario"))
-base<-base %>% mutate(Asalariado = case_when((VD4009 == "Empregado no setor privado com carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor público com carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor privado sem carteira de trabalho assinada"|
-                                                 VD4009 == "Empregado no setor público sem carteira de trabalho assinada"|
-                                                VD4009 == "Trabalhador familiar auxiliar"|
-                                                VD4009 == "Militar e servidor estatutário"|
-                                                VD4009 == "Trabalhador doméstico com carteira de trabalho assinada"|
-                                              VD4009 == "Trabalhador doméstico sem carteira de trabalho assinada")~"Asalariado"))
-=======
 base<-base %>% mutate(Precariedad = case_when(((
   #Precarios
   VD4009 == "Empregado no setor privado com carteira de trabalho assinada"|
@@ -217,7 +192,6 @@ base<-base %>% mutate(Asalariado = case_when((
     VD4009 == "Militar e servidor estatutário"|
     VD4009 == "Trabalhador doméstico com carteira de trabalho assinada"|
     VD4009 == "Trabalhador doméstico sem carteira de trabalho assinada")~"Asalariado"))
->>>>>>> 05abf20000a7b05abc2b39c74cba0af618678035:Trabajo Final MTE- Laurora y Fernandez 2024 07 09.Rmd
 
 PrecariedadyFormalidad <- base %>% 
   summarise(Asalariados          = sum(V1028[Asalariado == "Asalariado"],na.rm=TRUE),
@@ -324,11 +298,7 @@ kable(PrecariedadxEdad, format = "html", table.attr = "class='table table-stripe
 PrecariedadxEdad <- base %>% filter(V2009<100)%>%filter(Precariedad=="Precario"|Precariedad=="No precario")%>% group_by(Precariedad,GRUPO_EDAD) %>% summarise(n=n())
 ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) + 
     geom_bar(position="fill", stat="identity") + 
-<<<<<<< HEAD:Trabajo Final MTE- Laurora y Fernandez 2024 06 18.Rmd
-    scale_fill_viridis(discrete = T, option = "D")+
-=======
     scale_fill_viridis(discrete = T, option = "F")+
->>>>>>> 05abf20000a7b05abc2b39c74cba0af618678035:Trabajo Final MTE- Laurora y Fernandez 2024 07 09.Rmd
   labs(title = "Precariedad laboral por edad. Población asalariada de 14 años y más. Brasil, 2019",
        x="Edad",y="Proporción")+ theme_minimal() +theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -337,11 +307,7 @@ ggplot(PrecariedadxEdad, aes(fill=Precariedad, y=n, x=GRUPO_EDAD)) +
 ------------------------------------------------------------------------
 
 # Análisis España y Reino Unido
-<<<<<<< HEAD:Trabajo Final MTE- Laurora y Fernandez 2024 06 18.Rmd
-
-=======
 <div align="justify">
->>>>>>> 05abf20000a7b05abc2b39c74cba0af618678035:Trabajo Final MTE- Laurora y Fernandez 2024 07 09.Rmd
 ## 1) Abrir y explorar las distintas bases de datos. Describir brevemente la metodología con que la encuesta es elaborada y explicar las variables que serán utilizadas en el TP.
 
 La Encuesta de Fuerza de Trabajo de la Unión Europea (EU-LFS de ahora en
@@ -663,7 +629,7 @@ países.
 
 Como era de esperar, al comparar la informalidad en un país
 latinoamericano como Brasil, vemos que la informalidad allí es
-notablemente mayor, alcanzando niveles del 44,1%, aunque debe quedar
+notablemente mayor, alcanzando niveles del 47,3%, aunque debe quedar
 claro que se tomaron decisiones metodológicas distintas para medir este
 país y los europeos.
 
@@ -766,13 +732,9 @@ España en cantidad de empleados y empleados no precarizados, pero no así
 en empleados precarizados donde los valores absolutos son muy similares,
 dando cuenta de lo que ya nos explican los porcentajes: esto es, la
 precarización afecta fuertemente a los trabajadores de España, al
-compararlos con Reino Unido. Por otro lado, es notable que en Brasil el
-porcentaje de precarizados es bastante similar al de Reino Unido, aunque
-este es algo menor. A su vez, en comparación con España, Brasil tiene un
-porcentaje significativamente mejor de precarizados. Como ya sabemos,
-tenemos que tener en cuenta que los criterios utilizados para medir
-precarización en los dos países europeos difiere mucho del utilizado en
-el capítulo de Brasil.
+compararlos con Reino Unido. 
+
+Por otro lado, es notable que en Brasil el porcentaje de precarizados es bastante similar al de Reino Unido, aunque este último es algo menor. A su vez, en comparación con España, Brasil tiene un porcentaje significativamente menor de precarizados. Como ya sabemos, tenemos que tener en cuenta que los criterios utilizados para medir precarización en los dos países europeos difiere mucho del utilizado en el capítulo de Brasil.
 
 ## 6) Analizar la incidencia de la informalidad y la precariedad según sexo y edad.
 
@@ -980,10 +942,7 @@ sexos.
 
 Por otra parte, comparando contra Brasil, vemos que la informalidad
 parece afectar de manera diferencial a los hombres por sobre las
-mujeres, aunque de una manera menos marcada que como notamos en los
-países europeos. En ese sentido, parece ser que la informalidad es un
-fenómeno más extendido en el país latinoamericano, pero la variable sexo
-no parece afectar tanto como lo hace en España y Reino Unido.
+mujeres. Por otro lado, al ver los grupos por edad, notamos aquí también que la informalidad es mayor a medida que aumenta la edad, en especial en el grupo de edad de 60 años o más, de la misma forma que acontece en los países europeos analizados. Debe quedar claro que el fenómeno de informalidad es una problemática mayor en el país latinoamericano, como podíamos presuponer.
 
 Analicemos por último el fenómeno de la precariedad laboral.
 
@@ -1080,21 +1039,13 @@ más baja en todos los rangos etarios y que varía considerablemente poco,
 en relación a España. Con lo cual, es posible afirmar que la
 precarización laboral en Reino Unido es un problema notablemente menos
 significativo que en España, no afecta de manera tan fuerte a jóvenes y
-mujeres, como sí sucede en el caso de España. Por último, al comparar
-con Brasil, en primer lugar es posible notar que la precarización
-también afecta de manera más profunda a las mujeres y al sector más
-joven. Por otra parte, en Brasil, a diferencia de España, los niveles de
-precarización son muy altos en la juventud, bajan fuertemente en la
-mediana edad o adultez, y por último vuelven a subir en los últimos años
-de actividad de las personas.
+mujeres, como sí sucede en el caso de España. 
 
-<<<<<<< HEAD:Trabajo Final MTE- Laurora y Fernandez 2024 06 18.Rmd
-## Bibliografía
-=======
+Por último, al comparar con Brasil, en primer lugar es posible notar que la precarización también afecta de manera más profunda a las mujeres. Pero, por otro lado, la variable de edad dista de ser tan influyente en el análisis, como sí acontece en España, donde los jóvenes sufren de manera diferencial este problema. 
+
 # Bibliografía
->>>>>>> 05abf20000a7b05abc2b39c74cba0af618678035:Trabajo Final MTE- Laurora y Fernandez 2024 07 09.Rmd
 
-ILO (2024). International Standard Classification of Occupations (ISCO). Disponible en línea: https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/
+Organización Internacional del Trabajo (2024). International Standard Classification of Occupations (ISCO). Disponible en línea: https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/
 
 Pok, C. (2013) Informalidad y precariedad laboral: Los desarrollos conceptuales de su  abordaje frente a los desafíos de su medición. Congreso Nacional de Estudios del Trabajo. Buenos Aires, 2013.
 
